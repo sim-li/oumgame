@@ -1,8 +1,8 @@
 var KEYCODE_SPACE = 32,
     FFTSIZE = 32,    
-    TICK_FREQ = 20,
+    TICK_FREQ = 200,
     assetsPath = 'assets/',
-    playPressed = false,
+    isPlaying = false,
     update = true,
     offset = {},
     canvas,
@@ -36,7 +36,7 @@ function init() {
 function afterLoad(event) { 
     var context = createjs.WebAudioPlugin.context,
         dynamicsNode;
-    analyserNode = context.createAnalyser(),
+    analyserNode = context.createAnalyser();
     analyserNode.fftSize = FFTSIZE;
     analyserNode.smoothingTimeConstant = 0.85;
     analyserNode.connect(context.destination);
@@ -46,24 +46,31 @@ function afterLoad(event) {
     freqFloatData = new Float32Array(analyserNode.frequencyBinCount);
     freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
     timeByteData = new Uint8Array(analyserNode.frequencyBinCount);
-    stage.update();
-    createjs.Sound.play("shattSong", {
+   
+    var instance = createjs.Sound.createInstance('shattSong');
+    instance.play('shattSong', {
         interrupt: createjs.Sound.INTERRUPT_NONE,
         loop: 0,
         volume: 0.4,
         offset: 10000
         }
     );
-}
-function updateAnalysis() {
-
+    instance.addEventListener('succeeded', handleSucceeded);
 }
 
+function handleSucceeded() {
+    this.isPlaying = true;
+}
 function tick(event) {
-    analyserNode.getFloatFrequencyData(freqFloatData); // dB
-    analyserNode.getByteFrequencyData(freqByteData);   // f
-    analyserNode.getByteTimeDomainData(timeByteData);  // waveform
-    this.printData();
+    if (isPlaying) {
+        analyserNode.getFloatFrequencyData(freqFloatData); // dB
+        analyserNode.getByteFrequencyData(freqByteData);   // f
+        analyserNode.getByteTimeDomainData(timeByteData);  // waveform
+        symbol = new Block(timeByteData, freqByteData);
+        stage.addChild(symbol);
+        // symbol.refresh(timeByteData, freqByteData);
+        stage.update();
+    }
 }
 
 function printData() {
