@@ -1,6 +1,6 @@
 var KEYCODE_SPACE = 32,
     FFTSIZE = 32,    
-    TICK_FREQ = 1,
+    TICK_FREQ = 100,
     assetsPath = 'assets/',
     isPlaying = false,
     update = true,
@@ -79,9 +79,14 @@ function tick(event) {
             }
             soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
         }
-        var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
-        var TRESH_HOLD = 50;
-        if (cache.length <= 1 || (Math.abs(cache[cache.length-1] - avg) > TRESH_HOLD)) {
+        var avg = ((soundData[0] * soundData[1] * soundData[2] * soundData[3]) / 100000);
+        var TRESH_HOLD = 10;
+        var cached = cache[cache.length];
+        console.log(cache.length, cached, avg)
+        var dif = cached - avg;
+            // console.log(dif);
+        var check =  (dif > TRESH_HOLD);
+        if (cache.length <= 1 || check ) {
             cache.push(avg);
         }
         if (cache.length >= 16) {
