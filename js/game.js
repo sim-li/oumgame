@@ -1,6 +1,6 @@
 var KEYCODE_SPACE = 32,
     FFTSIZE = 32,    
-    TICK_FREQ = 200,
+    TICK_FREQ = 1,
     assetsPath = 'assets/',
     isPlaying = false,
     update = true,
@@ -10,9 +10,10 @@ var KEYCODE_SPACE = 32,
     preload,
     stage,
     symbol,
-    freqFloatData,
-    freqByteData,
-    timeByteData,
+    dbData,
+    fData,
+    cache = [],
+    waveformData,
     analyserNode;
 
 function init() {
@@ -43,9 +44,9 @@ function afterLoad(event) {
     dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
     dynamicsNode.disconnect();
     dynamicsNode.connect(analyserNode);
-    freqFloatData = new Float32Array(analyserNode.frequencyBinCount);
-    freqByteData = new Uint8Array(analyserNode.frequencyBinCount);
-    timeByteData = new Uint8Array(analyserNode.frequencyBinCount);
+    dbData = new Float32Array(analyserNode.frequencyBinCount);
+    fData = new Uint8Array(analyserNode.frequencyBinCount);
+    waveformData = new Uint8Array(analyserNode.frequencyBinCount);
    
     var instance = createjs.Sound.createInstance('shattSong');
     instance.play('shattSong', {
@@ -63,18 +64,39 @@ function handleSucceeded() {
 }
 function tick(event) {
     if (isPlaying) {
-        analyserNode.getFloatFrequencyData(freqFloatData); // dB
-        analyserNode.getByteFrequencyData(freqByteData);   // f
-        analyserNode.getByteTimeDomainData(timeByteData);  // waveform
-        symbol = new Block(timeByteData, freqByteData);
-        stage.addChild(symbol);
-        // symbol.refresh(timeByteData, freqByteData);
-        stage.update();
+        analyserNode.getFloatFrequencyData(dbData); // dB
+        analyserNode.getByteFrequencyData(fData);   // f
+        analyserNode.getByteTimeDomainData(waveformData);  // waveform
+        var offset = 50;
+        var soundData = [];
+        var i = waveformData.length;
+        while(i--) {
+            if (fData[i] === 0) {
+                fData[i] = 100;
+            }
+            if (waveformData[i] === 0) {
+                waveformData[i] = 1;
+            }
+            soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
+        }
+        var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
+        var TRESH_HOLD = 50;
+        if (cache.length <= 1 || (Math.abs(cache[cache.length-1] - avg) > TRESH_HOLD)) {
+            cache.push(avg);
+        }
+        if (cache.length >= 16) {
+            if (symbol === undefined) { 
+                symbol = new Block(soundData);
+                stage.addChild(symbol);
+            }
+            stage.update();
+            cache = [];
+        }
     }
 }
 
 function printData() {
-    console.log(freqFloatData);
-    console.log(freqByteData);
-    console.log(timeByteData);
+    console.log(dbData);
+    console.log(fData);
+    console.log(waveformData);
 }
