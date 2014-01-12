@@ -33,7 +33,7 @@
             var stroke = createjs.Graphics.getRGB(c_r, c_g, c_b);
             // console.log(stroke);
             g.graphics.beginFill('#000000').beginStroke(stroke);
-            g.graphics.drawCircle(100,100,(i+1)*2);
+            g.graphics.drawCircle(0,0,(i+1)*2);
             // g.alpha = 1-i*0.02;
             // g.x = Math.random()*550;
             // g.y = Math.random()*400;

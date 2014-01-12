@@ -87,8 +87,19 @@ function tick(event) {
         if (cache.length >= 16) {
             if (symbol === undefined) { 
                 symbol = new Block(soundData);
+                symbol.x = 300;
+                symbol.y = 300;
+                var dragger = new createjs.Container();
+                dragger.addChild(symbol);
                 stage.addChild(symbol);
+                var offset = 100;
+                symbol.on('pressmove', function(evt) {
+                    evt.currentTarget.x = evt.stageX ;
+                    evt.currentTarget.y = evt.stageY ;
+                    stage.update();
+                });
             }
+
             stage.update();
             cache = [];
         }
