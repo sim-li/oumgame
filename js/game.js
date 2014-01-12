@@ -18,10 +18,10 @@ var KEYCODE_SPACE = 32,
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
-    container = new createjs.Container();
+    // container = new createjs.Container();
     canvas = document.getElementById('gameCanvas');
     stage = new createjs.Stage(canvas);
-    stage.addChild(container);
+    // stage.addChild(container);
     manifest = [{
         id: 'shattSong', 
         src: 'music/shatt.ogg'
