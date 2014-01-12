@@ -18,10 +18,8 @@ var KEYCODE_SPACE = 32,
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
-    container = new createjs.Container();
     canvas = document.getElementById('gameCanvas');
     stage = new createjs.Stage(canvas);
-    stage.addChild(container);
     manifest = [{
         id: 'shattSong', 
         src: 'music/shatt.ogg'
@@ -35,6 +33,7 @@ function init() {
 }
 
 function afterLoad(event) { 
+    //Initalize Analyser
     var context = createjs.WebAudioPlugin.context,
         dynamicsNode;
     analyserNode = context.createAnalyser();
@@ -47,15 +46,14 @@ function afterLoad(event) {
     dbData = new Float32Array(analyserNode.frequencyBinCount);
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
-   
+    //Play song
     var instance = createjs.Sound.createInstance('shattSong');
     instance.play('shattSong', {
         interrupt: createjs.Sound.INTERRUPT_NONE,
         loop: 0,
         volume: 0.4,
         offset: 10000
-        }
-    );
+    });
     instance.addEventListener('succeeded', handleSucceeded);
 }
 
@@ -80,7 +78,7 @@ function tick(event) {
             soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
         }
         var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
-        var TRESH_HOLD = 50;
+        var TRESH_HOLD = 10;
         if (cache.length <= 1 || (Math.abs(cache[cache.length-1] - avg) > TRESH_HOLD)) {
             cache.push(avg);
         }
@@ -99,7 +97,8 @@ function tick(event) {
                     stage.update();
                 });
             }
-
+            symbol.refresh(soundData);
+            symbol.tick();
             stage.update();
             cache = [];
         }
