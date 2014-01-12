@@ -78,7 +78,7 @@ function tick(event) {
             soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
         }
         var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
-        var TRESH_HOLD = 50;
+        var TRESH_HOLD = 10;
         if (cache.length <= 1 || (Math.abs(cache[cache.length-1] - avg) > TRESH_HOLD)) {
             cache.push(avg);
         }
@@ -97,7 +97,8 @@ function tick(event) {
                     stage.update();
                 });
             }
-
+            symbol.refresh(soundData);
+            symbol.tick();
             stage.update();
             cache = [];
         }
