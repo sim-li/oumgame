@@ -16,6 +16,7 @@
         this.Container_initialize();
         this.soundData = soundData;
         this.offsetStart = offsetStart;
+        instance.setPosition(this.offsetStart);
         this.offsetStop = offsetStop;
         this.melodicCircle = new createjs.Shape();
         this.addChild(this.melodicCircle);
@@ -36,7 +37,6 @@
             this.currentlyPlaying = false;
             return;
         } 
-        instance.setPosition(this.offsetStart);
         instance.play();
         this.currentlyPlaying = true;
     }
@@ -66,7 +66,6 @@
     p.tick = function() { 
         this.makeShape();
         if (instance.getPosition() > this.offsetStop) {
-            instance.stop();
             instance.setPosition(this.offsetStart);
         }
     }

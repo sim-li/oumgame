@@ -64,7 +64,7 @@ function randomSoundData() {
     return soundData;
 }
 function createSymbol() {
-    var mySymbol = new Block(this.randomSoundData(), 5000, 12000);
+    var mySymbol = new Block(this.randomSoundData(), 15000, 16010);
     mySymbol.x = 300;
     mySymbol.y = 300;
     var dragger = new createjs.Container();
