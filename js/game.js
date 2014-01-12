@@ -14,6 +14,7 @@ var KEYCODE_SPACE = 32,
     fData,
     cache = [],
     waveformData,
+    instance,
     analyserNode;
 
 function init() {
@@ -47,14 +48,43 @@ function afterLoad(event) {
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     //Play song
-    var instance = createjs.Sound.createInstance('shattSong');
-    instance.play('shattSong', {
+    instance = createjs.Sound.createInstance('shattSong');
+    // instance.pause();
+       instance.play('shattSong', {
         interrupt: createjs.Sound.INTERRUPT_NONE,
         loop: 0,
         volume: 0.4,
         offset: 10000
     });
     instance.addEventListener('succeeded', handleSucceeded);
+    if (symbol === undefined) { 
+        symbol = this.createSymbol();
+    }
+    
+}
+
+function randomSoundData() {
+    var soundData = [];
+    for (i = 0; i < 16; i++) {
+        soundData[i] = Math.random() * 255;
+    }
+    return soundData;
+}
+function createSymbol() {
+    var mySymbol = new Block(this.randomSoundData());
+    mySymbol.x = 300;
+    mySymbol.y = 300;
+    var dragger = new createjs.Container();
+    dragger.addChild(mySymbol);
+    stage.addChild(mySymbol);
+    stage.update();
+    var offset = 100;
+    mySymbol.on('pressmove', function(evt) {
+        evt.currentTarget.x = evt.stageX ;
+        evt.currentTarget.y = evt.stageY ;
+        stage.update();
+    });
+    return mySymbol;
 }
 
 function handleSucceeded() {
@@ -83,20 +113,6 @@ function tick(event) {
             cache.push(avg);
         }
         if (cache.length >= 16) {
-            if (symbol === undefined) { 
-                symbol = new Block(soundData);
-                symbol.x = 300;
-                symbol.y = 300;
-                var dragger = new createjs.Container();
-                dragger.addChild(symbol);
-                stage.addChild(symbol);
-                var offset = 100;
-                symbol.on('pressmove', function(evt) {
-                    evt.currentTarget.x = evt.stageX ;
-                    evt.currentTarget.y = evt.stageY ;
-                    stage.update();
-                });
-            }
             symbol.refresh(soundData);
             symbol.tick();
             stage.update();
