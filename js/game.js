@@ -64,13 +64,12 @@ function randomSoundData() {
     return soundData;
 }
 function createSymbol() {
-    var mySymbol = new Block(this.randomSoundData(), 15000, 16010);
-    mySymbol.x = 300;
-    mySymbol.y = 300;
-    var dragger = new createjs.Container();
-    dragger.addChild(mySymbol);
+    var mySymbol = new Block(10, 300, this.randomSoundData(), 15000, 16010);
+    
+
     stage.addChild(mySymbol);
     stage.update();
+
     mySymbol.on('pressmove', function(evt) {
         evt.currentTarget.x = evt.stageX ;
         evt.currentTarget.y = evt.stageY ;

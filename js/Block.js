@@ -1,6 +1,6 @@
 (function(window) {
-    function Block(soundData, offsetStart, offsetStop) {
-        this.initialize(soundData, offsetStart, offsetStop);
+    function Block(x, y, soundData, offsetStart, offsetStop) {
+        this.initialize(x, y, soundData, offsetStart, offsetStop);
     }
     var p = Block.prototype = new createjs.Container();
         p.circleCount = 16;
@@ -12,7 +12,7 @@
         p.offsetStart;
         p.offsetStop;
         p.Container_initialize = p.initialize;
-    p.initialize = function(soundData, offsetStart, offsetStop) {
+    p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
         this.soundData = soundData;
         this.offsetStart = offsetStart;
@@ -21,6 +21,8 @@
         this.melodicCircle = new createjs.Shape();
         this.addChild(this.melodicCircle);
         this.makeShape();
+        this.x = x;
+        this.y = y;
         createjs.Ticker.addEventListener("tick", tick);
         var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
         var self = this;
