@@ -65,8 +65,6 @@ function randomSoundData() {
 }
 function createSymbol() {
     var mySymbol = new Block(10, 300, this.randomSoundData(), 15000, 16010);
-    
-
     stage.addChild(mySymbol);
     stage.update();
 
