@@ -54,18 +54,11 @@ function afterLoad(event) {
     var timeline = new Timeline();
     timeline.build();
     stage.addChild(timeline);
-    timeline.build(5);
+    timeline.build(1);
     stage.update();
     
 }
 
-function randomSoundData() {
-    var soundData = [];
-    for (i = 0; i < 16; i++) {
-        soundData[i] = Math.random() * 255;
-    }
-    return soundData;
-}
 // function createSymbol() {
 //     // var mySymbol = new Block(100, 300, 0, this.randomSoundData(), 15000, 16010);
 //     var timeline = new Timeline();
