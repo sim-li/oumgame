@@ -1,6 +1,6 @@
 (function(window) {
-    function Block(soundData, instance) {
-        this.initialize(soundData);
+    function Block(soundData, offsetStart, offsetStop) {
+        this.initialize(soundData, offsetStart, offsetStop);
     }
     var p = Block.prototype = new createjs.Container();
         p.circleCount = 16;
@@ -9,17 +9,26 @@
         p.soundData;
         p.instance;
         p.melodicCircle;
+        p.offsetStart;
+        p.offsetStop;
         p.Container_initialize = p.initialize;
-    p.initialize = function(soundData) {
+    p.initialize = function(soundData, offsetStart, offsetStop) {
         this.Container_initialize();
         this.soundData = soundData;
-        this.instance = instance;
+        this.offsetStart = offsetStart;
+        this.offsetStop = offsetStop;
         this.melodicCircle = new createjs.Shape();
         this.addChild(this.melodicCircle);
         this.makeShape();
         createjs.Ticker.addEventListener("tick", tick);
         var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
-        this.addEventListener("click", this.handleClick);
+        var self = this;
+        (function(self) {
+            self.addEventListener('click', function() {
+                self.handleClick();
+            });
+        })(this);
+        // this.addEventListener("click", this.handleClick);
     }
     p.handleClick = function() {
         if (this.currentlyPlaying === true) {
@@ -27,12 +36,8 @@
             this.currentlyPlaying = false;
             return;
         } 
-        instance.play('shattSong', {
-            interrupt: createjs.Sound.INTERRUPT_NONE,
-            loop: 0,
-            volume: 0.4,
-            offset: 10000
-        });
+        instance.setPosition(this.offsetStart);
+        instance.play();
         this.currentlyPlaying = true;
     }
     p.rgbToHex = function(r, g, b) {
@@ -60,6 +65,10 @@
     }
     p.tick = function() { 
         this.makeShape();
+        if (instance.getPosition() > this.offsetStop) {
+            instance.stop();
+            instance.setPosition(this.offsetStart);
+        }
     }
     window.Block = Block;
 }(window));
