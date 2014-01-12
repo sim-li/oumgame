@@ -79,17 +79,12 @@ function tick(event) {
             }
             soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
         }
-        var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
+        var avg = ((soundData[0] * soundData[1] * soundData[2] * soundData[3]) / 100000);
         var TRESH_HOLD = 10;
-        var dif;
         var cached = cache[cache.length];
-        if (cache.length == 0) {
-            dif = TRESH_HOLD;
-        } else {
-            dif = cache[cache.length-1] - avg;
-        }
-        
-            console.log(dif, cached, avg, cache.length);
+        console.log(cache.length, cached, avg)
+        var dif = cached - avg;
+            // console.log(dif);
         var check =  (dif > TRESH_HOLD);
         if (cache.length <= 1 || check ) {
             cache.push(avg);
