@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EaselJS demo: localToLocal</title>
+	<link href="../_shared/demo.css" rel="stylesheet" type="text/css">
+	<script src="http://code.createjs.com/easeljs-0.7.0.min.js"></script>
+	<script>
+		var stage, arm, dragger;
+		function init() {
+			stage = new createjs.Stage("demoCanvas");
+			
+			target = stage.addChild(new createjs.Shape());
+			target.graphics.beginFill("red").drawCircle(0,0,45)
+				target.graphics.beginFill("white").drawCircle(0,0,30)
+				target.graphics.beginFill("red").drawCircle(0,0,15);
+			target.x = 200;
+			target.y = 200;
+			
+			arm = new createjs.Shape();
+			arm.graphics.beginFill("blue").drawCircle(0,0,40);
+			
+
+			dragger = new createjs.Container();
+			dragger.x = 40;
+			dragger.y = 100;
+			dragger.addChild(arm);
+			stage.addChild(dragger);
+
+			dragger.on("pressmove",function(evt) {
+				// currentTarget will be the container that the event listener was added to:
+				evt.currentTarget.x = evt.stageX;
+				evt.currentTarget.y = evt.stageY;
+				// make sure to redraw the stage to show the change:
+				//stage.update();  
+			});
+
+			//stage.update();   
+			
+			createjs.Ticker.on("tick", tick);
+		}
+		
+		function tick(event) {
+
+			target.alpha = 0.5;
+			var pt = dragger.localToLocal(10,10,target);
+			if (target.hitTest(pt.x, pt.y)) { 
+				target.alpha = 1; 
+				dragger.setTransform(target.x, target.y);
+				//console.log(target.x, target.y);
+			}
+			
+			stage.update(event);
+		}
+	</script>
+</head>
+<body onLoad="init();">
+	<canvas id="demoCanvas" width="600" height="600">
+		alternate content
+	</canvas>
+</body>
+</html>
