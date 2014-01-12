@@ -49,13 +49,6 @@ function afterLoad(event) {
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     //Play song
     instance = createjs.Sound.createInstance('shattSong');
-    // instance.pause();
-       instance.play('shattSong', {
-        interrupt: createjs.Sound.INTERRUPT_NONE,
-        loop: 0,
-        volume: 0.4,
-        offset: 10000
-    });
     instance.addEventListener('succeeded', handleSucceeded);
     if (symbol === undefined) { 
         symbol = this.createSymbol();

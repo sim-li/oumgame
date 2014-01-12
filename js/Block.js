@@ -5,6 +5,7 @@
     var p = Block.prototype = new createjs.Container();
         p.circleCount = 16;
         p.strokeColor = '#000000';
+        p.currentlyPlaying = false;
         p.soundData;
         p.instance;
         p.melodicCircle;
@@ -18,16 +19,21 @@
         this.makeShape();
         createjs.Ticker.addEventListener("tick", tick);
         var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
-        this.melodicCircle.addEventListener("click", this.handleClick);
+        this.addEventListener("click", this.handleClick);
     }
     p.handleClick = function() {
-        console.log('HELLLO');
-    //     instance.play('shattSong', {
-    //     interrupt: createjs.Sound.INTERRUPT_NONE,
-    //     loop: 0,
-    //     volume: 0.4,
-    //     offset: 10000
-    // });
+        if (this.currentlyPlaying === true) {
+            instance.pause();
+            this.currentlyPlaying = false;
+            return;
+        } 
+        instance.play('shattSong', {
+            interrupt: createjs.Sound.INTERRUPT_NONE,
+            loop: 0,
+            volume: 0.4,
+            offset: 10000
+        });
+        this.currentlyPlaying = true;
     }
     p.rgbToHex = function(r, g, b) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
