@@ -63,7 +63,7 @@ function drawTarget(color, alpha) {
 function createWorld() {
     var numberOfCircles = 4;
     var totalDuration = instance.getDuration();
-    var usedDuration = totalDuration / 20; 
+    var usedDuration = totalDuration / 8; 
     var fragmentSize = usedDuration / numberOfCircles;
     var lastChild;
     for (var i = 0; i < numberOfCircles; i++) {
