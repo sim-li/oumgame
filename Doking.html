@@ -9,73 +9,24 @@
 		function init() {
 
 			stage = new createjs.Stage("demoCanvas");
-			for (var i = 0; i < 2; i++) {
-				var child = new createjs.Shape();
-				child.graphics.beginFill("red").drawCircle(0,0,45);
-				child.x = 100 + i*100;
-				child.y = 100;
-				child.id = i;
-				createjs.Ticker.addEventListener("tick", child.tick);
+			
+			
+			target = new createjs.Shape()
+			target.graphics.beginFill("red").drawCircle(0,0,45)
+			target.graphics.beginFill("white").drawCircle(0,0,30)
+			target.graphics.beginFill("red").drawCircle(0,0,15);
+			target.x = 200;
+			target.y = 200;
+			stage.addChild(target);
+			
+			arm = new createjs.Shape();
+			arm.graphics.beginFill("blue").drawCircle(0,0,40);
+			dragger = new createjs.Container();
+			dragger.x = 40;
+			dragger.y = 100;
+			dragger.addChild(arm);
+			stage.addChild(dragger);
 
-				var target = new createjs.Shape();
-				target.graphics.beginFill("blue").drawCircle(0,0,45);
-				target.x = 100 + i*100;
-				target.y = 400;
-				target.id = 10000-i;
-
-				child.target = target;
-				stage.addChild(child.target);
-				stage.addChild(child);
-				
-				
-				child.on("pressmove", function(evt) {
-					snapOnCorrectObject(evt);
-					snapOnAnyObject(evt);
-				});
-			var sortFunction = function(obj1, obj2, options) {
-			    if (obj1.id > obj2.id) { return -1; }
-			    if (obj1.id < obj2.id) { return 1; }
-		    return 0;
-		}
-		    stage.sortChildren(sortFunction);
-		    stage.update();
-			}
-			stage.update();
-		}
-		
-		function snapOnCorrectObject(evt) {
-			var myChild = evt.target;
-			var myTarget = evt.target.target;
-			evt.currentTarget.x = evt.stageX;
-			evt.currentTarget.y = evt.stageY;
-			var pt = myChild.localToLocal(10, 10, myTarget);
-			if (myTarget.hitTest(pt.x, pt.y)) { 
-				myTarget.alpha = 1; 
-				myChild.setTransform(myTarget.x, myTarget.y);
-				console.log('I am correct');
-			}
-			stage.update(); 
-		}
-		function snapOnAnyObject(evt) {
-			var myChild = evt.target;
-			evt.currentTarget.x = evt.stageX;
-			evt.currentTarget.y = evt.stageY;
-			for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-				var myTarget = stage.getChildAt(i).target;
-				if (myTarget == undefined) {
-					continue;
-				}
-				var pt = myChild.localToLocal(10, 10, myTarget);
-				if (myTarget.hitTest(pt.x, pt.y)) { 
-					myTarget.alpha = 1; 
-					myChild.setTransform(myTarget.x, myTarget.y);
-				}
-			}
-			stage.update(); 
-		}
-		function tick(event) {
-			stage.update(event);
-		}
 	</script>
 </head>
 <body onLoad="init();">
