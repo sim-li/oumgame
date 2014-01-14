@@ -27,25 +27,39 @@
 				stage.addChild(child);
 				stage.addChild(child.target);
 				
-				console.log(child.id);
 				child.on("pressmove", function(evt) {
-					
-					// Child hits correct target
+					// Child hits any target
 					var myChild = evt.target;
-					var myTarget = evt.target.target;
 					evt.currentTarget.x = evt.stageX;
 					evt.currentTarget.y = evt.stageY;
-					var pt = myChild.localToLocal(10, 10, myTarget);
-					if (myTarget.hitTest(pt.x, pt.y)) { 
-						myTarget.alpha = 1; 
-						myChild.setTransform(myTarget.x, myTarget.y);
+					for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
+						var myTarget = stage.getChildAt(i).target;
+						if (myTarget == undefined) {
+							continue;
+						}
+						var pt = myChild.localToLocal(10, 10, myTarget);
+						if (myTarget.hitTest(pt.x, pt.y)) { 
+							myTarget.alpha = 1; 
+							myChild.setTransform(myTarget.x, myTarget.y);
+						}
 					}
+
+					// Child hits correct target
+					// var myChild = evt.target;
+					// var myTarget = evt.target.target;
+					// evt.currentTarget.x = evt.stageX;
+					// evt.currentTarget.y = evt.stageY;
+					// var pt = myChild.localToLocal(10, 10, myTarget);
+					// if (myTarget.hitTest(pt.x, pt.y)) { 
+					// 	myTarget.alpha = 1; 
+					// 	myChild.setTransform(myTarget.x, myTarget.y);
+					// }
 					stage.update(); 
 				});
 				
 			}
 			for (var i = 0; i < stage.getNumChildren(); i++) {
-				console.log(stage.getChildAt(i).id);
+				// console.log(stage.getChildAt(i).id);
 			}
 			stage.update();
 // getNumChildren y()
