@@ -8,47 +8,79 @@
 		var stage, arm, dragger;
 		function init() {
 			stage = new createjs.Stage("demoCanvas");
-			
-			target = stage.addChild(new createjs.Shape());
-			target.graphics.beginFill("red").drawCircle(0,0,45)
-				target.graphics.beginFill("white").drawCircle(0,0,30)
-				target.graphics.beginFill("red").drawCircle(0,0,15);
-			target.x = 200;
-			target.y = 200;
-			
-			arm = new createjs.Shape();
-			arm.graphics.beginFill("blue").drawCircle(0,0,40);
-			
+			for (var i = 0; i < 8; i++) {
+				var child = new createjs.Shape();
+				child.graphics.beginFill("red").drawCircle(0,0,45);
+				child.x = i*100;
+				child.y = 100;
 
-			dragger = new createjs.Container();
-			dragger.x = 40;
-			dragger.y = 100;
-			dragger.addChild(arm);
-			stage.addChild(dragger);
+				var target = new createjs.Shape();
+				target.graphics.beginFill("blue").drawCircle(0,0,45);
+				target.x = i*100;
+				target.y = 400;
 
-			dragger.on("pressmove",function(evt) {
-				// currentTarget will be the container that the event listener was added to:
-				evt.currentTarget.x = evt.stageX;
-				evt.currentTarget.y = evt.stageY;
-				// make sure to redraw the stage to show the change:
-				//stage.update();  
-			});
+				stage.addChild(child);
+				stage.addChild(target);
+
+				var self = this;
+			        (function(self) {
+			            self.addEventListener('click', function() {
+			                self.handleClick();
+			            });
+			        })(this);
+			    (function(self) {
+			    	
+			    })    
+				child.on("pressmove",function(evt) {
+					evt.currentTarget.x = evt.stageX;
+					evt.currentTarget.y = evt.stageY;
+
+					var pt = child.localToLocal(10, 10, target);
+					if (target.hitTest(pt.x, pt.y)) { 
+						target.alpha = 1; 
+						console.log('HUHU');
+						child.setTransform(target.x, target.y);
+					}
+					stage.update(); 
+				});
+				
+			}
+
+			stage.update();
+// getNumChildren y()
+			
+			// for (var i = 0; i < stage.getNumChildren(); i++) {
+			// 	var child = stage.getChildAt(i);
+			// }
+
+		
+			// dragger = new createjs.Container();
+			// dragger.x = 40;
+			// dragger.y = 100;
+			// dragger.addChild(arm);
+			// stage.addChild(dragger);
+
+			// dragger.on("pressmove",function(evt) {
+			// 	evt.currentTarget.x = evt.stageX;
+			// 	evt.currentTarget.y = evt.stageY;
+			// 	target.alpha = 0.5;
+			// 	var pt = dragger.localToLocal(10, 10, target);
+			// 	if (target.hitTest(pt.x, pt.y)) { 
+			// 		target.alpha = 1; 
+			// 		dragger.setTransform(target.x, target.y);
+			// 	}
+			// 	stage.update();  
+			// });
+
+
+
 
 			//stage.update();   
 			
-			createjs.Ticker.on("tick", tick);
+			// createjs.Ticker.on("tick", tick);
 		}
 		
 		function tick(event) {
-
-			target.alpha = 0.5;
-			var pt = dragger.localToLocal(10,10,target);
-			if (target.hitTest(pt.x, pt.y)) { 
-				target.alpha = 1; 
-				dragger.setTransform(target.x, target.y);
-				//console.log(target.x, target.y);
-			}
-			
 			stage.update(event);
 		}
 	</script>
