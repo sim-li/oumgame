@@ -77,7 +77,7 @@ function createWorld() {
         target.id = 10000-i;
         child.target = target;
         if (lastChild != undefined) {
-            target.nextFather = lastChild;
+            target.nextFather = lastChild; // HERE IS THE SALAD
         }
         stage.addChild(child.target);
         stage.addChild(child);
