@@ -7,7 +7,6 @@
 	<script>
 		var stage, arm, dragger;
 		function init() {
-
 			stage = new createjs.Stage("demoCanvas");
 			
 			
@@ -27,6 +26,31 @@
 			dragger.addChild(arm);
 			stage.addChild(dragger);
 
+			dragger.on("pressmove",function(evt) {
+				// currentTarget will be the container that the event listener was added to:
+				evt.currentTarget.x = evt.stageX;
+				evt.currentTarget.y = evt.stageY;
+				// make sure to redraw the stage to show the change:
+				//stage.update();  
+			});
+
+			//stage.update();   
+			
+			createjs.Ticker.on("tick", tick);
+		}
+		
+		function tick(event) {
+
+			target.alpha = 0.5;
+			var pt = dragger.localToLocal(10,10,target);
+			if (target.hitTest(pt.x, pt.y)) { 
+				target.alpha = 1; 
+				dragger.setTransform(target.x, target.y);
+				//console.log(target.x, target.y);
+			}
+			
+			stage.update(event);
+		}
 	</script>
 </head>
 <body onLoad="init();">
