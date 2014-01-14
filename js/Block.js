@@ -14,28 +14,23 @@
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
-        // this.soundData = soundData;
         this.offsetStart = offsetStart;
         instance.setPosition(this.offsetStart);
         this.offsetStop = offsetStop;
         this.melodicCircle = new createjs.Shape();
         this.melodicCircle.x = 0;
         this.melodicCircle.y = 0;
-        // this.addChild(this.melodicCircle);
         this.makeShape();
         this.x = x;
         this.y = y;
-        // var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
         var self = this;
         (function(self) {
             self.addEventListener('click', function() {
                 self.handleClick();
             });
         })(this);
-        // this.addEventListener("click", this.handleClick);
     }
     p.handleClick = function() {
-        console.log("HAVE CLICK");
         if (this.currentlyPlaying === true) {
             instance.pause();
             this.currentlyPlaying = false;
@@ -64,9 +59,6 @@
             g.compositeOperation = "lighter";
         }
     }
-    // p.refresh = function(soundData) { 
-    //     soundData = soundData;
-    // }
     p.tick = function() { 
          console.log("ROGER");
         if (instance.getPosition() > this.offsetStop) {
