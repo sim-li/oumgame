@@ -32,6 +32,9 @@
             self.addEventListener('tick', function() {
                 self.tick();
             });
+            instance.addEventListener('startingplayback', function() {
+                self.handlePlayStart();
+            });
         })(this);
     }
     p.handleClick = function() {
@@ -41,13 +44,17 @@
         } 
         this.play();
     }
+    p.handlePlayStart = function() {
+        this.pause();
+    }
     p.play = function() {
+        instance.dispatchEvent('startingplayback');
         instance.setPosition(this.position);
         this.playing = true;
         instance.play();
     }
     p.pause = function() {
-        this.positon = instance.getPosition();
+        // this.position = instance.getPosition();
         this.playing = false;
         instance.pause();
     }
@@ -73,9 +80,9 @@
     }
     p.tick = function() { 
         if (this.playing) {
-            if (instance.getPosition() > this.offsetStop) {
-                instance.setPosition(this.offsetStart);
-            }
+            // if (instance.getPosition() > this.offsetStop) {
+            //     instance.setPosition(this.offsetStart);
+            // }
             this.makeShape();
         }
     }
