@@ -54,6 +54,12 @@ function afterLoad(event) {
     this.createWorld();
 }
 
+function drawTarget(color, alpha) {
+    var target = new createjs.Shape();
+    target.graphics.alpha = alpha;
+    target.graphics.beginFill("black").drawCircle(0,0, (16+1)*4);
+    return target;
+}
 function createWorld() {
     var numberOfCircles = 4;
     var totalDuration = instance.getDuration();
@@ -69,9 +75,7 @@ function createWorld() {
         var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         child.id = i;
 
-        var target = new createjs.Shape();
-        target.graphics.alpha = 0.3
-        target.graphics.beginFill("black").drawCircle(0,0, (16+1)*4);
+        var target = this.drawTarget('black', 0.2);
 
          // Don't touch circle directly, change x-y coords of target instead!
         target.x = 100 + i*200;
