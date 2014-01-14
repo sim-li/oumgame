@@ -65,12 +65,14 @@ function createWorld() {
         var childY = Math.random() * 600;
         // var childX = 100 + i*200;
         // var childY = 100;
-        console.log(fragmentSize * i, fragmentSize * (i + 1));
+        // console.log(fragmentSize * i, fragmentSize * (i + 1));
         var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         child.id = i;
 
         var target = new createjs.Shape();
-        target.graphics.beginFill("blue").drawCircle(0,0, (16+1)*4);
+        target.graphics.alpha = 0.3
+        target.graphics.beginFill("black").drawCircle(0,0, (16+1)*4);
+
          // Don't touch circle directly, change x-y coords of target instead!
         target.x = 100 + i*200;
         target.y = 400;
