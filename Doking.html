@@ -15,14 +15,12 @@
 				child.x = 100 + i*100;
 				child.y = 100;
 				child.id = i;
-				// child.dominance = 5;
 
 				var target = new createjs.Shape();
 				target.graphics.beginFill("blue").drawCircle(0,0,45);
 				target.x = 100 + i*100;
 				target.y = 400;
 				target.id = 10000-i;
-				// target.dominance = 0;
 
 				child.target = target;
 				stage.addChild(child.target);
