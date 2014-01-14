@@ -75,15 +75,8 @@ function createWorld() {
         // console.log(fragmentSize * i, fragmentSize * (i + 1));
         var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         child.id = i;
-        var target = this.drawTarget('#1C1C1C', 0.2);
-
-         // Don't touch circle directly, change x-y coords of target instead!
-        target.x = 100 + i*200;
-        target.y = 300;
+        var target = new Target(100 + i*200, 300, '#1C1C1C', 1);
         target.id = 10000-i;
-        if (nextTarget != 'undefined') {
-            child.target.nextTarget = nextTarget;
-        }
         child.target = target;
         stage.addChild(child.target);
         stage.addChild(child);
@@ -114,7 +107,7 @@ function snapOnCorrectObject(evt) {
     evt.currentTarget.y = evt.stageY;
     var pt = myChild.localToLocal(10, 10, myTarget);
     if (myTarget.hitTest(pt.x, pt.y)) { 
-        myTarget.alpha = 1; 
+        // myTarget.alpha = 1; 
         myChild.setTransform(myTarget.x, myTarget.y);
         console.log('I am correct');
     }
@@ -132,7 +125,7 @@ function snapOnAnyObject(evt) {
         }
         var pt = myChild.localToLocal(10, 10, myTarget);
         if (myTarget.hitTest(pt.x, pt.y)) { 
-            myTarget.alpha = 1; 
+            // myTarget.alpha = 1; 
             myChild.setTransform(myTarget.x, myTarget.y);
             myChild.rowPlay();
         }
