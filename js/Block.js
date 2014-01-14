@@ -12,6 +12,7 @@
         p.offsetStop;
         p.position;
         p.playing;
+        p.isRowPlay;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
@@ -22,6 +23,7 @@
         this.melodicCircle.x = 0;
         this.melodicCircle.y = 0;
         this.makeShape();
+        this.isRowPlay = false;
         this.x = x;
         this.y = y;
         var self = this;
@@ -35,6 +37,11 @@
             instance.addEventListener('startingplayback', function() {
                 self.handlePlayStart();
             });
+            instance.addEventListener('complete ', function() { 
+                if (self.isRowPlay) {
+                    self.playNext(); 
+                }
+            })
         })(this);
     }
     p.handleClick = function() {
@@ -56,6 +63,19 @@
     p.pause = function() {
         this.playing = false;
         instance.pause();
+    }
+    p.rowPlay = function() {
+        this.isRowPlay = true;
+        this.position = this.offsetStart;
+        instance.setPosition(this.offsetStart);
+        instance.play();
+    }
+    p.playNext = function() {
+       if (this.nextChild != 'undefined') {
+        this.rowPlay = false;
+        instance.pause();
+        this.nextChild.rowPlay();
+       }
     }
     p.rgbToHex = function(r, g, b) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
