@@ -16,9 +16,18 @@ var KEYCODE_SPACE = 32,
     waveformData,
     instance,
     analyserNode,
-    soundData = [];
+    titleLabel,
+    countdownLabel,
+    soundData = [],
+    startTime,
+    currentTime,
+    currentDate;
+
 
 function init() {
+    currentDate = new Date();
+    startTime = currentDate.getSeconds();
+
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
     canvas = document.getElementById('gameCanvas');
     stage = new createjs.Stage(canvas);
@@ -61,6 +70,13 @@ function drawTarget(color, alpha) {
     return target;
 }
 function createWorld() {
+    countdownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
+    countdownLabel.alpha = 0.5;
+    countdownLabel.x = 0;
+    countdownLabel.y = 0;
+   
+    stage.addChild(countdownLabel);
+    stage.update();
     var numberOfCircles = 4;
     var totalDuration = instance.getDuration();
     var usedDuration = totalDuration / 8; 
@@ -167,6 +183,11 @@ function handleSucceeded() {
     this.isPlaying = true;
 }
 function tick(event) {
+    currentTime = currentDate.getSeconds();
+    var dif = startTime ;
+    if (countdownLabel != undefined) {
+        countdownLabel.text = dif;
+    }
     if (isPlaying) {
         analyserNode.getFloatFrequencyData(dbData); // dB
         analyserNode.getByteFrequencyData(fData);   // f
