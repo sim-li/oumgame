@@ -37,9 +37,8 @@
             instance.addEventListener('startingplayback', function() {
                 self.handlePlayStart();
             });
-            instance.addEventListener('complete ', function() { 
+            instance.addEventListener('playbackComplete', function() { 
                 if (self.isRowPlay) {
-                    console.log('Next!');
                     self.handleComplete(); 
                 }
             })
@@ -72,12 +71,16 @@
         instance.setPosition(this.offsetStart);
         instance.play();
     }
+    p.rowPlayStop = function() {
+        this.isRowPlay = false;
+        console.log('Ropwlay stop');
+    }
     p.handleComplete = function() {
         console.log('next!');
-       if (this.nextChild != 'undefined') {
+       if (this.target.nextTarget.father != undefined) {
         this.rowPlay = false;
         instance.pause();
-        this.nextChild.rowPlay();
+        this.target.nextTarget.father.rowPlay();
        }
     }
     p.rgbToHex = function(r, g, b) {
@@ -101,14 +104,11 @@
         }
     }
     p.tick = function() { 
-        if (this.target != undefined) {
-            this.target.tick();
-        }
         if (this.playing) {
             this.position = instance.getPosition();
             if (instance.getPosition() > this.offsetStop) {
                 instance.setPosition(this.offsetStart);
-                instance.dispatchEvent('complete');
+                instance.dispatchEvent('playbackComplete');
             }
             this.makeShape();
         }

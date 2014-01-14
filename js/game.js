@@ -63,7 +63,7 @@ function drawTarget(color, alpha) {
 function createWorld() {
     var numberOfCircles = 4;
     var totalDuration = instance.getDuration();
-    var usedDuration = totalDuration / 4; 
+    var usedDuration = totalDuration / 20; 
     var fragmentSize = usedDuration / numberOfCircles;
     var lastChild;
     for (var i = 0; i < numberOfCircles; i++) {
@@ -73,12 +73,12 @@ function createWorld() {
         var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         child.id = i;
         var target = new Target(100 + i*200, 300, '#1C1C1C', 1);
-        if (lastChild != undefined) {
-            lastChild.target.nextSibling = target; // Dangerous salad of objects TODO: CLEARIFY!!!
-            lastChild.target.parent = lastChild;
-        }
+        
         target.id = 10000-i;
         child.target = target;
+        if (lastChild != undefined) {
+            target.nextFather = lastChild;
+        }
         stage.addChild(child.target);
         stage.addChild(child);
         lastChild = child;
@@ -129,7 +129,7 @@ function snapOnAnyObject(evt) {
             // myTarget.alpha = 1; 
             myChild.setTransform(myTarget.x, myTarget.y);
             myChild.rowPlay();
-        }
+        } 
     }
     stage.update(); 
 }

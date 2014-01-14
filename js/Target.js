@@ -7,9 +7,8 @@
         p.y;
         p.color;
         p.alpha;
-        p.nextSibling;
-        p.parent;
-        p.rowPlay;
+        p.id;
+        p.father;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, color, alpha) {
         this.x = x;
@@ -17,39 +16,20 @@
         this.color = color;
         this.alpha = alpha;
         this.makeShape();
-        this.rowPlay = false;
-        var self = this;
-        (function(self) {
-            // self.addEventListener('click', function() {
-            //     self.handleClick();
-            // });
-            // self.addEventListener('tick', function() {
-            //     self.tick();
-            // });
-            // instance.addEventListener('startingplayback', function() {
-            //     self.handlePlayStart();
-            // });
-            // instance.addEventListener('complete ', function() { 
-            //     if (self.isRowPlay) {
-            //         console.log('Next!');
-            //         self.handleComplete(); 
-            //     }
-            // })
-        })(this);
     }
+    
+    p.setFather = function(parent) {
+        this.father = parent;
+    }
+    p.getFather = function(parent) {
+        return this.father;
+    }
+
     p.makeShape = function()  {
         g = this;
         g.graphics.clear();
         g.graphics.alpha = this.alpha;
         g.graphics.beginFill(this.color).drawCircle(0,0, (16+1)*4);
-    }
-    p.startRowPlay = function() {
-
-    }
-    p.stopRowPlay = function() {
-        
-    }
-    p.tick = function() { 
     }
     window.Target = Target;
 }(window));
