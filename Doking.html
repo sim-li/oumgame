@@ -14,87 +14,66 @@
 				child.graphics.beginFill("red").drawCircle(0,0,45);
 				child.x = 100 + i*100;
 				child.y = 100;
-				child.id = 'a'+i;
+				child.id = i;
+				// child.dominance = 5;
 
 				var target = new createjs.Shape();
 				target.graphics.beginFill("blue").drawCircle(0,0,45);
 				target.x = 100 + i*100;
 				target.y = 400;
-				target.id = 'b'+i;
+				target.id = 10000-i;
+				// target.dominance = 0;
 
 				child.target = target;
-
-				stage.addChild(child);
 				stage.addChild(child.target);
+				stage.addChild(child);
+				
 				
 				child.on("pressmove", function(evt) {
-					// Child hits any target
-					var myChild = evt.target;
-					evt.currentTarget.x = evt.stageX;
-					evt.currentTarget.y = evt.stageY;
-					for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-						var myTarget = stage.getChildAt(i).target;
-						if (myTarget == undefined) {
-							continue;
-						}
-						var pt = myChild.localToLocal(10, 10, myTarget);
-						if (myTarget.hitTest(pt.x, pt.y)) { 
-							myTarget.alpha = 1; 
-							myChild.setTransform(myTarget.x, myTarget.y);
-						}
-					}
-
-					// Child hits correct target
-					// var myChild = evt.target;
-					// var myTarget = evt.target.target;
-					// evt.currentTarget.x = evt.stageX;
-					// evt.currentTarget.y = evt.stageY;
-					// var pt = myChild.localToLocal(10, 10, myTarget);
-					// if (myTarget.hitTest(pt.x, pt.y)) { 
-					// 	myTarget.alpha = 1; 
-					// 	myChild.setTransform(myTarget.x, myTarget.y);
-					// }
-					stage.update(); 
+					snapOnCorrectObject(evt);
+					snapOnAnyObject(evt);
 				});
-				
-			}
-			for (var i = 0; i < stage.getNumChildren(); i++) {
-				// console.log(stage.getChildAt(i).id);
+			var sortFunction = function(obj1, obj2, options) {
+			    if (obj1.id > obj2.id) { return -1; }
+			    if (obj1.id < obj2.id) { return 1; }
+		    return 0;
+		}
+		    stage.sortChildren(sortFunction);
+		    stage.update();
 			}
 			stage.update();
-// getNumChildren y()
-			
-			// for (var i = 0; i < stage.getNumChildren(); i++) {
-			// 	var child = stage.getChildAt(i);
-			// }
-
-		
-			// dragger = new createjs.Container();
-			// dragger.x = 40;
-			// dragger.y = 100;
-			// dragger.addChild(arm);
-			// stage.addChild(dragger);
-
-			// dragger.on("pressmove",function(evt) {
-			// 	evt.currentTarget.x = evt.stageX;
-			// 	evt.currentTarget.y = evt.stageY;
-			// 	target.alpha = 0.5;
-			// 	var pt = dragger.localToLocal(10, 10, target);
-			// 	if (target.hitTest(pt.x, pt.y)) { 
-			// 		target.alpha = 1; 
-			// 		dragger.setTransform(target.x, target.y);
-			// 	}
-			// 	stage.update();  
-			// });
-
-
-
-
-			//stage.update();   
-			
-			// createjs.Ticker.on("tick", tick);
 		}
 		
+		function snapOnCorrectObject(evt) {
+			var myChild = evt.target;
+			var myTarget = evt.target.target;
+			evt.currentTarget.x = evt.stageX;
+			evt.currentTarget.y = evt.stageY;
+			var pt = myChild.localToLocal(10, 10, myTarget);
+			if (myTarget.hitTest(pt.x, pt.y)) { 
+				myTarget.alpha = 1; 
+				myChild.setTransform(myTarget.x, myTarget.y);
+				console.log('I am correct');
+			}
+			stage.update(); 
+		}
+		function snapOnAnyObject(evt) {
+			var myChild = evt.target;
+			evt.currentTarget.x = evt.stageX;
+			evt.currentTarget.y = evt.stageY;
+			for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
+				var myTarget = stage.getChildAt(i).target;
+				if (myTarget == undefined) {
+					continue;
+				}
+				var pt = myChild.localToLocal(10, 10, myTarget);
+				if (myTarget.hitTest(pt.x, pt.y)) { 
+					myTarget.alpha = 1; 
+					myChild.setTransform(myTarget.x, myTarget.y);
+				}
+			}
+			stage.update(); 
+		}
 		function tick(event) {
 			stage.update(event);
 		}
