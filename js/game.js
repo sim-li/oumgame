@@ -55,7 +55,7 @@ function afterLoad(event) {
 }
 
 function createWorld() {
-    
+
     for (var i = 0; i < 2; i++) {
         soundData = this.randomSoundData();
         var child = new Block(100 + i*200, 100, this.randomSoundData(), 15000, 16010);
@@ -63,7 +63,8 @@ function createWorld() {
 
         var target = new createjs.Shape();
         target.graphics.beginFill("blue").drawCircle(0,0, (16+1)*4);
-        target.x = 100 + i*100;
+         // Don't touch circle directly, change x-y coords of target instead!
+        target.x = 100 + i*200;
         target.y = 400;
         target.id = 10000-i;
 
