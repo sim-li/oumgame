@@ -78,7 +78,7 @@ function createSymbol() {
 
 function handleSucceeded() {
     this.isPlaying = true;
-}
+}//
 function tick(event) {
     if (isPlaying) {
         analyserNode.getFloatFrequencyData(dbData); // dB
