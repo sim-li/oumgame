@@ -15,6 +15,7 @@
 				child.x = 100 + i*100;
 				child.y = 100;
 				child.id = i;
+				createjs.Ticker.addEventListener("tick", child.tick);
 
 				var target = new createjs.Shape();
 				target.graphics.beginFill("blue").drawCircle(0,0,45);

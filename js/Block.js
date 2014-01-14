@@ -23,7 +23,6 @@
         this.makeShape();
         this.x = x;
         this.y = y;
-        createjs.Ticker.addEventListener("tick", tick);
         var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
         var self = this;
         (function(self) {
@@ -66,7 +65,7 @@
     //     soundData = soundData;
     // }
     p.tick = function() { 
-        this.makeShape();
+         console.log("ROGER");
         if (instance.getPosition() > this.offsetStop) {
             instance.setPosition(this.offsetStart);
         }

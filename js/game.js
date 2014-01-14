@@ -61,7 +61,7 @@ function createWorld() {
         child.id = i;
 
         var target = new createjs.Shape();
-        target.graphics.beginFill("blue").drawCircle(0,0,45);
+        target.graphics.beginFill("blue").drawCircle(0,0, (16+1)*4);
         target.x = 100 + i*100;
         target.y = 400;
         target.id = 10000-i;
@@ -72,7 +72,7 @@ function createWorld() {
 
 
         child.on("pressmove", function(evt) {
-            snapOnCorrectObject(evt);
+            // snapOnCorrectObject(evt);
             snapOnAnyObject(evt);
         });
         var sortFunction = function(obj1, obj2, options) {
@@ -177,10 +177,15 @@ function tick(event) {
         if (cache.length >= 16) {
             // symbol.refresh(soundData);
             // symbol.tick();
-            stage.update();
+            // stage.tick();
+           
             cache = [];
         }
     }
+    // for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
+    //     stage.getChildAt(i).tick();
+    // }
+    stage.update(event);
 }
 
 function printData() {
