@@ -54,7 +54,6 @@
         instance.play();
     }
     p.pause = function() {
-        // this.position = instance.getPosition();
         this.playing = false;
         instance.pause();
     }
@@ -80,6 +79,7 @@
     }
     p.tick = function() { 
         if (this.playing) {
+            this.position = instance.getPosition();
             // if (instance.getPosition() > this.offsetStop) {
             //     instance.setPosition(this.offsetStart);
             // }
