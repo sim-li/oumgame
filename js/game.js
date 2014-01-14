@@ -67,8 +67,8 @@ function createWorld() {
     var fragmentSize = usedDuration / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
         soundData = this.randomSoundData();
-        var childX = Math.random() * 800;
-        var childY = Math.random() * 600;
+        var childX = Math.max(100, Math.random() * 700);
+        var childY = Math.max(100, Math.random() * 500);
         // var childX = 100 + i*200;
         // var childY = 100;
         // console.log(fragmentSize * i, fragmentSize * (i + 1));
@@ -79,7 +79,7 @@ function createWorld() {
 
          // Don't touch circle directly, change x-y coords of target instead!
         target.x = 100 + i*200;
-        target.y = 400;
+        target.y = 300;
         target.id = 10000-i;
 
         child.target = target;
