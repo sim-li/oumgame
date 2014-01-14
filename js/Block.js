@@ -1,18 +1,18 @@
 (function(window) {
-    function Block(x, y, order, soundData, offsetStart, offsetStop) {
-        this.initialize(x, y, order, soundData, offsetStart, offsetStop);
+    function Block(x, y, soundData, offsetStart, offsetStop) {
+        this.initialize(x, y, soundData, offsetStart, offsetStop);
     }
     var p = Block.prototype = new createjs.Container();
         p.circleCount = 16;
         p.strokeColor = '#000000';
         p.currentlyPlaying = false;
         p.soundData;
+        p.instance;
         p.melodicCircle;
         p.offsetStart;
         p.offsetStop;
         p.Container_initialize = p.initialize;
-        p.order;
-    p.initialize = function(x, y, order, soundData, offsetStart, offsetStop) {
+    p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
         this.soundData = soundData;
         this.offsetStart = offsetStart;
@@ -23,7 +23,6 @@
         this.makeShape();
         this.x = x;
         this.y = y;
-        this.order = order;
         createjs.Ticker.addEventListener("tick", tick);
         var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
         var self = this;
@@ -65,12 +64,6 @@
     }
     p.refresh = function(soundData) { 
         this.soundData = soundData;
-    }
-    p.setOrder = function(order) {
-        this.order = order;
-    }
-    p.getOrder = function() {
-        return this.order;
     }
     p.tick = function() { 
         this.makeShape();
