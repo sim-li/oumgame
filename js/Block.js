@@ -6,7 +6,7 @@
         p.circleCount = 16;
         p.strokeColor = '#000000';
         p.currentlyPlaying = false;
-        p.soundData;
+        // p.soundData;
         p.instance;
         p.melodicCircle;
         p.offsetStart;
@@ -14,7 +14,7 @@
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
-        this.soundData = soundData;
+        // this.soundData = soundData;
         this.offsetStart = offsetStart;
         instance.setPosition(this.offsetStart);
         this.offsetStop = offsetStop;
@@ -52,9 +52,9 @@
             g.graphics.setStrokeStyle(15);
             var offset = 50,
                 mul = 1,
-                c_r = Math.round(this.soundData[i] * 0.5),
-                c_g = Math.round(this.soundData[i+1] * 0.5),
-                c_b = Math.round(this.soundData[i+2] * 0.5);
+                c_r = Math.round(soundData[i] * 0.5),
+                c_g = Math.round(soundData[i+1] * 0.5),
+                c_b = Math.round(soundData[i+2] * 0.5);
             var stroke = createjs.Graphics.getRGB(c_r, c_g, c_b);
             g.graphics.beginFill('#000000').beginStroke(stroke);
             g.graphics.drawCircle(0,0,(i+1)*4);
@@ -62,9 +62,9 @@
             g.compositeOperation = "lighter";
         }
     }
-    p.refresh = function(soundData) { 
-        this.soundData = soundData;
-    }
+    // p.refresh = function(soundData) { 
+    //     soundData = soundData;
+    // }
     p.tick = function() { 
         this.makeShape();
         if (instance.getPosition() > this.offsetStop) {

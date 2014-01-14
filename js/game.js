@@ -15,7 +15,8 @@ var KEYCODE_SPACE = 32,
     cache = [],
     waveformData,
     instance,
-    analyserNode;
+    analyserNode,
+    soundData = [];
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
@@ -50,10 +51,74 @@ function afterLoad(event) {
     //Play song
     instance = createjs.Sound.createInstance('shattSong');
     instance.addEventListener('succeeded', handleSucceeded);
-    if (symbol === undefined) { 
-        symbol = this.createSymbol();
+    this.createWorld();
+}
+
+function createWorld() {
+    for (var i = 0; i < 2; i++) {
+        soundData = this.randomSoundData();
+        var child = new Block(100 + i*200, 100, this.randomSoundData(), 15000, 16010);
+        child.id = i;
+
+        var target = new createjs.Shape();
+        target.graphics.beginFill("blue").drawCircle(0,0,45);
+        target.x = 100 + i*100;
+        target.y = 400;
+        target.id = 10000-i;
+
+        child.target = target;
+        stage.addChild(child.target);
+        stage.addChild(child);
+
+
+        child.on("pressmove", function(evt) {
+            snapOnCorrectObject(evt);
+            snapOnAnyObject(evt);
+        });
+        var sortFunction = function(obj1, obj2, options) {
+            if (obj1.id > obj2.id) { return -1; }
+            if (obj1.id < obj2.id) { return 1; }
+            return 0;
+        }
+        stage.sortChildren(sortFunction);
+        stage.update();
     }
-    
+    stage.update();
+}
+
+function snapOnCorrectObject(evt) {
+    var myChild = evt.target;
+    var myTarget = evt.target.target;
+     if (myTarget == undefined) {
+        return;
+    }
+    evt.currentTarget.x = evt.stageX;
+    evt.currentTarget.y = evt.stageY;
+    var pt = myChild.localToLocal(10, 10, myTarget);
+    if (myTarget.hitTest(pt.x, pt.y)) { 
+        myTarget.alpha = 1; 
+        myChild.setTransform(myTarget.x, myTarget.y);
+        console.log('I am correct');
+    }
+    stage.update(); 
+}
+
+function snapOnAnyObject(evt) {
+    var myChild = evt.target;
+    evt.currentTarget.x = evt.stageX;
+    evt.currentTarget.y = evt.stageY;
+    for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
+        var myTarget = stage.getChildAt(i).target;
+        if (myTarget == undefined) {
+            continue;
+        }
+        var pt = myChild.localToLocal(10, 10, myTarget);
+        if (myTarget.hitTest(pt.x, pt.y)) { 
+            myTarget.alpha = 1; 
+            myChild.setTransform(myTarget.x, myTarget.y);
+        }
+    }
+    stage.update(); 
 }
 
 function randomSoundData() {
@@ -67,7 +132,6 @@ function createSymbol() {
     var mySymbol = new Block(10, 300, this.randomSoundData(), 15000, 16010);
     stage.addChild(mySymbol);
     stage.update();
-
     mySymbol.on('pressmove', function(evt) {
         evt.currentTarget.x = evt.stageX ;
         evt.currentTarget.y = evt.stageY ;
@@ -76,16 +140,25 @@ function createSymbol() {
     return mySymbol;
 }
 
+function createTarget() {
+        target.alpha = 0.5;
+            var pt = dragger.localToLocal(10,10,target);
+            if (target.hitTest(pt.x, pt.y)) { 
+                target.alpha = 1; 
+                dragger.setTransform(target.x, target.y);
+                //console.log(target.x, target.y);
+            }
+            
+}
 function handleSucceeded() {
     this.isPlaying = true;
-}//
+}
 function tick(event) {
     if (isPlaying) {
         analyserNode.getFloatFrequencyData(dbData); // dB
         analyserNode.getByteFrequencyData(fData);   // f
         analyserNode.getByteTimeDomainData(waveformData);  // waveform
         var offset = 50;
-        var soundData = [];
         var i = waveformData.length;
         while(i--) {
             if (fData[i] === 0) {
@@ -102,8 +175,8 @@ function tick(event) {
             cache.push(avg);
         }
         if (cache.length >= 16) {
-            symbol.refresh(soundData);
-            symbol.tick();
+            // symbol.refresh(soundData);
+            // symbol.tick();
             stage.update();
             cache = [];
         }
