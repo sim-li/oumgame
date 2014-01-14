@@ -65,7 +65,7 @@ function createWorld() {
     var totalDuration = instance.getDuration();
     var usedDuration = totalDuration / 4; 
     var fragmentSize = usedDuration / numberOfCircles;
-    var nextChild;
+    var nextTarget;
     for (var i = 0; i < numberOfCircles; i++) {
         soundData = this.randomSoundData();
         var childX = Math.max(100, Math.random() * 700);
@@ -75,20 +75,19 @@ function createWorld() {
         // console.log(fragmentSize * i, fragmentSize * (i + 1));
         var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         child.id = i;
-        if (nextChild != 'undefined') {
-            child.nextChild = nextChild;
-        }
         var target = this.drawTarget('#1C1C1C', 0.2);
 
          // Don't touch circle directly, change x-y coords of target instead!
         target.x = 100 + i*200;
         target.y = 300;
         target.id = 10000-i;
-
+        if (nextTarget != 'undefined') {
+            child.target.nextTarget = nextTarget;
+        }
         child.target = target;
         stage.addChild(child.target);
         stage.addChild(child);
-        nextChild = child;
+        nextTarget = target;
 
         child.on("pressmove", function(evt) {
             // snapOnCorrectObject(evt);

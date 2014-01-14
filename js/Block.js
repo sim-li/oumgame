@@ -39,7 +39,8 @@
             });
             instance.addEventListener('complete ', function() { 
                 if (self.isRowPlay) {
-                    self.playNext(); 
+                    console.log('Next!');
+                    self.handleComplete(); 
                 }
             })
         })(this);
@@ -66,11 +67,13 @@
     }
     p.rowPlay = function() {
         this.isRowPlay = true;
+         console.log('rowplay');
         this.position = this.offsetStart;
         instance.setPosition(this.offsetStart);
         instance.play();
     }
-    p.playNext = function() {
+    p.handleComplete = function() {
+        console.log('next!');
        if (this.nextChild != 'undefined') {
         this.rowPlay = false;
         instance.pause();
@@ -100,9 +103,10 @@
     p.tick = function() { 
         if (this.playing) {
             this.position = instance.getPosition();
-            // if (instance.getPosition() > this.offsetStop) {
-            //     instance.setPosition(this.offsetStart);
-            // }
+            if (instance.getPosition() > this.offsetStop) {
+                instance.setPosition(this.offsetStart);
+                instance.dispatchEvent('complete');
+            }
             this.makeShape();
         }
     }
