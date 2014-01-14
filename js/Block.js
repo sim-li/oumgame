@@ -28,6 +28,9 @@
             self.addEventListener('click', function() {
                 self.handleClick();
             });
+            self.addEventListener('tick', function() {
+                self.tick();
+            });
         })(this);
     }
     p.handleClick = function() {
@@ -60,10 +63,10 @@
         }
     }
     p.tick = function() { 
-         console.log("ROGER");
         if (instance.getPosition() > this.offsetStop) {
             instance.setPosition(this.offsetStart);
         }
+        this.makeShape();
     }
     window.Block = Block;
 }(window));

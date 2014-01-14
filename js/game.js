@@ -56,7 +56,7 @@ function afterLoad(event) {
 
 function createWorld() {
 
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 8; i++) {
         soundData = this.randomSoundData();
         var child = new Block(100 + i*200, 100, this.randomSoundData(), 15000, 16010);
         child.id = i;
