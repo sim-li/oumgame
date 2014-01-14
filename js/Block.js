@@ -2,7 +2,7 @@
     function Block(x, y, soundData, offsetStart, offsetStop) {
         this.initialize(x, y, soundData, offsetStart, offsetStop);
     }
-    var p = Block.prototype = new createjs.Container();
+    var p = Block.prototype = new createjs.Shape();
         p.circleCount = 16;
         p.strokeColor = '#000000';
         p.currentlyPlaying = false;
@@ -19,11 +19,13 @@
         instance.setPosition(this.offsetStart);
         this.offsetStop = offsetStop;
         this.melodicCircle = new createjs.Shape();
-        this.addChild(this.melodicCircle);
+        this.melodicCircle.x = 0;
+        this.melodicCircle.y = 0;
+        // this.addChild(this.melodicCircle);
         this.makeShape();
         this.x = x;
         this.y = y;
-        var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
+        // var helper = new createjs.ButtonHelper(this.melodicCircle, "out", "over", "down", false, this.melodicCircle, "hit");
         var self = this;
         (function(self) {
             self.addEventListener('click', function() {
@@ -33,6 +35,7 @@
         // this.addEventListener("click", this.handleClick);
     }
     p.handleClick = function() {
+        console.log("HAVE CLICK");
         if (this.currentlyPlaying === true) {
             instance.pause();
             this.currentlyPlaying = false;
@@ -45,7 +48,7 @@
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     }
     p.makeShape = function()  {
-        g = this.melodicCircle;
+        g = this;
         g.graphics.clear();
         for (var i = 0; i < this.circleCount-2; i++) {
             g.graphics.setStrokeStyle(15);
