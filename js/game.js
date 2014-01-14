@@ -50,31 +50,27 @@ function afterLoad(event) {
     //Play song
     instance = createjs.Sound.createInstance('shattSong');
     instance.addEventListener('succeeded', handleSucceeded);
-    if (symbol === undefined) { 
-        symbol = this.createSymbol();
-    }
+
+    var timeline = new Timeline();
+    timeline.build();
+    stage.addChild(timeline);
+    timeline.build(1);
+    stage.update();
     
 }
 
-function randomSoundData() {
-    var soundData = [];
-    for (i = 0; i < 16; i++) {
-        soundData[i] = Math.random() * 255;
-    }
-    return soundData;
-}
-function createSymbol() {
-    var mySymbol = new Block(10, 300, this.randomSoundData(), 15000, 16010);
-    stage.addChild(mySymbol);
-    stage.update();
+// function createSymbol() {
+//     // var mySymbol = new Block(100, 300, 0, this.randomSoundData(), 15000, 16010);
+//     var timeline = new Timeline();
+//     timeline.build();
+//     stage.addChild(timeline);
+//     stage.update();
+//     // stage.addChild(mySymbol);
+//     // stage.update();
 
-    mySymbol.on('pressmove', function(evt) {
-        evt.currentTarget.x = evt.stageX ;
-        evt.currentTarget.y = evt.stageY ;
-        stage.update();
-    });
-    return mySymbol;
-}
+  
+//     // return mySymbol;
+// }
 
 function handleSucceeded() {
     this.isPlaying = true;
