@@ -6,16 +6,17 @@
         p.circleCount = 16;
         p.strokeColor = '#000000';
         p.currentlyPlaying = false;
-        // p.soundData;
         p.instance;
         p.melodicCircle;
         p.offsetStart;
         p.offsetStop;
+        p.position;
+        p.playing;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
         this.offsetStart = offsetStart;
-        instance.setPosition(this.offsetStart);
+        this.position = this.offsetStart;
         this.offsetStop = offsetStop;
         this.melodicCircle = new createjs.Shape();
         this.melodicCircle.x = 0;
@@ -34,13 +35,21 @@
         })(this);
     }
     p.handleClick = function() {
-        if (this.currentlyPlaying === true) {
-            instance.pause();
-            this.currentlyPlaying = false;
+        if (this.playing === true) {
+            this.pause();
             return;
         } 
+        this.play();
+    }
+    p.play = function() {
+        instance.setPosition(this.position);
+        this.playing = true;
         instance.play();
-        this.currentlyPlaying = true;
+    }
+    p.pause = function() {
+        this.positon = instance.getPosition();
+        this.playing = false;
+        instance.pause();
     }
     p.rgbToHex = function(r, g, b) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
@@ -63,10 +72,12 @@
         }
     }
     p.tick = function() { 
-        if (instance.getPosition() > this.offsetStop) {
-            instance.setPosition(this.offsetStart);
+        if (this.playing) {
+            if (instance.getPosition() > this.offsetStop) {
+                instance.setPosition(this.offsetStart);
+            }
+            this.makeShape();
         }
-        this.makeShape();
     }
     window.Block = Block;
 }(window));

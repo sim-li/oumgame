@@ -55,10 +55,18 @@ function afterLoad(event) {
 }
 
 function createWorld() {
-
-    for (var i = 0; i < 8; i++) {
+    var numberOfCircles = 4;
+    var totalDuration = instance.getDuration();
+    var usedDuration = totalDuration / 4; 
+    var fragmentSize = usedDuration / numberOfCircles;
+    for (var i = 0; i < numberOfCircles; i++) {
         soundData = this.randomSoundData();
-        var child = new Block(100 + i*200, 100, this.randomSoundData(), 15000, 16010);
+        var childX = Math.random() * 800;
+        var childY = Math.random() * 600;
+        // var childX = 100 + i*200;
+        // var childY = 100;
+        console.log(fragmentSize * i, fragmentSize * (i + 1));
+        var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         child.id = i;
 
         var target = new createjs.Shape();
