@@ -7,6 +7,9 @@
         p.y;
         p.color;
         p.alpha;
+        p.nextSibling;
+        p.parent;
+        p.rowPlay;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, color, alpha) {
         this.x = x;
@@ -14,6 +17,7 @@
         this.color = color;
         this.alpha = alpha;
         this.makeShape();
+        this.rowPlay = false;
         var self = this;
         (function(self) {
             // self.addEventListener('click', function() {
@@ -38,6 +42,12 @@
         g.graphics.clear();
         g.graphics.alpha = this.alpha;
         g.graphics.beginFill(this.color).drawCircle(0,0, (16+1)*4);
+    }
+    p.startRowPlay = function() {
+
+    }
+    p.stopRowPlay = function() {
+        
     }
     p.tick = function() { 
     }

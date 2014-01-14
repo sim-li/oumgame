@@ -65,22 +65,23 @@ function createWorld() {
     var totalDuration = instance.getDuration();
     var usedDuration = totalDuration / 4; 
     var fragmentSize = usedDuration / numberOfCircles;
-    var nextTarget;
+    var lastChild;
     for (var i = 0; i < numberOfCircles; i++) {
         soundData = this.randomSoundData();
         var childX = Math.max(100, Math.random() * 700);
         var childY = Math.max(100, Math.random() * 500);
-        // var childX = 100 + i*200;
-        // var childY = 100;
-        // console.log(fragmentSize * i, fragmentSize * (i + 1));
         var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         child.id = i;
         var target = new Target(100 + i*200, 300, '#1C1C1C', 1);
+        if (lastChild != undefined) {
+            lastChild.target.nextSibling = target; // Dangerous salad of objects TODO: CLEARIFY!!!
+            lastChild.target.parent = lastChild;
+        }
         target.id = 10000-i;
         child.target = target;
         stage.addChild(child.target);
         stage.addChild(child);
-        nextTarget = target;
+        lastChild = child;
 
         child.on("pressmove", function(evt) {
             // snapOnCorrectObject(evt);

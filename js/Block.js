@@ -101,6 +101,9 @@
         }
     }
     p.tick = function() { 
+        if (this.target != undefined) {
+            this.target.tick();
+        }
         if (this.playing) {
             this.position = instance.getPosition();
             if (instance.getPosition() > this.offsetStop) {
