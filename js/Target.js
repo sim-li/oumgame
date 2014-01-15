@@ -8,23 +8,43 @@
         p.color;
         p.alpha;
         p.id;
-        p.father;
+        p.docked;
+        p.gangTattoo;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, color, alpha) {
         this.x = x;
         this.y = y;
         this.color = color;
         this.alpha = alpha;
+        this.docked = false;
         this.makeShape();
     }
     
-    p.setFather = function(parent) {
-        this.father = parent;
+    p.dock = function(block) {
+        this.docked = block;
     }
-    p.getFather = function(parent) {
-        return this.father;
+    p.undock = function() {
+        this.docked = false;
     }
+    p.getDocked = function () {
+        return this.docked;
+    }
+    p.sameGang = function() {
 
+    }
+    p.makeTattoo = function() {
+        var d = new Date();
+        var n = d.getTime();
+        return tattoo = Math.random * 10000 + n;
+    }
+    p.setGangTattoo = function() {
+        var tattoo = this.makeTattoo();
+        this.getDocked.setGangTattoo(tattoo);
+        this.gangTattoo = tattoo;
+    }
+    p.getGangTattoo = function() {
+        return this.gangTattoo;
+    }
     p.makeShape = function()  {
         g = this;
         g.graphics.clear();

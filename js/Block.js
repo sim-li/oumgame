@@ -14,6 +14,7 @@
         p.playing;
         p.isRowPlay;
         p.Container_initialize = p.initialize;
+        p.gangTattoo;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
         this.offsetStart = offsetStart;
@@ -74,6 +75,12 @@
     p.rowPlayStop = function() {
         this.isRowPlay = false;
         console.log('Ropwlay stop');
+    }
+    p.setGangTattoo = function(tattoo) {
+        this.gangTattoo = tattoo;
+    }
+    p.getGangTattoo = function() {
+        return this.gangTattoo;
     }
     p.handleComplete = function() {
         console.log('next!');

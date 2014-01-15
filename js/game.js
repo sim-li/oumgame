@@ -1,6 +1,9 @@
 var KEYCODE_SPACE = 32,
     FFTSIZE = 32,    
     TICK_FREQ = 1,
+    ONE_SEC = 1000 / TICK_FREQ,
+    countDown = 30,
+    count = 0,
     assetsPath = 'assets/',
     isPlaying = false,
     update = true,
@@ -18,6 +21,10 @@ var KEYCODE_SPACE = 32,
     analyserNode,
     titleLabel,
     countdownLabel,
+    gameoverLabel,
+    gameoverSubLabel,
+    winLabel,
+    winSubLabel,
     soundData = [],
     startTime,
     currentTime,
@@ -25,9 +32,6 @@ var KEYCODE_SPACE = 32,
 
 
 function init() {
-    currentDate = new Date();
-    startTime = currentDate.getSeconds();
-
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
     canvas = document.getElementById('gameCanvas');
     stage = new createjs.Stage(canvas);
@@ -70,12 +74,41 @@ function drawTarget(color, alpha) {
     return target;
 }
 function createWorld() {
+    //CountDown Label
     countdownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
     countdownLabel.alpha = 0.5;
     countdownLabel.x = 0;
     countdownLabel.y = 0;
-   
+    //GameOverMessage
+    gameoverLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
+    gameoverLabel.alpha = 0.5;
+    gameoverLabel.x = 30;
+    gameoverLabel.y = 140;
+    gameoverSubLabel =  new createjs.Text('Try harder next time.', 'bold 72px Arial', '#FFFFFF');
+    gameoverSubLabel.alpha = 0.5;
+    gameoverSubLabel.x = 50;
+    gameoverSubLabel.y = 270;
+    stage.addChild(gameoverLabel);
     stage.addChild(countdownLabel);
+    stage.addChild(gameoverSubLabel);
+    this.gameoverLabel.visible = false;
+    this.gameoverSubLabel.visible = false;
+    //You made it Message
+    winLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
+    winLabel.alpha = 0.5;
+    winLabel.x = 30;
+    winLabel.y = 140;
+    winSubLabel =  new createjs.Text('Try harder next time.', 'bold 72px Arial', '#FFFFFF');
+    winSubLabel.alpha = 0.5;
+    winSubLabel.x = 50;
+    winSubLabel.y = 270;
+    stage.addChild(winLabel);
+    stage.addChild(winSubLabel);
+    this.winLabel.visible = false;
+    this.winSubLabel.visible = false;
+
+
+
     stage.update();
     var numberOfCircles = 4;
     var totalDuration = instance.getDuration();
@@ -183,12 +216,21 @@ function handleSucceeded() {
     this.isPlaying = true;
 }
 function tick(event) {
-    currentTime = currentDate.getSeconds();
-    var dif = startTime ;
-    if (countdownLabel != undefined) {
-        countdownLabel.text = dif;
-    }
-    if (isPlaying) {
+    // Needs callback from outside
+    if (this.isPlaying) {
+        // if (this.countdownLabel != undefined) {
+        this.countdownLabel.text = this.countDown;
+        stage.update(event);
+        // }
+        this.count++;
+        if (this.count >= 100 && this.countDown > 0) {
+            this.count = 0;
+            this.countDown--;
+        }
+        if (this.countDown <= 0) {
+            this.gameoverLabel.visible = true;
+            this.gameoverSubLabel.visible = true;
+        }
         analyserNode.getFloatFrequencyData(dbData); // dB
         analyserNode.getByteFrequencyData(fData);   // f
         analyserNode.getByteTimeDomainData(waveformData);  // waveform
