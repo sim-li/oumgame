@@ -223,7 +223,7 @@ function tick(event) {
         stage.update(event);
         // }
         this.count++;
-        if (this.count >= 100 && this.countDown > 0) {
+        if (this.count >= 20 && this.countDown > 0) {
             this.count = 0;
             this.countDown--;
         }
