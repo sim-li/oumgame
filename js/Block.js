@@ -5,14 +5,12 @@
     var p = Block.prototype = new createjs.Shape();
         p.circleCount = 16;
         p.strokeColor = '#000000';
-        p.currentlyPlaying = false;
+        p.isPlaying = false;
         p.instance;
-        p.melodicCircle;
         p.offsetStart;
         p.offsetStop;
         p.position;
         p.playing;
-        p.isRowPlay;
         p.Container_initialize = p.initialize;
         p.gangTattoo;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
@@ -21,10 +19,7 @@
         this.position = this.offsetStart;
         this.offsetStop = offsetStop;
         this.melodicCircle = new createjs.Shape();
-        this.melodicCircle.x = 0;
-        this.melodicCircle.y = 0;
         this.makeShape();
-        this.isRowPlay = false;
         this.x = x;
         this.y = y;
         var self = this;
@@ -35,60 +30,41 @@
             self.addEventListener('tick', function() {
                 self.tick();
             });
-            instance.addEventListener('startingplayback', function() {
-                self.handlePlayStart();
+            instance.addEventListener('stopAllPlayers', function() {
+                self.handleStopAllPlayers();
             });
-            instance.addEventListener('playbackComplete', function() { 
-                if (self.isRowPlay) {
-                    self.handleComplete(); 
-                }
-            })
         })(this);
     }
     p.handleClick = function() {
-        if (this.playing === true) {
+        if (this.isPlaying) {
             this.pause();
-            return;
-        } 
-        this.play();
+        } else {
+            this.play();
+        }
     }
-    p.handlePlayStart = function() {
-        this.pause();
-    }
-    p.play = function() {
-        instance.dispatchEvent('startingplayback');
+    p.play = function () {
+        this.isPlaying = true;
         instance.setPosition(this.position);
-        this.playing = true;
-        instance.play();
+        this.dispatchEvent('stopAllPlayers');
+        if (instance.playing != true) {
+            instance.play();
+            instance.playing = true;
+        }
     }
     p.pause = function() {
-        this.playing = false;
+        instance.playing = false;
         instance.pause();
     }
-    p.rowPlay = function() {
-        this.isRowPlay = true;
-         console.log('rowplay');
-        this.position = this.offsetStart;
-        instance.setPosition(this.offsetStart);
-        instance.play();
-    }
-    p.rowPlayStop = function() {
-        this.isRowPlay = false;
-        console.log('Ropwlay stop');
+    p.handleStopAllPlayers = function() {
+        if (this.isPlaying) {
+            this.isPlaying = false;
+        }
     }
     p.setGangTattoo = function(tattoo) {
         this.gangTattoo = tattoo;
     }
     p.getGangTattoo = function() {
         return this.gangTattoo;
-    }
-    p.handleComplete = function() {
-        console.log('next!');
-       if (this.target.nextTarget.father != undefined) {
-        this.rowPlay = false;
-        instance.pause();
-        this.target.nextTarget.father.rowPlay();
-       }
     }
     p.rgbToHex = function(r, g, b) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
@@ -111,11 +87,11 @@
         }
     }
     p.tick = function() { 
-        if (this.playing) {
+        if (this.isPlaying) {
             this.position = instance.getPosition();
             if (instance.getPosition() > this.offsetStop) {
+                this.position = this.offsetStart;
                 instance.setPosition(this.offsetStart);
-                instance.dispatchEvent('playbackComplete');
             }
             this.makeShape();
         }

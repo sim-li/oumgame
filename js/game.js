@@ -63,7 +63,7 @@ function afterLoad(event) {
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     //Play song
     instance = createjs.Sound.createInstance('shattSong');
-    instance.addEventListener('succeeded', handleSucceeded);
+    // instance.addEventListener('succeeded', handleSucceeded);
     this.createWorld();
 }
 
@@ -177,7 +177,7 @@ function snapOnAnyObject(evt) {
         if (myTarget.hitTest(pt.x, pt.y)) { 
             // myTarget.alpha = 1; 
             myChild.setTransform(myTarget.x, myTarget.y);
-            myChild.rowPlay();
+            // myChild.rowPlay();
         } 
     }
     stage.update(); 
@@ -218,10 +218,8 @@ function handleSucceeded() {
 function tick(event) {
     // Needs callback from outside
     if (this.isPlaying) {
-        // if (this.countdownLabel != undefined) {
         this.countdownLabel.text = this.countDown;
         stage.update(event);
-        // }
         this.count++;
         if (this.count >= 100 && this.countDown > 0) {
             this.count = 0;
@@ -245,22 +243,7 @@ function tick(event) {
             }
             soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
         }
-        var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
-        var TRESH_HOLD = 10;
-        if (cache.length <= 1 || (Math.abs(cache[cache.length-1] - avg) > TRESH_HOLD)) {
-            cache.push(avg);
-        }
-        if (cache.length >= 16) {
-            // symbol.refresh(soundData);
-            // symbol.tick();
-            // stage.tick();
-           
-            cache = [];
-        }
     }
-    // for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-    //     stage.getChildAt(i).tick();
-    // }
     stage.update(event);
 }
 
