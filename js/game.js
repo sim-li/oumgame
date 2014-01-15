@@ -23,6 +23,7 @@ var KEYCODE_SPACE = 32,
     countdownLabel,
     gameoverLabel,
     gameoverSubLabel,
+    resetLabel,
     winLabel,
     winSubLabel,
     soundData = [],
@@ -88,6 +89,16 @@ function createWorld() {
     gameoverSubLabel.alpha = 0.5;
     gameoverSubLabel.x = 50;
     gameoverSubLabel.y = 270;
+    resetLabel =  new createjs.Text('Restart', 'bold 36px Arial', '#FFFFFF');
+    resetLabel.alpha = 0.5;
+    resetLabel.x = 60;
+    resetLabel.y = 0;
+    resetLabel.on('click', function(evt) {
+            countDown = 30;
+            gameoverLabel.visible = false;
+            gameoverSubLabel.visible = false;
+        });
+    stage.addChild(resetLabel);
     stage.addChild(gameoverLabel);
     stage.addChild(countdownLabel);
     stage.addChild(gameoverSubLabel);
