@@ -98,6 +98,11 @@ function createWorld() {
             gameoverLabel.visible = false;
             gameoverSubLabel.visible = false;
         });
+    var infoLabel = new createjs.Text('Click to listen. Reconstruct the song in the right order.', 'bold 24px Arial', '#FFFFFF');
+    infoLabel.x = 210;
+    infoLabel.y = 8; 
+    infoLabel.alpha = 0.3;
+    stage.addChild(infoLabel);
     stage.addChild(resetLabel);
     stage.addChild(gameoverLabel);
     stage.addChild(countdownLabel);
