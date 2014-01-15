@@ -16,6 +16,7 @@
         p.Container_initialize = p.initialize;
         p.gangTattoo;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
+        console.log(offsetStart, offsetStop);
         this.Container_initialize();
         this.offsetStart = offsetStart;
         this.position = this.offsetStart;
