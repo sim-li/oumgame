@@ -63,14 +63,17 @@ function createWorld(numberOfCircles) {
 
         var rndPositionX = Math.max(100, Math.random() * stage.canvas.width);
         var rndPositionY = Math.max(100, Math.random() * stage.canvas.height);
-        var melodicCircle = new MelodicCircle(rndPositionX, rndPositionY, fragmentSize * i, fragmentSize * (i + 1));
-        var slot = new Slot(100 + i*200, 300, '#1C1C1C', 1);
-        
-        melodicCircle.generateId(i);
-        slot.generateId(i);
 
+        var melodicCircle = new MelodicCircle(i, rndPositionX, rndPositionY, {
+            startOffset: fragmentSize * i,
+            endOffset: fragmentSize * (i + 1)
+        });
+
+        // new Slot(100 + i*200, 300, '#1C1C1C', 1)
+        var slot = new Slot(i, 100 + i * 200, 300);
+        
         melodicCircle.setSlot(slot);
-        console.log(melodicCircle);
+
         stage.addChild(slot);
         stage.addChild(melodicCircle);
 
