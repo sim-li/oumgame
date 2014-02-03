@@ -16,9 +16,11 @@ var manifest;
 var stage;
 var fData;
 var waveformData;
+var dbData;
 var instance;
 var analyserNode;
 var soundData = [];
+var loaded = false;
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
@@ -33,11 +35,11 @@ function init() {
     preload.addEventListener('complete', afterLoad);
     preload.loadManifest(manifest);
     createjs.Ticker.addEventListener("tick", tick);
-    createjs.Ticker.setInterval(tick_freq
-);
+    createjs.Ticker.setInterval(tick_freq);
 }
 
 function afterLoad(event) { 
+    this.loaded = true;
     var context = createjs.WebAudioPlugin.context;
     var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
     analyserNode = context.createAnalyser();
@@ -61,7 +63,7 @@ function createWorld(numberOfCircles) {
 
         var rndPositionX = Math.max(100, Math.random() * stage.canvas.width);
         var rndPositionY = Math.max(100, Math.random() * stage.canvas.height);
-
+        console.log(me.generateRndSoundData());
         var melodicCircle = new MelodicCircle(rndPositionX, rndPositionY, me.generateRndSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         var slot = new Slot(100 + i*200, 300, '#1C1C1C', 1);
         
@@ -69,7 +71,7 @@ function createWorld(numberOfCircles) {
         slot.generateId(i);
 
         melodicCircle.setSlot(slot);
-        
+        console.log(melodicCircle);
         stage.addChild(slot);
         stage.addChild(melodicCircle);
 
@@ -129,25 +131,10 @@ function generateRndSoundData() {
 
 function tick(event) {
     var me = this;
-    if (me.isPlaying) {
-        me.updateCountDown();
+    if (me.loaded) {
         me.updateSoundData();
     }
     stage.update(event);
-}
-
-function updateCountDown() {
-    // var me = this;
-    // me.countdownLabel.text = me.countDown;
-    // me.count++;
-    // if (me.count >= 50 && me.countDown > 0) {
-    //     me.count = 0;
-    //     me.countDown--;
-    // }
-    // if (me.countDown <= 0) {
-    //     me.gameoverLabel.visible = true;
-    //     me.gameoverSubLabel.visible = true;
-    // }
 }
 
 function updateSoundData() {

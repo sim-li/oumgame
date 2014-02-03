@@ -9,12 +9,14 @@
         p.offsetStart;
         p.offsetStop;
         p.position;
+        p.soundData;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
         this.offsetStart = offsetStart;
         this.position = this.offsetStart;
         this.offsetStop = offsetStop;
+        this.soundData = soundData;
         this.makeShape();
         this.x = x;
         this.y = y;
@@ -72,11 +74,11 @@
         var mul = 1;
         g = this;
         g.graphics.clear();
-        g.graphics.setStrokeStyle(15);
         for (var i = 0; i < this.circleCount-2; i++) {
-            var c_r = Math.round(soundData[i] * 0.5);
-            var c_g = Math.round(soundData[i+1] * 0.5);
-            var c_b = Math.round(soundData[i+2] * 0.5);
+            g.graphics.setStrokeStyle(15);
+            var c_r = Math.round(this.soundData[i] * 0.5);
+            var c_g = Math.round(this.soundData[i+1] * 0.5);
+            var c_b = Math.round(this.soundData[i+2] * 0.5);
             var stroke = createjs.Graphics.getRGB(c_r, c_g, c_b);
             g.graphics.beginFill('#000000').beginStroke(stroke);
             g.graphics.drawCircle(0, 0, (i + 1) * 4);
