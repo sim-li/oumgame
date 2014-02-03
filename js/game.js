@@ -62,12 +62,6 @@ function drawTarget(color, alpha) {
     return target;
 }
 function createWorld() {
-    //CountDown Label
-    countdownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
-    countdownLabel.alpha = 0.5;
-    countdownLabel.x = 0;
-    countdownLabel.y = 0;
-    //GameOverMessage
     gameoverLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
     gameoverLabel.alpha = 0.5;
     gameoverLabel.x = 30;
@@ -76,19 +70,17 @@ function createWorld() {
     gameoverSubLabel.alpha = 0.5;
     gameoverSubLabel.x = 50;
     gameoverSubLabel.y = 270;
-    resetLabel =  new createjs.Text('Restart', 'bold 36px Arial', '#FFFFFF');
-    resetLabel.alpha = 0.5;
-    resetLabel.x = 60;
-    resetLabel.y = 0;
-    resetLabel.on('click', function(evt) {
-            countDown = 30;
-            gameoverLabel.visible = false;
-            gameoverSubLabel.visible = false;
-        });
+    
+    /* SHOW GAME OVER ON TIME UP */
+    gameoverLabel.visible = false;
+    gameoverSubLabel.visible = false;
+
     var infoLabel = new createjs.Text('Click to listen. Reconstruct the song in the right order.', 'bold 24px Arial', '#FFFFFF');
     infoLabel.x = 210;
     infoLabel.y = 8; 
     infoLabel.alpha = 0.3;
+
+
     stage.addChild(infoLabel);
     stage.addChild(resetLabel);
     stage.addChild(gameoverLabel);
@@ -105,10 +97,12 @@ function createWorld() {
     winSubLabel.alpha = 0.5;
     winSubLabel.x = 50;
     winSubLabel.y = 270;
-    stage.addChild(winLabel);
-    stage.addChild(winSubLabel);
     this.winLabel.visible = false;
     this.winSubLabel.visible = false;
+
+    stage.addChild(winLabel);
+    stage.addChild(winSubLabel);
+   
 
 
 
@@ -139,6 +133,7 @@ function createWorld() {
             // snapOnCorrectObject(evt);
             snapOnAnyObject(evt);
         });
+
         var sortFunction = function(obj1, obj2, options) {
             if (obj1.id > obj2.id) { return -1; }
             if (obj1.id < obj2.id) { return 1; }
