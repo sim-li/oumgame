@@ -9,6 +9,7 @@ var fftsize = 32;
 var tick_freq = 100;  
 var countDown = 30;
 var count = 0;
+var songDividend = 8;
 var assetsPath = 'assets/';
 var canvas;
 var manifest;
@@ -49,86 +50,80 @@ function afterLoad(event) {
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     instance = createjs.Sound.createInstance('shattSong');
-    this.createWorld();
+    this.createWorld(4);
 }
 
-function drawTarget(color, alpha) {
-    var target = new createjs.Shape();
-    target.graphics.alpha = alpha;
-    target.graphics.beginFill(color).drawCircle(0,0, (16+1)*4);
-    return target;
-}
-function createWorld() {
+function createWorld(numberOfCircles) {
+    //melodicCircle
+    //child
+    me = this;
+
+
     stage.update();
-    var numberOfCircles = 4;
-    var totalDuration = instance.getDuration();
-    var usedDuration = totalDuration / 8; 
-    var fragmentSize = usedDuration / numberOfCircles;
-    var lastChild;
+    var fragmentSize = (instance.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
-        soundData = this.randomSoundData();
-        var childX = Math.max(100, Math.random() * 700);
-        var childY = Math.max(100, Math.random() * 500);
-        var child = new Block(childX, childY, this.randomSoundData(), fragmentSize * i, fragmentSize * (i + 1));
-        child.id = i;
-        var target = new Target(100 + i*200, 300, '#1C1C1C', 1);
-        
-        target.id = 10000-i;
-        child.target = target;
-        if (lastChild != undefined) {
-            target.nextFather = lastChild; // HERE IS THE SALAD
-        }
-        stage.addChild(child.target);
-        stage.addChild(child);
-        lastChild = child;
 
-        child.on("pressmove", function(evt) {
+        var melodicCircleX = Math.max(100, Math.random() * stage.canvas.width;);
+        var melodicCircleY = Math.max(100, Math.random() * stage.canvas.height);
+
+        var melodicCircle = new Block(childX, childY, me.generateRndSoundData(), fragmentSize * i, fragmentSize * (i + 1));
+        var slot = new slot(100 + i*200, 300, '#1C1C1C', 1);
+        
+        melodicCircle.generateId(i);
+        slot.generateId(i);
+
+        melodicCircle.setSlot(slot);
+        
+        stage.addChild(slot);
+        stage.addChild(melodicCircle);
+
+        melodicCircle.on('pressmove', function(evt) {
             // snapOnCorrectObject(evt);
             snapOnAnyObject(evt);
         });
 
-        var sortFunction = function(obj1, obj2, options) {
+       
+        stage.sortChildren(function(obj1, obj2, options) {
             if (obj1.id > obj2.id) { return -1; }
             if (obj1.id < obj2.id) { return 1; }
             return 0;
-        }
-        stage.sortChildren(sortFunction);
+        });
         stage.update();
     }
     stage.update();
 }
 
 function snapOnCorrectObject(evt) {
-    var myChild = evt.target;
-    var myTarget = evt.target.target;
-    evt.currentTarget.x = evt.stageX;
-    evt.currentTarget.y = evt.stageY;
-    var pt = myChild.localToLocal(10, 10, myTarget);
-    if (myTarget.hitTest(pt.x, pt.y)) { 
-        myChild.setTransform(myTarget.x, myTarget.y);
+    var melodicCircle = evt.target;
+    var slot = melodicCircle.slot;
+    evt.target.x = evt.stageX;
+    evt.target.y = evt.stageY;
+    var pt = melodicCircle.localToLocal(10, 10, slot);
+    if (slot.hitTest(pt.x, pt.y)) { 
+        melodicCircle.setTransform(slot.x, slot.y);
         console.log('I am correct');
     }
     stage.update(); 
 }
 
 function snapOnAnyObject(evt) {
-    var myChild = evt.target;
+    var melodicCircle = evt.target;
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-        var myTarget = stage.getChildAt(i).target;
-        if (myTarget == undefined) {
+        var slot = stage.getChildAt(i).slot;
+        if (slot === undefined) {
             continue;
         }
-        var pt = myChild.localToLocal(10, 10, myTarget);
-        if (myTarget.hitTest(pt.x, pt.y)) { 
-            myChild.setTransform(myTarget.x, myTarget.y);
+        var pt = melodicCircle.localToLocal(10, 10, slot);
+        if (slot.hitTest(pt.x, pt.y)) { 
+            melodicCircle.setTransform(slot.x, slot.y);
         } 
     }
     stage.update(); 
 }
 
-function randomSoundData() {
+function generateRndSoundData() {
     var soundData = [];
     for (i = 0; i < 16; i++) {
         soundData[i] = Math.random() * 255;
@@ -136,23 +131,23 @@ function randomSoundData() {
     return soundData;
 }
 function createSymbol() {
-    var mySymbol = new Block(10, 300, this.randomSoundData(), 15000, 16010);
+    var mySymbol = new Block(10, 300, this.generateRndSoundData(), 15000, 16010);
     stage.addChild(mySymbol);
     stage.update();
     mySymbol.on('pressmove', function(evt) {
-        evt.currentTarget.x = evt.stageX ;
-        evt.currentTarget.y = evt.stageY ;
+        evt.currentslot.x = evt.stageX ;
+        evt.currentslot.y = evt.stageY ;
         stage.update();
     });
     return mySymbol;
 }
 
-function createTarget() {
-    target.alpha = 0.5;
-        var pt = dragger.localToLocal(10,10,target);
-        if (target.hitTest(pt.x, pt.y)) { 
-            target.alpha = 1; 
-            dragger.setTransform(target.x, target.y);
+function createslot() {
+    slot.alpha = 0.5;
+        var pt = dragger.localToLocal(10,10,slot);
+        if (slot.hitTest(pt.x, pt.y)) { 
+            slot.alpha = 1; 
+            dragger.setTransform(slot.x, slot.y);
         }
 }
 
