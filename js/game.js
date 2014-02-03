@@ -166,7 +166,8 @@ function createWorld() {
 function snapOnCorrectObject(evt) {
     var myChild = evt.target;
     var myTarget = evt.target.target;
-     if (myTarget == undefined) {
+    // Has never happened in my life before okay?
+    if (myTarget == undefined) {
         return;
     }
     evt.currentTarget.x = evt.stageX;
