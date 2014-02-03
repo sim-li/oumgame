@@ -1,21 +1,13 @@
-var KEYCODE_SPACE = 32,
-    FFTSIZE = 32,    
-    TICK_FREQ = 1,
-    ONE_SEC = 1000 / TICK_FREQ,
+var FFTSIZE = 32,
+    TICK_FREQ = 1,    
     countDown = 30,
     count = 0,
     assetsPath = 'assets/',
-    isPlaying = false,
-    update = true,
-    offset = {},
     canvas,
     manifest,
     preload,
     stage,
-    symbol,
-    dbData,
     fData,
-    cache = [],
     waveformData,
     instance,
     analyserNode,
@@ -23,13 +15,10 @@ var KEYCODE_SPACE = 32,
     countdownLabel,
     gameoverLabel,
     gameoverSubLabel,
+    resetLabel,
     winLabel,
     winSubLabel,
-    soundData = [],
-    startTime,
-    currentTime,
-    currentDate;
-
+    soundData = [];
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
@@ -61,7 +50,6 @@ function afterLoad(event) {
     dbData = new Float32Array(analyserNode.frequencyBinCount);
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
-    //Play song
     instance = createjs.Sound.createInstance('shattSong');
     // instance.addEventListener('succeeded', handleSucceeded);
     this.createWorld();
@@ -74,12 +62,6 @@ function drawTarget(color, alpha) {
     return target;
 }
 function createWorld() {
-    //CountDown Label
-    countdownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
-    countdownLabel.alpha = 0.5;
-    countdownLabel.x = 0;
-    countdownLabel.y = 0;
-    //GameOverMessage
     gameoverLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
     gameoverLabel.alpha = 0.5;
     gameoverLabel.x = 30;
@@ -88,6 +70,19 @@ function createWorld() {
     gameoverSubLabel.alpha = 0.5;
     gameoverSubLabel.x = 50;
     gameoverSubLabel.y = 270;
+    
+    /* SHOW GAME OVER ON TIME UP */
+    gameoverLabel.visible = false;
+    gameoverSubLabel.visible = false;
+
+    var infoLabel = new createjs.Text('Click to listen. Reconstruct the song in the right order.', 'bold 24px Arial', '#FFFFFF');
+    infoLabel.x = 210;
+    infoLabel.y = 8; 
+    infoLabel.alpha = 0.3;
+
+
+    stage.addChild(infoLabel);
+    stage.addChild(resetLabel);
     stage.addChild(gameoverLabel);
     stage.addChild(countdownLabel);
     stage.addChild(gameoverSubLabel);
@@ -102,10 +97,12 @@ function createWorld() {
     winSubLabel.alpha = 0.5;
     winSubLabel.x = 50;
     winSubLabel.y = 270;
-    stage.addChild(winLabel);
-    stage.addChild(winSubLabel);
     this.winLabel.visible = false;
     this.winSubLabel.visible = false;
+
+    stage.addChild(winLabel);
+    stage.addChild(winSubLabel);
+   
 
 
 
@@ -136,6 +133,7 @@ function createWorld() {
             // snapOnCorrectObject(evt);
             snapOnAnyObject(evt);
         });
+
         var sortFunction = function(obj1, obj2, options) {
             if (obj1.id > obj2.id) { return -1; }
             if (obj1.id < obj2.id) { return 1; }
@@ -150,14 +148,10 @@ function createWorld() {
 function snapOnCorrectObject(evt) {
     var myChild = evt.target;
     var myTarget = evt.target.target;
-     if (myTarget == undefined) {
-        return;
-    }
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
     var pt = myChild.localToLocal(10, 10, myTarget);
     if (myTarget.hitTest(pt.x, pt.y)) { 
-        // myTarget.alpha = 1; 
         myChild.setTransform(myTarget.x, myTarget.y);
         console.log('I am correct');
     }
@@ -175,7 +169,6 @@ function snapOnAnyObject(evt) {
         }
         var pt = myChild.localToLocal(10, 10, myTarget);
         if (myTarget.hitTest(pt.x, pt.y)) { 
-            // myTarget.alpha = 1; 
             myChild.setTransform(myTarget.x, myTarget.y);
             // myChild.rowPlay();
         } 
@@ -203,21 +196,21 @@ function createSymbol() {
 }
 
 function createTarget() {
-        target.alpha = 0.5;
-            var pt = dragger.localToLocal(10,10,target);
-            if (target.hitTest(pt.x, pt.y)) { 
-                target.alpha = 1; 
-                dragger.setTransform(target.x, target.y);
-                //console.log(target.x, target.y);
-            }
-            
+    target.alpha = 0.5;
+        var pt = dragger.localToLocal(10,10,target);
+        if (target.hitTest(pt.x, pt.y)) { 
+            target.alpha = 1; 
+            dragger.setTransform(target.x, target.y);
+        }
 }
+
 function handleSucceeded() {
     this.isPlaying = true;
 }
+
 function tick(event) {
-    // Needs callback from outside
     if (this.isPlaying) {
+<<<<<<< HEAD
         this.countdownLabel.text = this.countDown;
         stage.update(event);
         this.count++;
@@ -243,12 +236,41 @@ function tick(event) {
             }
             soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
         }
+=======
+        this.updateCountDown();
+        this.updateSoundData();
+>>>>>>> fbe2a84ee2cc4b21c047b9a899b2dd4a45eb2b37
     }
     stage.update(event);
 }
 
-function printData() {
-    console.log(dbData);
-    console.log(fData);
-    console.log(waveformData);
+function updateCountDown() {
+    this.countdownLabel.text = this.countDown;
+    this.count++;
+    if (this.count >= 50 && this.countDown > 0) {
+        this.count = 0;
+        this.countDown--;
+    }
+    if (this.countDown <= 0) {
+        this.gameoverLabel.visible = true;
+        this.gameoverSubLabel.visible = true;
+    }
+
+}
+
+function updateSoundData() {
+    analyserNode.getFloatFrequencyData(dbData);
+    analyserNode.getByteFrequencyData(fData);  
+    analyserNode.getByteTimeDomainData(waveformData); 
+    var offset = 50;
+    var i = waveformData.length;
+    while(i--) {
+        if (fData[i] === 0) {
+            fData[i] = 100;
+        }
+        if (waveformData[i] === 0) {
+            waveformData[i] = 1;
+        }
+        soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
+    }
 }

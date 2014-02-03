@@ -3,22 +3,29 @@
         this.initialize(x, y, soundData, offsetStart, offsetStop);
     }
     var p = Block.prototype = new createjs.Shape();
+<<<<<<< HEAD
         p.circleCount = 16;
         p.strokeColor = '#000000';
         p.isPlaying = false;
         p.instance;
+=======
+        p.instance;
+        p.circleCount = 16;
+>>>>>>> fbe2a84ee2cc4b21c047b9a899b2dd4a45eb2b37
         p.offsetStart;
         p.offsetStop;
         p.position;
         p.playing;
         p.Container_initialize = p.initialize;
-        p.gangTattoo;
     p.initialize = function(x, y, soundData, offsetStart, offsetStop) {
         this.Container_initialize();
         this.offsetStart = offsetStart;
         this.position = this.offsetStart;
         this.offsetStop = offsetStop;
+<<<<<<< HEAD
         this.melodicCircle = new createjs.Shape();
+=======
+>>>>>>> fbe2a84ee2cc4b21c047b9a899b2dd4a45eb2b37
         this.makeShape();
         this.x = x;
         this.y = y;
@@ -55,6 +62,7 @@
         instance.playing = false;
         instance.pause();
     }
+<<<<<<< HEAD
     p.handleStopAllPlayers = function() {
         if (this.isPlaying) {
             this.isPlaying = false;
@@ -65,6 +73,10 @@
     }
     p.getGangTattoo = function() {
         return this.gangTattoo;
+=======
+    p.handleComplete = function() {
+        instance.pause();
+>>>>>>> fbe2a84ee2cc4b21c047b9a899b2dd4a45eb2b37
     }
     p.rgbToHex = function(r, g, b) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
