@@ -57,7 +57,6 @@
         instance.pause();
     }
     p.handleComplete = function() {
-        console.log('Done playing back.');
         instance.pause();
     }
     p.rgbToHex = function(r, g, b) {

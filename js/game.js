@@ -1,21 +1,13 @@
-var KEYCODE_SPACE = 32,
-    FFTSIZE = 32,    
-    TICK_FREQ = 1,
-    ONE_SEC = 1000 / TICK_FREQ,
+var FFTSIZE = 32,
+    TICK_FREQ = 1,    
     countDown = 30,
     count = 0,
     assetsPath = 'assets/',
-    isPlaying = false,
-    update = true,
-    offset = {},
     canvas,
     manifest,
     preload,
     stage,
-    symbol,
-    dbData,
     fData,
-    cache = [],
     waveformData,
     instance,
     analyserNode,
@@ -26,11 +18,7 @@ var KEYCODE_SPACE = 32,
     resetLabel,
     winLabel,
     winSubLabel,
-    soundData = [],
-    startTime,
-    currentTime,
-    currentDate;
-
+    soundData = [];
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
@@ -264,20 +252,7 @@ function tick(event) {
         }
         var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
         var TRESH_HOLD = 10;
-        if (cache.length <= 1 || (Math.abs(cache[cache.length-1] - avg) > TRESH_HOLD)) {
-            cache.push(avg);
-        }
-        if (cache.length >= 16) {
-            // symbol.refresh(soundData);
-            // symbol.tick();
-            // stage.tick();
-           
-            cache = [];
-        }
     }
-    // for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-    //     stage.getChildAt(i).tick();
-    // }
     stage.update(event);
 }
 
