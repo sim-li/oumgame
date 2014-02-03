@@ -11,13 +11,6 @@ var FFTSIZE = 32,
     waveformData,
     instance,
     analyserNode,
-    titleLabel,
-    countdownLabel,
-    gameoverLabel,
-    gameoverSubLabel,
-    resetLabel,
-    winLabel,
-    winSubLabel,
     soundData = [];
 
 function init() {
@@ -62,50 +55,6 @@ function drawTarget(color, alpha) {
     return target;
 }
 function createWorld() {
-    gameoverLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
-    gameoverLabel.alpha = 0.5;
-    gameoverLabel.x = 30;
-    gameoverLabel.y = 140;
-    gameoverSubLabel =  new createjs.Text('Try harder next time.', 'bold 72px Arial', '#FFFFFF');
-    gameoverSubLabel.alpha = 0.5;
-    gameoverSubLabel.x = 50;
-    gameoverSubLabel.y = 270;
-    
-    /* SHOW GAME OVER ON TIME UP */
-    gameoverLabel.visible = false;
-    gameoverSubLabel.visible = false;
-
-    var infoLabel = new createjs.Text('Click to listen. Reconstruct the song in the right order.', 'bold 24px Arial', '#FFFFFF');
-    infoLabel.x = 210;
-    infoLabel.y = 8; 
-    infoLabel.alpha = 0.3;
-
-
-    stage.addChild(infoLabel);
-    stage.addChild(resetLabel);
-    stage.addChild(gameoverLabel);
-    stage.addChild(countdownLabel);
-    stage.addChild(gameoverSubLabel);
-    this.gameoverLabel.visible = false;
-    this.gameoverSubLabel.visible = false;
-    //You made it Message
-    winLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
-    winLabel.alpha = 0.5;
-    winLabel.x = 30;
-    winLabel.y = 140;
-    winSubLabel =  new createjs.Text('Try harder next time.', 'bold 72px Arial', '#FFFFFF');
-    winSubLabel.alpha = 0.5;
-    winSubLabel.x = 50;
-    winSubLabel.y = 270;
-    this.winLabel.visible = false;
-    this.winSubLabel.visible = false;
-
-    stage.addChild(winLabel);
-    stage.addChild(winSubLabel);
-   
-
-
-
     stage.update();
     var numberOfCircles = 4;
     var totalDuration = instance.getDuration();
