@@ -1,8 +1,8 @@
 (function(window) {
-    function GameOverMessage() {
+    function GreetingMessage() {
         this.initialize();
     }
-    var p = GameOverMessage.prototype = new createjs.Shape(x, y);
+    var p = GreetingMessage.prototype = new createjs.Shape(x, y);
         p.instance;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y) {
@@ -23,6 +23,6 @@
     });
 
     }
-    window.GameOverMessage = GameOverMessage;
+    window.GreetingMessage = GreetingMessage;
 }(window));
 
