@@ -50,7 +50,6 @@ function afterLoad(event) {
     dbData = new Float32Array(analyserNode.frequencyBinCount);
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
-    //Play song
     instance = createjs.Sound.createInstance('shattSong');
     instance.addEventListener('succeeded', handleSucceeded);
     this.createWorld();
@@ -154,15 +153,10 @@ function createWorld() {
 function snapOnCorrectObject(evt) {
     var myChild = evt.target;
     var myTarget = evt.target.target;
-    // Has never happened in my life before okay?
-    if (myTarget == undefined) {
-        return;
-    }
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
     var pt = myChild.localToLocal(10, 10, myTarget);
     if (myTarget.hitTest(pt.x, pt.y)) { 
-        // myTarget.alpha = 1; 
         myChild.setTransform(myTarget.x, myTarget.y);
         console.log('I am correct');
     }
@@ -180,7 +174,6 @@ function snapOnAnyObject(evt) {
         }
         var pt = myChild.localToLocal(10, 10, myTarget);
         if (myTarget.hitTest(pt.x, pt.y)) { 
-            // myTarget.alpha = 1; 
             myChild.setTransform(myTarget.x, myTarget.y);
             myChild.rowPlay();
         } 
@@ -208,56 +201,53 @@ function createSymbol() {
 }
 
 function createTarget() {
-        target.alpha = 0.5;
-            var pt = dragger.localToLocal(10,10,target);
-            if (target.hitTest(pt.x, pt.y)) { 
-                target.alpha = 1; 
-                dragger.setTransform(target.x, target.y);
-                //console.log(target.x, target.y);
-            }
-            
+    target.alpha = 0.5;
+        var pt = dragger.localToLocal(10,10,target);
+        if (target.hitTest(pt.x, pt.y)) { 
+            target.alpha = 1; 
+            dragger.setTransform(target.x, target.y);
+        }
 }
+
 function handleSucceeded() {
     this.isPlaying = true;
 }
+
 function tick(event) {
-    // Needs callback from outside
     if (this.isPlaying) {
-        // if (this.countdownLabel != undefined) {
-        this.countdownLabel.text = this.countDown;
-        stage.update(event);
-        // }
-        this.count++;
-        if (this.count >= 50 && this.countDown > 0) {
-            this.count = 0;
-            this.countDown--;
-        }
-        if (this.countDown <= 0) {
-            this.gameoverLabel.visible = true;
-            this.gameoverSubLabel.visible = true;
-        }
-        analyserNode.getFloatFrequencyData(dbData); // dB
-        analyserNode.getByteFrequencyData(fData);   // f
-        analyserNode.getByteTimeDomainData(waveformData);  // waveform
-        var offset = 50;
-        var i = waveformData.length;
-        while(i--) {
-            if (fData[i] === 0) {
-                fData[i] = 100;
-            }
-            if (waveformData[i] === 0) {
-                waveformData[i] = 1;
-            }
-            soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
-        }
-        var avg = ((soundData[0] + soundData[1] + soundData[2] + soundData[3]) / 4);
-        var TRESH_HOLD = 10;
+        this.updateCountDown();
+        this.updateSoundData();
     }
     stage.update(event);
 }
 
-function printData() {
-    console.log(dbData);
-    console.log(fData);
-    console.log(waveformData);
+function updateCountDown() {
+    this.countdownLabel.text = this.countDown;
+    this.count++;
+    if (this.count >= 50 && this.countDown > 0) {
+        this.count = 0;
+        this.countDown--;
+    }
+    if (this.countDown <= 0) {
+        this.gameoverLabel.visible = true;
+        this.gameoverSubLabel.visible = true;
+    }
+
+}
+
+function updateSoundData() {
+    analyserNode.getFloatFrequencyData(dbData);
+    analyserNode.getByteFrequencyData(fData);  
+    analyserNode.getByteTimeDomainData(waveformData); 
+    var offset = 50;
+    var i = waveformData.length;
+    while(i--) {
+        if (fData[i] === 0) {
+            fData[i] = 100;
+        }
+        if (waveformData[i] === 0) {
+            waveformData[i] = 1;
+        }
+        soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
+    }
 }
