@@ -44,7 +44,7 @@ function afterLoad(event) {
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     instance = createjs.Sound.createInstance('shattSong');
-    instance.addEventListener('succeeded', handleSucceeded);
+    // instance.addEventListener('succeeded', handleSucceeded);
     this.createWorld();
 }
 
@@ -119,7 +119,7 @@ function snapOnAnyObject(evt) {
         var pt = myChild.localToLocal(10, 10, myTarget);
         if (myTarget.hitTest(pt.x, pt.y)) { 
             myChild.setTransform(myTarget.x, myTarget.y);
-            myChild.rowPlay();
+            // myChild.rowPlay();
         } 
     }
     stage.update(); 
@@ -159,8 +159,36 @@ function handleSucceeded() {
 
 function tick(event) {
     if (this.isPlaying) {
+<<<<<<< HEAD
+        this.countdownLabel.text = this.countDown;
+        stage.update(event);
+        this.count++;
+        if (this.count >= 100 && this.countDown > 0) {
+            this.count = 0;
+            this.countDown--;
+        }
+        if (this.countDown <= 0) {
+            this.gameoverLabel.visible = true;
+            this.gameoverSubLabel.visible = true;
+        }
+        analyserNode.getFloatFrequencyData(dbData); // dB
+        analyserNode.getByteFrequencyData(fData);   // f
+        analyserNode.getByteTimeDomainData(waveformData);  // waveform
+        var offset = 50;
+        var i = waveformData.length;
+        while(i--) {
+            if (fData[i] === 0) {
+                fData[i] = 100;
+            }
+            if (waveformData[i] === 0) {
+                waveformData[i] = 1;
+            }
+            soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
+        }
+=======
         this.updateCountDown();
         this.updateSoundData();
+>>>>>>> fbe2a84ee2cc4b21c047b9a899b2dd4a45eb2b37
     }
     stage.update(event);
 }
