@@ -31,16 +31,19 @@
     p.generateId = function() {
 
     }
-    p.getId() = function() {
+    p.getId = function() {
 
     }
-    p.setSlot() = function() {
+    p.setSlot = function() {
 
     }
-    p.setPlayStatus() = function() {
+    p.getSlot = function() {
 
     }
-    p.getPlayStatus() = function() {
+    p.setPlayStatus = function() {
+
+    }
+    p.getPlayStatus = function() {
 
     }
     p.handleClick = function() {
@@ -71,8 +74,8 @@
         g.graphics.clear();
         g.graphics.setStrokeStyle(15);
         for (var i = 0; i < this.circleCount-2; i++) {
-            var c_r = Math.round(soundData[i] * 0.5),
-            var c_g = Math.round(soundData[i+1] * 0.5),
+            var c_r = Math.round(soundData[i] * 0.5);
+            var c_g = Math.round(soundData[i+1] * 0.5);
             var c_b = Math.round(soundData[i+2] * 0.5);
             var stroke = createjs.Graphics.getRGB(c_r, c_g, c_b);
             g.graphics.beginFill('#000000').beginStroke(stroke);

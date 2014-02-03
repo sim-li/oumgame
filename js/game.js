@@ -41,7 +41,7 @@ function afterLoad(event) {
     var context = createjs.WebAudioPlugin.context;
     var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
     analyserNode = context.createAnalyser();
-    analyserNode fftsize = fftsize;
+    analyserNode.fftsize = fftsize;
     analyserNode.smoothingTimeConstant = 0.85;
     analyserNode.connect(context.destination);
     dynamicsNode.disconnect();
@@ -59,10 +59,10 @@ function createWorld(numberOfCircles) {
     var fragmentSize = (instance.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
-        var melodicCircleX = Math.max(100, Math.random() * stage.canvas.width;);
-        var melodicCircleY = Math.max(100, Math.random() * stage.canvas.height);
+        var rndPositionX = Math.max(100, Math.random() * stage.canvas.width);
+        var rndPositionY = Math.max(100, Math.random() * stage.canvas.height);
 
-        var melodicCircle = new MelodicCircle(childX, childY, me.generateRndSoundData(), fragmentSize * i, fragmentSize * (i + 1));
+        var melodicCircle = new MelodicCircle(rndPositionX, rndPositionY, me.generateRndSoundData(), fragmentSize * i, fragmentSize * (i + 1));
         var slot = new Slot(100 + i*200, 300, '#1C1C1C', 1);
         
         melodicCircle.generateId(i);

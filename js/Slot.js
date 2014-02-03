@@ -8,8 +8,6 @@
         p.color;
         p.alpha;
         p.id;
-        p.docked;
-        p.gangTattoo;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, color, alpha) {
         this.x = x;
@@ -22,7 +20,7 @@
     p.generateId = function() {
 
     }
-    p.getId() = function() {
+    p.getId = function() {
 
     }
     p.makeShape = function()  {
