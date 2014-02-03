@@ -4,7 +4,6 @@
     }
     var p = Block.prototype = new createjs.Shape();
         p.circleCount = 16;
-        p.strokeColor = '#000000';
         p.isPlaying = false;
         p.instance;
         p.offsetStart;

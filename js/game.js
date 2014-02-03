@@ -1,17 +1,23 @@
-var FFTSIZE = 32,
-    TICK_FREQ = 1,    
-    countDown = 30,
-    count = 0,
-    assetsPath = 'assets/',
-    canvas,
-    manifest,
-    preload,
-    stage,
-    fData,
-    waveformData,
-    instance,
-    analyserNode,
-    soundData = [];
+/**
+ * Oumshatt Game / Main File
+ * 
+ * @type {Number} fftsize       Number of samples for analizer node
+ * @type {Number} tick_freq     Refresh rate for ticker
+ * @type {Number} countDown     Used to force user into a timeout 
+ */
+var fftsize = 32;
+var tick_freq = 100;  
+var countDown = 30;
+var count = 0;
+var assetsPath = 'assets/';
+var canvas;
+var manifest;
+var stage;
+var fData;
+var waveformData;
+var instance;
+var analyserNode;
+var soundData = [];
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
@@ -21,30 +27,28 @@ function init() {
         id: 'shattSong', 
         src: 'music/shatt.ogg'
     }];
-    preload = new createjs.LoadQueue(true, assetsPath);
+    var preload = new createjs.LoadQueue(true, assetsPath);
     preload.installPlugin(createjs.Sound);
     preload.addEventListener('complete', afterLoad);
     preload.loadManifest(manifest);
     createjs.Ticker.addEventListener("tick", tick);
-    createjs.Ticker.setInterval(TICK_FREQ);
+    createjs.Ticker.setInterval(tick_freq
+);
 }
 
 function afterLoad(event) { 
-    //Initalize Analyser
-    var context = createjs.WebAudioPlugin.context,
-        dynamicsNode;
+    var context = createjs.WebAudioPlugin.context;
+    var dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
     analyserNode = context.createAnalyser();
-    analyserNode.fftSize = FFTSIZE;
+    analyserNode fftsize = fftsize;
     analyserNode.smoothingTimeConstant = 0.85;
     analyserNode.connect(context.destination);
-    dynamicsNode = createjs.WebAudioPlugin.dynamicsCompressorNode;
     dynamicsNode.disconnect();
     dynamicsNode.connect(analyserNode);
     dbData = new Float32Array(analyserNode.frequencyBinCount);
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     instance = createjs.Sound.createInstance('shattSong');
-    // instance.addEventListener('succeeded', handleSucceeded);
     this.createWorld();
 }
 
@@ -119,7 +123,6 @@ function snapOnAnyObject(evt) {
         var pt = myChild.localToLocal(10, 10, myTarget);
         if (myTarget.hitTest(pt.x, pt.y)) { 
             myChild.setTransform(myTarget.x, myTarget.y);
-            // myChild.rowPlay();
         } 
     }
     stage.update(); 
@@ -159,36 +162,8 @@ function handleSucceeded() {
 
 function tick(event) {
     if (this.isPlaying) {
-<<<<<<< HEAD
-        this.countdownLabel.text = this.countDown;
-        stage.update(event);
-        this.count++;
-        if (this.count >= 100 && this.countDown > 0) {
-            this.count = 0;
-            this.countDown--;
-        }
-        if (this.countDown <= 0) {
-            this.gameoverLabel.visible = true;
-            this.gameoverSubLabel.visible = true;
-        }
-        analyserNode.getFloatFrequencyData(dbData); // dB
-        analyserNode.getByteFrequencyData(fData);   // f
-        analyserNode.getByteTimeDomainData(waveformData);  // waveform
-        var offset = 50;
-        var i = waveformData.length;
-        while(i--) {
-            if (fData[i] === 0) {
-                fData[i] = 100;
-            }
-            if (waveformData[i] === 0) {
-                waveformData[i] = 1;
-            }
-            soundData[i] = Math.abs(Math.round(fData[i] * waveformData[i] / 100) - offset);
-        }
-=======
         this.updateCountDown();
         this.updateSoundData();
->>>>>>> fbe2a84ee2cc4b21c047b9a899b2dd4a45eb2b37
     }
     stage.update(event);
 }
