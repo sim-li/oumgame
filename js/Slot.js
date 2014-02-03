@@ -10,12 +10,12 @@
         p.id;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y, color, alpha) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        this.alpha = alpha;
-        this.docked = false;
-        this.makeShape();
+        var me = this;
+        me.x = x;
+        me.y = y;
+        me.color = color;
+        me.alpha = alpha;
+        me.makeShape();
     }
     p.generateId = function() {
 
@@ -24,10 +24,10 @@
 
     }
     p.makeShape = function()  {
-        g = this;
-        g.graphics.clear();
-        g.graphics.alpha = this.alpha;
-        g.graphics.beginFill(this.color).drawCircle(0, 0, (16 + 1) * 4);
+        me = this;
+        me.graphics.clear();
+        me.graphics.alpha = this.alpha;
+        me.graphics.beginFill(this.color).drawCircle(0, 0, (16 + 1) * 4);
     }
     window.Slot = Slot
 ;

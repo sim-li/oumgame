@@ -63,8 +63,7 @@ function createWorld(numberOfCircles) {
 
         var rndPositionX = Math.max(100, Math.random() * stage.canvas.width);
         var rndPositionY = Math.max(100, Math.random() * stage.canvas.height);
-        console.log(me.generateRndSoundData());
-        var melodicCircle = new MelodicCircle(rndPositionX, rndPositionY, me.generateRndSoundData(), fragmentSize * i, fragmentSize * (i + 1));
+        var melodicCircle = new MelodicCircle(rndPositionX, rndPositionY, fragmentSize * i, fragmentSize * (i + 1));
         var slot = new Slot(100 + i*200, 300, '#1C1C1C', 1);
         
         melodicCircle.generateId(i);
@@ -119,14 +118,6 @@ function snapOnAnyObject(evt) {
         } 
     }
     stage.update(); 
-}
-
-function generateRndSoundData() {
-    var soundData = [];
-    for (i = 0; i < 16; i++) {
-        soundData[i] = Math.random() * 255;
-    }
-    return soundData;
 }
 
 function tick(event) {
