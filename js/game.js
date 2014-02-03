@@ -54,11 +54,7 @@ function afterLoad(event) {
 }
 
 function createWorld(numberOfCircles) {
-    //melodicCircle
-    //child
     me = this;
-
-
     stage.update();
     var fragmentSize = (instance.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
@@ -84,8 +80,8 @@ function createWorld(numberOfCircles) {
 
        
         stage.sortChildren(function(obj1, obj2, options) {
-            if (obj1.id > obj2.id) { return -1; }
-            if (obj1.id < obj2.id) { return 1; }
+            if (obj1.getId() > obj2.getId()) { return -1; }
+            if (obj1.getId() < obj2.getId()) { return 1; }
             return 0;
         });
         stage.update();
@@ -96,8 +92,8 @@ function createWorld(numberOfCircles) {
 function snapOnCorrectObject(evt) {
     var melodicCircle = evt.target;
     var slot = melodicCircle.slot;
-    evt.target.x = evt.stageX;
-    evt.target.y = evt.stageY;
+    evt.currentTarget.x = evt.stageX;
+    evt.currentTarget.y = evt.stageY;
     var pt = melodicCircle.localToLocal(10, 10, slot);
     if (slot.hitTest(pt.x, pt.y)) { 
         melodicCircle.setTransform(slot.x, slot.y);
@@ -130,51 +126,28 @@ function generateRndSoundData() {
     }
     return soundData;
 }
-function createSymbol() {
-    var mySymbol = new Block(10, 300, this.generateRndSoundData(), 15000, 16010);
-    stage.addChild(mySymbol);
-    stage.update();
-    mySymbol.on('pressmove', function(evt) {
-        evt.currentslot.x = evt.stageX ;
-        evt.currentslot.y = evt.stageY ;
-        stage.update();
-    });
-    return mySymbol;
-}
-
-function createslot() {
-    slot.alpha = 0.5;
-        var pt = dragger.localToLocal(10,10,slot);
-        if (slot.hitTest(pt.x, pt.y)) { 
-            slot.alpha = 1; 
-            dragger.setTransform(slot.x, slot.y);
-        }
-}
-
-function handleSucceeded() {
-    this.isPlaying = true;
-}
 
 function tick(event) {
-    if (this.isPlaying) {
-        this.updateCountDown();
-        this.updateSoundData();
+    var me = this;
+    if (me.isPlaying) {
+        me.updateCountDown();
+        me.updateSoundData();
     }
     stage.update(event);
 }
 
 function updateCountDown() {
-    this.countdownLabel.text = this.countDown;
-    this.count++;
-    if (this.count >= 50 && this.countDown > 0) {
-        this.count = 0;
-        this.countDown--;
-    }
-    if (this.countDown <= 0) {
-        this.gameoverLabel.visible = true;
-        this.gameoverSubLabel.visible = true;
-    }
-
+    // var me = this;
+    // me.countdownLabel.text = me.countDown;
+    // me.count++;
+    // if (me.count >= 50 && me.countDown > 0) {
+    //     me.count = 0;
+    //     me.countDown--;
+    // }
+    // if (me.countDown <= 0) {
+    //     me.gameoverLabel.visible = true;
+    //     me.gameoverSubLabel.visible = true;
+    // }
 }
 
 function updateSoundData() {
