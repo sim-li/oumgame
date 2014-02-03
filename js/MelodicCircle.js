@@ -1,8 +1,8 @@
 (function(window) {
-    function Block(x, y, soundData, offsetStart, offsetStop) {
+    function MelodicCircle(x, y, soundData, offsetStart, offsetStop) {
         this.initialize(x, y, soundData, offsetStart, offsetStop);
     }
-    var p = Block.prototype = new createjs.Shape();
+    var p = MelodicCircle.prototype = new createjs.Shape();
         p.circleCount = 16;
         p.isPlaying = false;
         p.instance;
@@ -91,6 +91,6 @@
             this.makeShape();
         }
     }
-    window.Block = Block;
+    window.MelodicCircle = MelodicCircle;
 }(window));
 

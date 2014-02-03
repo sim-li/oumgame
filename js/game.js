@@ -62,8 +62,8 @@ function createWorld(numberOfCircles) {
         var melodicCircleX = Math.max(100, Math.random() * stage.canvas.width;);
         var melodicCircleY = Math.max(100, Math.random() * stage.canvas.height);
 
-        var melodicCircle = new Block(childX, childY, me.generateRndSoundData(), fragmentSize * i, fragmentSize * (i + 1));
-        var slot = new slot(100 + i*200, 300, '#1C1C1C', 1);
+        var melodicCircle = new MelodicCircle(childX, childY, me.generateRndSoundData(), fragmentSize * i, fragmentSize * (i + 1));
+        var slot = new Slot(100 + i*200, 300, '#1C1C1C', 1);
         
         melodicCircle.generateId(i);
         slot.generateId(i);
