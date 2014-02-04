@@ -125,9 +125,9 @@ function snapOnAnyObject(evt) {
 
 function tick(event) {
     var me = this;
-    if (me.loaded) {
-        me.updateSoundData();
-    }
+    // if (me.loaded) {
+    //     me.updateSoundData();
+    // }
     stage.update(event);
 }
 
