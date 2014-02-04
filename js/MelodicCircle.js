@@ -49,10 +49,11 @@
         me.graphics.clear();
         for (var i = 0; i < this.circleCount-2; i++) {
             me.graphics.setStrokeStyle(15);
-            var r = Math.round(data[i] * 0.5);
-            var g = Math.round(data[i+1] * 0.5);
-            var b = Math.round(data[i+2] * 0.5);
-            var stroke = createjs.Graphics.getRGB(r, g, b);
+            console.log(data);
+            var cr = Math.round(data[i] * 0.5);
+            var cg = Math.round(data[i+1] * 0.5);
+            var cb = Math.round(data[i+2] * 0.5);
+            var stroke = createjs.Graphics.getRGB(cr, cg, cb);
             me.graphics.beginFill('#000000').beginStroke(stroke);
             me.graphics.drawCircle(0, 0, (i + 1) * me.circleSpread);
             me.alpha = 1 - i * 0.02;

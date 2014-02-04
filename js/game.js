@@ -6,7 +6,7 @@
  * @type {Number} countDown     Used to force user into a timeout 
  */
 var fftsize = 32;
-var tick_freq = 100;  
+var tick_freq = 1;  
 var countDown = 30;
 var count = 0;
 var songDividend = 8;
@@ -59,7 +59,6 @@ function afterLoad(event) {
 
 function createWorld(numberOfCircles) {
     me = this;
-    stage.update();
     var fragmentSize = (instance.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
@@ -89,7 +88,6 @@ function createWorld(numberOfCircles) {
             if (obj1.getId() < obj2.getId()) { return 1; }
             return 0;
         });
-        stage.update();
     }
     stage.update();
 }
