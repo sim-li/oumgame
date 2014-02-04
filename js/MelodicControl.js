@@ -28,23 +28,16 @@
             this.playingCircle.pause();
             this.playingCircle.resetIcon();
         }
-        if (this.isDefined(melodicCircle)) {
             this.playingCircle = melodicCircle;
             melodicCircle.play();
             currentSong.setPosition(melodicCircle.getPosition());
             currentSong.play();
-        }
     }
 
     p.playAll = function() {
         var me = this;
-        me.playListPosition = 1;
-        // Plays first item
-        me.playingCircle = me.playlist[me.playlistPosition];
-        me.playingCircle.play();
-        currentSong.setPosition(melodicCircle.getPosition());
-        currentSong.play();
         me.chainMode = true;
+        me.play(me.playlist[me.playlistPosition]);
     }
 
   
@@ -64,17 +57,14 @@
         if (!me.isDefined(me.playingCircle)) {
             return;
         }
-        console.log(me.playingCircle);
-        if ((currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) || 
-            this.playlistPosition === (this.playlist.length - 1)) {
-
-            me.pause();
-            return;
-        }
-        if (me.chainMode) {
+        if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
+            if (!me.chainMode || this.playlistPosition === (this.playlist.length - 1)) {
+                me.pause();
+                return;
+            }
+            this.playlistPosition++;
             var nextItem = this.playlist[this.playlistPosition];
             this.play(nextItem);
-            this.playlistPosition++;
         }
     }
 
