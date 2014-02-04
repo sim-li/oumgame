@@ -1,6 +1,6 @@
 (function(window) {
-    function Slot(x, y, radius) {
-        this.initialize(x, y, radius);
+    function Slot(iNumber, x, y, radius) {
+        this.initialize(iNumber, x, y, radius);
     }
     var p = Slot.prototype = new createjs.Shape();
         p.x;
@@ -12,9 +12,9 @@
         p.Container_initialize = p.initialize;
     p.initialize = function(iNumber, x, y, radius) {
         var me = this;
-        me.x = x;
-        me.y = y;
         me.iNumber = iNumber;
+        me.x = x + iNumber * 200;
+        me.y = y;
         me.radius = radius;
         me.generateId(iNumber);
         me.makeShape();
@@ -32,7 +32,7 @@
         me = this;
         me.graphics.clear();
         me.graphics.alpha = 1;
-        me.graphics.beginFill(me.color).drawCircle(0, 0, (16 + 1) * 4);
+        me.graphics.beginFill(me.color).drawCircle(0, 0, me.radius);
     }
     window.Slot = Slot
 ;

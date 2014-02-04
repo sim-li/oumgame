@@ -69,8 +69,7 @@ function createWorld(numberOfCircles) {
             endOffset: fragmentSize * (i + 1)
         });
 
-        // new Slot(100 + i*200, 300, '#1C1C1C', 1)
-        var slot = new Slot(i, 100 + i * 200, 300);
+        var slot = new Slot(i, 100, 300, melodicCircle.getRadius());
 
         melodicCircle.setSlot(slot);
 

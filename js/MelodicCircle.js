@@ -4,6 +4,7 @@
     }
     var p = MelodicCircle.prototype = new createjs.Shape();
         p.circleCount = 16;
+        p.circleSpread = 4;
         p.position = -1;
         p.playing = false;
 
@@ -23,6 +24,7 @@
         me.y = y;
         me.offsets = offsets;
         me.generateId(iNumber);
+
         me.makeShape(me.generateRndSoundData());
         
         var self = this;
@@ -52,7 +54,7 @@
             var b = Math.round(data[i+2] * 0.5);
             var stroke = createjs.Graphics.getRGB(r, g, b);
             me.graphics.beginFill('#000000').beginStroke(stroke);
-            me.graphics.drawCircle(0, 0, (i + 1) * 4);
+            me.graphics.drawCircle(0, 0, (i + 1) * me.circleSpread);
             me.alpha = 1 - i * 0.02;
             me.compositeOperation = 'lighter';
         }
@@ -89,6 +91,9 @@
     }
     p.getPosition = function() {
         return this.position;
+    }
+    p.getRadius = function() {
+        return (this.circleCount + 1) * this.circleSpread;
     }
     p.play = function () {
         this.playing = true;
