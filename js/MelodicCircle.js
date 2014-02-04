@@ -7,12 +7,12 @@
         p.circleSpread = 4;
         p.position = -1;
         p.playing = false;
+        p.chainmode = false;
         p.randomSoundData = [];
         p.iNumber;
         p.x;
         p.y;
         p.offsets = {};
-       
         p.id;
         p.slot;
         p.Container_initialize = p.initialize;
@@ -60,6 +60,10 @@
         }
     }
 
+    p.setChainMode = function(isOn) {
+        this.chainMode = isOn;
+    }
+
     p.resetPosition = function() {
         var me = this;
         me.resetIcon();
@@ -79,9 +83,22 @@
     }
 
     p.tick = function() { 
-        if (this.isPlaying()) {
-            this.makeShape(soundData);
+        var me = this;
+        if (me.isPlaying()) {
+            me.makeShape(soundData);
+            /*
+            If fragment ends, fire event for MelodicControl (chained mode / next item in playlist)
+             */
+            if (me.playbackDone && me.chainMode) {
+                me.dispatchEvent('playbackDone');
+                console.log('I Fired!');
+                me.chainMode = false;
+            }
         }
+    }
+
+    p.playbackDone = function () {
+        return this.position > offsets.playStart;
     }
 
     p.generateId = function(i) {

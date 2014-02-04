@@ -77,11 +77,13 @@ function createWorld(numberOfCircles) {
         stage.addChild(slot);
         stage.addChild(melodicCircle);
 
+        melodicControl.addToPlaylist(melodicCircle);
+        
         melodicCircle.on('pressmove', function(evt) {
             snapOnCorrectObject(evt);
             // snapOnAnyObject(evt);
         });
-
+        melodicControl.playAll();
        
         stage.sortChildren(function(obj1, obj2, options) {
             if (obj1.getId() > obj2.getId()) { return -1; }

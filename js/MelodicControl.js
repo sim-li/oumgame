@@ -4,8 +4,10 @@
     }
     var p = MelodicControl.prototype = new createjs.Container();
         p.playlist = [];
+        p.playlistPosition = 0;
         p.empty = '';
         p.playingCircle = '';
+        p.chainMode = false;
         p.Container_initialize = p.initialize;
 
     p.initialize = function() {
@@ -17,11 +19,37 @@
     }
 
     p.addToPlaylist = function(melodicCircle) {
-        playlist.push(melodicCircle);
+        this.playlist.push(melodicCircle);
     }
 
     p.playAll = function() {
+        this.chainMode = true;
+        var len = this.playlist.length;
+        if (len > 0) {
+            for (var i = 0; i < len; i++) {
+                this.playlist[i].on('playbackDones', this.playNext);
+            }
+            this.playNext();
+        }
+    }
 
+    p.playNext = function() {
+        console.log('triggered');
+        var nextItem = this.playlist[this.playlistPosition];
+        this.playItem(nextItem);
+        nextItem.setChainMode(false);
+        this.playlistPosition++;
+    }
+
+    p.pauseAll = function() {
+        this.chainMode = false;
+    }
+
+    p.playItem = function(melodicCircle) {
+        this.playingCircle = melodicCircle;
+        melodicCircle.play();
+        currentSong.setPosition(melodicCircle.getPosition());
+        currentSong.play();
     }
 
     p.triggerPlayback = function(melodicCircle) {
@@ -33,10 +61,7 @@
             this.playingCircle.pause();
             this.playingCircle.resetIcon();
         }
-        this.playingCircle = melodicCircle;
-        melodicCircle.play();
-        currentSong.setPosition(melodicCircle.getPosition());
-        currentSong.play();
+        this.playItem(melodicCircle);
     }
 
     p.isPlayingSolo = function() {
