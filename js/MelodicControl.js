@@ -33,6 +33,7 @@
         if (this.playListPosition === this.playlist.length) {
             this.chainMode = false;
             this.playListPosition = 0;
+            this.stopCurrentSong();
             return;
         }
         var nextItem = this.playlist[this.playlistPosition];
@@ -56,15 +57,11 @@
             currentSong.setPosition(melodicCircle.getOffsets().playStart);
             return;
         }
-        if (this.isPlayingSolo()) {
+        if (this.isDefined(this.playingCircle)) {
             this.playingCircle.pause();
             this.playingCircle.resetIcon();
         }
         this.playItem(melodicCircle);
-    }
-
-    p.isPlayingSolo = function() {
-        return this.playingCircle != this.empty;
     }
 
     p.tick = function() {
@@ -79,7 +76,13 @@
 
     p.playbackComplete = function() {
         var me = this;
-        return me.isPlayingSolo() && (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd);
+        if (!me.isDefined(me.playingCircle)) {
+            return true;
+        }
+        if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
+            return true;
+        }
+        return false;
     }
 
     p.stopCurrentSong = function() {
@@ -89,7 +92,10 @@
             me.playingCircle = me.empty;
             currentSong.pause();
     }
-
+    
+    p.isDefined = function(object) {
+        return object != undefined;
+    }
     window.MelodicControl = MelodicControl;
 }(window));
 
