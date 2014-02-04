@@ -4,6 +4,7 @@
     }
     var p = MelodicCircle.prototype = new createjs.Shape();
         p.circleCount = 16;
+        p.position = -1;
         p.playing = false;
 
         p.iNumber;
@@ -11,7 +12,6 @@
         p.y;
         p.offsets = {};
        
-        p.lastPosition;
         p.id;
         p.slot;
         p.Container_initialize = p.initialize;
@@ -22,8 +22,9 @@
         me.x = x;
         me.y = y;
         me.offsets = offsets;
+        me.generateId(iNumber);
         me.makeShape(me.generateRndSoundData());
-       
+        
         var self = this;
         (function(self) {
             self.addEventListener('click', function() {
@@ -67,7 +68,7 @@
 
     p.tick = function() { 
         if (this.isPlaying()) {
-             this.makeShape(soundData);
+            this.makeShape(soundData);
         }
        
     }
@@ -77,20 +78,23 @@
     p.setSlot = function(slot) {
         this.slot = slot;
     }
+    p.setPosition = function(position) {
+        this.position = position;
+    }
     p.getId = function() {
         return this.id;
     }
     p.getSlot = function() {
         return this.slot;
     }
+    p.getPosition = function() {
+        return this.position;
+    }
     p.play = function () {
         this.playing = true;
     }
     p.pause = function() {
         this.playing = false;
-    }
-    p.setOffsets = function(offsets) {
-        this.offsets = offsets;
     }
     p.isPlaying = function() {
         return this.playing;

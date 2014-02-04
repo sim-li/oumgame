@@ -16,6 +16,7 @@
         me.y = y;
         me.iNumber = iNumber;
         me.radius = radius;
+        me.generateId(iNumber);
         me.makeShape();
     }
     p.generateId = function(i) {
