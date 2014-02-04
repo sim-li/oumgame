@@ -7,7 +7,7 @@
         p.circleSpread = 4;
         p.position = -1;
         p.playing = false;
-
+        p.randomSoundData = [];
         p.iNumber;
         p.x;
         p.y;
@@ -24,8 +24,8 @@
         me.y = y;
         me.offsets = offsets;
         me.generateId(iNumber);
-
-        me.makeShape(me.generateRndSoundData());
+        me.randomSoundData = me.generateRndSoundData();
+        me.resetPosition();
         
         var self = this;
         (function(self) {
@@ -58,6 +58,12 @@
             me.alpha = 1 - i * 0.04;
             me.compositeOperation = 'lighter';
         }
+    }
+
+    p.resetPosition = function() {
+        var me = this;
+        me.makeShape(me.randomSoundData);
+        me.position = me.offsets.playStart;
     }
 
     p.generateRndSoundData = function() {
@@ -103,9 +109,6 @@
     }
     p.pause = function() {
         this.playing = false;
-    }
-    p.resetPosition = function() {
-        this.position = this.offsets.playStart;
     }
     p.isPlaying = function() {
         return this.playing;
