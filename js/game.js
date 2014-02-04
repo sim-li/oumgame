@@ -107,7 +107,6 @@ function createWorld(numberOfCircles) {
             return 0;
         });
     }
-    // melodicControl.playAll();
     stage.update();
 }
 
@@ -126,10 +125,8 @@ function dockCircleToSlot(evt) {
             if (slot.hitTest(pt.x, pt.y)) { 
                 if (slot === melodicCircle.getSlot()) {
                     melodicCircle.setCorrectSlot(true);
-                    console.log('HINT HINT');
                     this.playTimeline();
                 } else {
-                    console.log('Fucki');
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
             } 

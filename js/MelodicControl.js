@@ -53,7 +53,6 @@
         me.playingCircle.pause();
         me.playingCircle.resetPosition();
         me.playingCircle = me.empty;
-        // me.flushPlaylist();
         currentSong.pause();
     }
 
@@ -76,16 +75,13 @@
     p.addToPlaylist = function(melodicCircle) {
         if (!this.contains(melodicCircle)) {
             this.playlist.push(melodicCircle);
-            console.log('Pushed!');
         }
-         console.log('Not Pushed!');
     }
 
     p.removeFromPlaylist = function(melodicCircle) {
         var index = this.playlist.indexOf(melodicCircle);
         if (index > -1) {
             this.playlist.splice(index, 1);
-            console.log('Deleted');
         }
     }
     
@@ -97,7 +93,6 @@
         var i = this.playlist.length;
         while (i--) {
            if (this.playlist[i] === melodicCircle) {
-            console.log('CONTAINS');
                return true;
            }
         }
