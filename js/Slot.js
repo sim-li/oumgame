@@ -3,17 +3,18 @@
         this.initialize(iNumber, x, y, radius);
     }
     var p = Slot.prototype = new createjs.Shape();
+        p.color = '#1C1C1C';
+        p.spreadFactor = 2.9;
         p.x;
         p.y;
         p.id;
         p.iNumber;
-        p.color = '#1C1C1C';
         p.radius;
         p.Container_initialize = p.initialize;
     p.initialize = function(iNumber, x, y, radius) {
         var me = this;
         me.iNumber = iNumber;
-        me.x = x + iNumber * 200;
+        me.x = x + iNumber * (radius * me.spreadFactor);
         me.y = y;
         me.radius = radius;
         me.generateId(iNumber);

@@ -72,8 +72,8 @@
         if (this.isPlaying()) {
             this.makeShape(soundData);
         }
-       
     }
+
     p.generateId = function(i) {
         this.id = i;
     }
