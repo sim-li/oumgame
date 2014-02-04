@@ -35,6 +35,13 @@
             createjs.Ticker.addEventListener('tick', function() {
                 self.tick();
             });
+            self.addEventListener('pressmove', function() {
+                melodicControl.blockSinglePlay = true;
+            });
+            self.addEventListener('pressup', function() {
+                console.log('Hello');
+                melodicControl.blockSinglePlay = false;
+            });
         })(this);
     }
 

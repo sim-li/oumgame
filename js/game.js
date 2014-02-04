@@ -124,9 +124,9 @@ function dockCircleToSlot(evt) {
             var pt = melodicCircle.localToLocal(10, 10, slot);
             if (slot.hitTest(pt.x, pt.y)) { 
                 if (slot === melodicCircle.getSlot()) {
+                    console.log('BINGO');
                     melodicCircle.setCorrectSlot(true);
                     this.playTimeline();
-                } else {
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
             } 

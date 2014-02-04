@@ -8,6 +8,7 @@
         p.empty = '';
         p.playingCircle = '';
         p.chainMode = false;
+        p.blockSinglePlay = false;
         p.Container_initialize = p.initialize;
 
     p.initialize = function() {
@@ -20,6 +21,9 @@
     }
 
      p.play = function(melodicCircle) {
+        if (this.blockSinglePlay) {
+            return;
+        }
         if (melodicCircle.isPlaying()) {
             currentSong.setPosition(melodicCircle.getOffsets().playStart);
             return;
@@ -38,7 +42,6 @@
         var me = this;
         me.chainMode = true;
         me.play(me.playlist[me.playlistPosition]);
-        console.log(me.playlist.length);
     }
 
   
@@ -50,9 +53,11 @@
         var me = this;
         me.chainMode = false;
         me.playlistPosition = 0;
-        me.playingCircle.pause();
-        me.playingCircle.resetPosition();
-        me.playingCircle = me.empty;
+        if (this.isDefined(me.playingCircle)) {
+            me.playingCircle.pause();
+            me.playingCircle.resetPosition();
+            me.playingCircle = me.empty;
+        }
         currentSong.pause();
     }
 
