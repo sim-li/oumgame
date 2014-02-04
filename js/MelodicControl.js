@@ -7,10 +7,10 @@
         p.playlistPosition = 0;
         p.empty = '';
         p.playingCircle = '';
-        p.chainMode = false;
         p.Container_initialize = p.initialize;
 
     p.initialize = function() {
+         var self = this;
          (function(self) {
             createjs.Ticker.addEventListener('tick', function() {
                 self.tick();
@@ -23,21 +23,14 @@
     }
 
     p.playAll = function() {
-        this.chainMode = true;
-        var len = this.playlist.length;
-        if (len > 0) {
-            for (var i = 0; i < len; i++) {
-                this.playlist[i].on('playbackDones', this.playNext);
-            }
-            this.playNext();
-        }
+        this.playListPosition = 0;
+        this.playNext();
     }
 
     p.playNext = function() {
         console.log('triggered');
         var nextItem = this.playlist[this.playlistPosition];
         this.playItem(nextItem);
-        nextItem.setChainMode(false);
         this.playlistPosition++;
     }
 

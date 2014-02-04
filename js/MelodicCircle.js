@@ -7,7 +7,6 @@
         p.circleSpread = 4;
         p.position = -1;
         p.playing = false;
-        p.chainmode = false;
         p.randomSoundData = [];
         p.iNumber;
         p.x;
@@ -60,10 +59,6 @@
         }
     }
 
-    p.setChainMode = function(isOn) {
-        this.chainMode = isOn;
-    }
-
     p.resetPosition = function() {
         var me = this;
         me.resetIcon();
@@ -86,14 +81,6 @@
         var me = this;
         if (me.isPlaying()) {
             me.makeShape(soundData);
-            /*
-            If fragment ends, fire event for MelodicControl (chained mode / next item in playlist)
-             */
-            if (me.playbackDone && me.chainMode) {
-                me.dispatchEvent('playbackDone');
-                console.log('I Fired!');
-                me.chainMode = false;
-            }
         }
     }
 
