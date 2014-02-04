@@ -19,40 +19,7 @@
         })(this);
     }
 
-    p.addToPlaylist = function(melodicCircle) {
-        this.playlist.push(melodicCircle);
-    }
-
-    p.playAll = function() {
-        this.chainMode = true;
-        this.playListPosition = 0;
-        this.playNext();
-    }
-
-    p.playNext = function() {
-        if (this.playListPosition === this.playlist.length) {
-            this.chainMode = false;
-            this.playListPosition = 0;
-            this.stopCurrentSong();
-            return;
-        }
-        var nextItem = this.playlist[this.playlistPosition];
-        this.playItem(nextItem);
-        this.playlistPosition++;
-    }
-
-    p.pauseAll = function() {
-        this.chainMode = false;
-    }
-
-    p.playItem = function(melodicCircle) {
-        this.playingCircle = melodicCircle;
-        melodicCircle.play();
-        currentSong.setPosition(melodicCircle.getPosition());
-        currentSong.play();
-    }
-
-    p.triggerPlayback = function(melodicCircle) {
+     p.play = function(melodicCircle) {
         if (melodicCircle.isPlaying()) {
             currentSong.setPosition(melodicCircle.getOffsets().playStart);
             return;
@@ -61,12 +28,42 @@
             this.playingCircle.pause();
             this.playingCircle.resetIcon();
         }
-        this.playItem(melodicCircle);
+        if (this.isDefined(melodicCircle)) {
+            this.playItem(melodicCircle);
+        }
     }
 
+    p.playAll = function() {
+        this.chainMode = true;
+        this.playListPosition = 0;
+        if (this.playlistPosition === (this.playlist.length - 1)) {
+            this.chainMode = false;
+            this.playlistPosition = 0;
+            this.stopCurrentSong();
+            return;
+        }
+        var nextItem = this.playlist[this.playlistPosition];
+        this.playingCircle = melodicCircle;
+        melodicCircle.play();
+        currentSong.setPosition(melodicCircle.getPosition());
+        currentSong.play();
+        this.playlistPosition++;
+    }
+
+  
+    p.pause = function() {
+        this.chainMode = false;
+        var me = this;
+        me.playingCircle.pause();
+        me.playingCircle.resetPosition();
+        me.playingCircle = me.empty;
+        currentSong.pause();
+    }
+
+   
     p.tick = function() {
         var me = this; 
-        if (me.isPlaybackComplete()) {
+        if (me.isDefined(me.playingCircle) && currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
             me.stopCurrentSong();
             if (me.chainMode) {
                 me.playNext();
@@ -74,25 +71,14 @@
         }
     }
 
-    p.isPlaybackComplete = function() {
-        var me = this;
-        if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
-            return true;
-        }
-        return false;
-    }
-
-    p.stopCurrentSong = function() {
-        var me = this;
-            me.playingCircle.pause();
-            me.playingCircle.resetPosition();
-            me.playingCircle = me.empty;
-            currentSong.pause();
+    p.addToPlaylist = function(melodicCircle) {
+        this.playlist.push(melodicCircle);
     }
     
     p.isDefined = function(object) {
-        return object != undefined;
+        return typeof object != 'undefined';
     }
+
     window.MelodicControl = MelodicControl;
 }(window));
 

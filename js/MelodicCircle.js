@@ -38,7 +38,7 @@
     }
 
     p.handleClick = function() {
-        melodicControl.triggerPlayback(this);
+        melodicControl.play(this);
     }
 
     p.makeShape = function(data)  {
