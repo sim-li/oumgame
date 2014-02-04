@@ -25,6 +25,9 @@
     p.getId = function() {
         return this.id;
     }
+    p.isMelodicCircle = function() {
+        return false;
+    }
     p.makeShape = function()  {
         me = this;
         me.graphics.clear();

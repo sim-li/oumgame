@@ -71,15 +71,15 @@ function createWorld(numberOfCircles) {
 
         // new Slot(100 + i*200, 300, '#1C1C1C', 1)
         var slot = new Slot(i, 100 + i * 200, 300);
-        
+
         melodicCircle.setSlot(slot);
 
         stage.addChild(slot);
         stage.addChild(melodicCircle);
 
         melodicCircle.on('pressmove', function(evt) {
-            // snapOnCorrectObject(evt);
-            snapOnAnyObject(evt);
+            snapOnCorrectObject(evt);
+            // snapOnAnyObject(evt);
         });
 
        
@@ -95,7 +95,7 @@ function createWorld(numberOfCircles) {
 
 function snapOnCorrectObject(evt) {
     var melodicCircle = evt.target;
-    var slot = melodicCircle.slot;
+    var slot = melodicCircle.getSlot();
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
     var pt = melodicCircle.localToLocal(10, 10, slot);
@@ -111,10 +111,11 @@ function snapOnAnyObject(evt) {
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-        var slot = stage.getChildAt(i).slot;
-        if (slot === undefined) {
+        var child = stage.getChildAt(i);
+        if (child.isMelodicCircle() === false) {
             continue;
         }
+        var slot = child.getSlot();
         var pt = melodicCircle.localToLocal(10, 10, slot);
         if (slot.hitTest(pt.x, pt.y)) { 
             melodicCircle.setTransform(slot.x, slot.y);
@@ -125,9 +126,9 @@ function snapOnAnyObject(evt) {
 
 function tick(event) {
     var me = this;
-    // if (me.loaded) {
-    //     me.updateSoundData();
-    // }
+    if (me.loaded) {
+        me.updateSoundData();
+    }
     stage.update(event);
 }
 
