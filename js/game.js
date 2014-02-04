@@ -6,7 +6,7 @@
  * @type {Number} countDown     Used to force user into a timeout 
  */
 var fftsize = 32;
-var tick_freq = 1;  
+var tick_freq = 30;  
 var countDown = 30;
 var count = 0;
 var songDividend = 8;
