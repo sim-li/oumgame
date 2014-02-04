@@ -36,11 +36,10 @@
                 self.tick();
             });
             self.addEventListener('pressmove', function() {
-                melodicControl.blockSinglePlay = true;
+                melodicControl.blockSinglePlay();
             });
             self.addEventListener('pressup', function() {
-                console.log('Hello');
-                melodicControl.blockSinglePlay = false;
+                melodicControl.releaseSinglePlay();
             });
         })(this);
     }

@@ -8,7 +8,7 @@
         p.empty = '';
         p.playingCircle = '';
         p.chainMode = false;
-        p.blockSinglePlay = false;
+        p.noSinglePlay = false;
         p.Container_initialize = p.initialize;
 
     p.initialize = function() {
@@ -21,7 +21,7 @@
     }
 
      p.play = function(melodicCircle) {
-        if (this.blockSinglePlay) {
+        if (this.noSinglePlay) {
             return;
         }
         if (melodicCircle.isPlaying()) {
@@ -36,6 +36,20 @@
         melodicCircle.play();
         currentSong.setPosition(melodicCircle.getPosition());
         currentSong.play();
+    }
+
+    p.blockSinglePlay = function() {
+        if (!this.chainMode) {
+            this.noSinglePlay = true;
+        } else {
+            this.noSinglePlay = false;
+        }
+    }
+
+    p.releaseSinglePlay = function() {
+        if (!this.chainMode) {
+            this.noSinglePlay = false;
+        }
     }
 
     p.playAll = function() {
