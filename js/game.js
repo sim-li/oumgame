@@ -137,7 +137,7 @@ function updateSoundData() {
     analyserNode.getFloatFrequencyData(dbData);
     analyserNode.getByteFrequencyData(fData);  
     analyserNode.getByteTimeDomainData(waveformData); 
-    var offset = 50;
+    var offset = 100;
     var i = waveformData.length;
     while(i--) {
         if (fData[i] === 0) {
