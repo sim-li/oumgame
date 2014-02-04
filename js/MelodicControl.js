@@ -41,7 +41,7 @@
     }
 
   
-    p.pause = function() {
+    p.stop = function() {
         var me = this;
         me.chainMode = false;
         me.playlistPosition = 0;
@@ -51,7 +51,6 @@
         currentSong.pause();
     }
 
-   
     p.tick = function() {
         var me = this; 
         if (!me.isDefined(me.playingCircle)) {
@@ -59,7 +58,7 @@
         }
         if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
             if (!me.chainMode || this.playlistPosition === (this.playlist.length - 1)) {
-                me.pause();
+                me.stop();
                 return;
             }
             this.playlistPosition++;
