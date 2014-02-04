@@ -7,6 +7,7 @@
         p.playlistPosition = 0;
         p.empty = '';
         p.playingCircle = '';
+        p.chainMode = false;
         p.Container_initialize = p.initialize;
 
     p.initialize = function() {
@@ -23,12 +24,17 @@
     }
 
     p.playAll = function() {
+        this.chainMode = true;
         this.playListPosition = 0;
         this.playNext();
     }
 
     p.playNext = function() {
-        console.log('triggered');
+        if (this.playListPosition === this.playlist.length) {
+            this.chainMode = false;
+            this.playListPosition = 0;
+            return;
+        }
         var nextItem = this.playlist[this.playlistPosition];
         this.playItem(nextItem);
         this.playlistPosition++;
@@ -62,15 +68,26 @@
     }
 
     p.tick = function() {
-    var me = this; 
-        if (me.isPlayingSolo()) {
-            if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
-                me.playingCircle.pause();
-                me.playingCircle.resetPosition();
-                me.playingCircle = me.empty;
-                currentSong.pause();
+        var me = this; 
+        if (me.playbackComplete()) {
+            me.stopCurrentSong();
+            if (me.chainMode) {
+                me.playNext();
             }
         }
+    }
+
+    p.playbackComplete = function() {
+        var me = this;
+        return me.isPlayingSolo() && (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd);
+    }
+
+    p.stopCurrentSong = function() {
+        var me = this;
+            me.playingCircle.pause();
+            me.playingCircle.resetPosition();
+            me.playingCircle = me.empty;
+            currentSong.pause();
     }
 
     window.MelodicControl = MelodicControl;
