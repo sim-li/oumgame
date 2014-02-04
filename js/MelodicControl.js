@@ -38,9 +38,14 @@
         var me = this;
         me.chainMode = true;
         me.play(me.playlist[me.playlistPosition]);
+        console.log(me.playlist);
     }
 
   
+    p.flushPlaylist = function() {
+        me.playlist = [];
+    }
+
     p.stop = function() {
         var me = this;
         me.chainMode = false;
@@ -48,6 +53,7 @@
         me.playingCircle.pause();
         me.playingCircle.resetPosition();
         me.playingCircle = me.empty;
+        // me.flushPlaylist();
         currentSong.pause();
     }
 
@@ -69,6 +75,10 @@
 
     p.addToPlaylist = function(melodicCircle) {
         this.playlist.push(melodicCircle);
+    }
+    
+    p.isPlaying = function(melodicCircle) {
+        return this.playingCircle === melodicCircle;
     }
     
     p.isDefined = function(object) {

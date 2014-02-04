@@ -109,7 +109,7 @@ function createWorld(numberOfCircles) {
             return 0;
         });
     }
-    melodicControl.playAll();
+    // melodicControl.playAll();
     stage.update();
 }
 
@@ -142,7 +142,10 @@ function playTimeline(evt) {
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
         var element = stage.getChildAt(i);
         if (element.isMelodicCircle() && element.hasCorrectSlot()) {
-            console.log('Happened once!');
+            console.log(element.hasCorrectSlot());
+            melodicControl.flushPlaylist();
+            melodicControl.addToPlaylist(element);
+            melodicControl.playAll();
         }
     }
 }

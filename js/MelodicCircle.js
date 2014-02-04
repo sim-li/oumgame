@@ -39,7 +39,11 @@
     }
 
     p.handleClick = function() {
-        melodicControl.play(this);
+        if (melodicControl.isPlaying(this)) {
+            melodicControl.stop();
+        } else {
+            melodicControl.play(this);
+        }
     }
 
     p.makeShape = function(data)  {
