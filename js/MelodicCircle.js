@@ -44,7 +44,7 @@
 
     p.makeShape = function(data)  {
         var me = this;
-        var offset = 50;
+        var offset = 150;
         var mul = 1;
         me.graphics.clear();
         for (var i = 0; i < this.circleCount-2; i++) {
@@ -103,6 +103,9 @@
     }
     p.pause = function() {
         this.playing = false;
+    }
+    p.resetPosition = function() {
+        this.position = this.offsets.playStart;
     }
     p.isPlaying = function() {
         return this.playing;

@@ -29,11 +29,13 @@
             instance.setPosition(melodicCircle.getOffsets().playStart);
             return;
         }
+        if (this.isPlayingSolo()) {
+            this.playingCircle.pause();
+        }
         this.playingCircle = melodicCircle;
         melodicCircle.play();
         instance.setPosition(melodicCircle.getPosition());
         instance.play();
-
     }
 
     p.isPlayingSolo = function() {
@@ -46,6 +48,8 @@
             me.playingCircle.setPosition(instance.getPosition());
             if (me.playingCircle.getPosition() > me.playingCircle.getOffsets().playEnd) {
                 me.playingCircle.pause();
+                console.log('pause');
+                me.playingCircle.resetPosition();
                 me.playingCircle = me.empty;
                 instance.pause();
             }
