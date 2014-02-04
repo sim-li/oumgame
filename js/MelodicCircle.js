@@ -32,7 +32,7 @@
             self.addEventListener('click', function() {
                 self.handleClick();
             });
-            self.addEventListener('tick', function() {
+            createjs.Ticker.addEventListener('tick', function() {
                 self.tick();
             });
         })(this);

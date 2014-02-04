@@ -9,8 +9,8 @@
         p.Container_initialize = p.initialize;
 
     p.initialize = function() {
-        (function(self) {
-            self.addEventListener('tick', function() {
+         (function(self) {
+            createjs.Ticker.addEventListener('tick', function() {
                 self.tick();
             });
         })(this);
@@ -30,6 +30,7 @@
             return;
         }
         this.playingCircle = melodicCircle;
+        melodicCircle.play();
         instance.setPosition(melodicCircle.getPosition());
         instance.play();
 
@@ -39,17 +40,13 @@
         return this.playingCircle != this.empty;
     }
 
-    p.ticka = function() {
+    p.tick = function() {
     var me = this; 
-    console.log(me.isPlayingSolo());
-    console.log('HELLO');
         if (me.isPlayingSolo()) {
             me.playingCircle.setPosition(instance.getPosition());
-            console.log(me.playingCircle.getPosition(),  p.playingCircle.getOffsets().playEnd);
-
-            if (me.playingCircle.getPosition() > p.playingCircle.getOffsets().playEnd) {
+            if (me.playingCircle.getPosition() > me.playingCircle.getOffsets().playEnd) {
                 me.playingCircle.pause();
-                me.isPlayingSolo = me.empty;
+                me.playingCircle = me.empty;
                 instance.pause();
             }
         }
