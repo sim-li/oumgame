@@ -100,8 +100,7 @@ function createWorld(numberOfCircles) {
         melodicControl.addToPlaylist(melodicCircle);
 
         melodicCircle.on('pressmove', function(evt) {
-            snapOnCorrectObject(evt);
-            // snapOnAnyObject(evt);
+            dockCircleToSlot(evt);
         });
 
         stage.sortChildren(function(obj1, obj2, options) {
@@ -114,35 +113,38 @@ function createWorld(numberOfCircles) {
     stage.update();
 }
 
-function snapOnCorrectObject(evt) {
+function dockCircleToSlot(evt) {
     var melodicCircle = evt.target;
-    var slot = melodicCircle.getSlot();
+    melodicCircle.setCorrectSlot(false);
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
-    var pt = melodicCircle.localToLocal(10, 10, slot);
-    if (slot.hitTest(pt.x, pt.y)) { 
-        melodicCircle.setTransform(slot.x, slot.y);
-        console.log('I am correct');
+    var slot;
+    for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
+        var element = stage.getChildAt(i);
+        if (!element.isMelodicCircle()) {
+            slot = element;
+            var pt = melodicCircle.localToLocal(10, 10, slot);
+            if (slot.hitTest(pt.x, pt.y)) { 
+                if (slot === melodicCircle.getSlot()) {
+                    melodicCircle.setCorrectSlot(true);
+                    console.log('HINT HINT');
+                    this.playTimeline();
+                }
+                melodicCircle.setTransform(slot.x, slot.y);
+            } 
+            continue;
+        }
     }
     stage.update(); 
 }
 
-function snapOnAnyObject(evt) {
-    var melodicCircle = evt.target;
-    evt.currentTarget.x = evt.stageX;
-    evt.currentTarget.y = evt.stageY;
+function playTimeline(evt) {
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-        var child = stage.getChildAt(i);
-        if (child.isMelodicCircle() === false) {
-            continue;
+        var element = stage.getChildAt(i);
+        if (element.isMelodicCircle() && element.hasCorrectSlot()) {
+            console.log('Happened once!');
         }
-        var slot = child.getSlot();
-        var pt = melodicCircle.localToLocal(10, 10, slot);
-        if (slot.hitTest(pt.x, pt.y)) { 
-            melodicCircle.setTransform(slot.x, slot.y);
-        } 
     }
-    stage.update(); 
 }
 
 function tick(event) {

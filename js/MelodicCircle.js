@@ -14,6 +14,7 @@
         p.offsets = {};
         p.id;
         p.slot;
+        p.correctSlot = false;
         p.Container_initialize = p.initialize;
     p.initialize = function(iNumber, x, y, offsets) {
         var me = this;
@@ -119,6 +120,12 @@
     }
     p.isMelodicCircle = function() {
         return true;
+    }
+    p.setCorrectSlot = function(correctSlot) {
+        this.correctSlot = correctSlot;
+    }
+    p.hasCorrectSlot = function() {
+        return this.correctSlot;
     }
     p.rgbToHex = function(r, g, b) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
