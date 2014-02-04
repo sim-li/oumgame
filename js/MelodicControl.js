@@ -26,7 +26,7 @@
 
     p.triggerPlayback = function(melodicCircle) {
         if (melodicCircle.isPlaying()) {
-            instance.setPosition(melodicCircle.getOffsets().playStart);
+            currentSong.setPosition(melodicCircle.getOffsets().playStart);
             return;
         }
         if (this.isPlayingSolo()) {
@@ -34,8 +34,8 @@
         }
         this.playingCircle = melodicCircle;
         melodicCircle.play();
-        instance.setPosition(melodicCircle.getPosition());
-        instance.play();
+        currentSong.setPosition(melodicCircle.getPosition());
+        currentSong.play();
     }
 
     p.isPlayingSolo = function() {
@@ -45,13 +45,11 @@
     p.tick = function() {
     var me = this; 
         if (me.isPlayingSolo()) {
-            me.playingCircle.setPosition(instance.getPosition());
-            if (me.playingCircle.getPosition() > me.playingCircle.getOffsets().playEnd) {
+            if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
                 me.playingCircle.pause();
-                console.log('pause');
                 me.playingCircle.resetPosition();
                 me.playingCircle = me.empty;
-                instance.pause();
+                currentSong.pause();
             }
         }
     }

@@ -17,7 +17,7 @@ var stage;
 var fData;
 var waveformData;
 var dbData;
-var instance;
+var currentSong;
 var analyserNode;
 var soundData = [];
 var loaded = false;
@@ -53,13 +53,13 @@ function afterLoad(event) {
     dbData = new Float32Array(analyserNode.frequencyBinCount);
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
-    instance = createjs.Sound.createInstance('shattSong');
+    currentSong = createjs.Sound.createInstance('shattSong');
     this.createWorld(4);
 }
 
 function createWorld(numberOfCircles) {
     me = this;
-    var fragmentSize = (instance.getDuration() / me.songDividend) / numberOfCircles;
+    var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
         var rndPositionX = Math.max(100, Math.random() * stage.canvas.width);
