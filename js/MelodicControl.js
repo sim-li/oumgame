@@ -66,7 +66,7 @@
 
     p.tick = function() {
         var me = this; 
-        if (me.playbackComplete()) {
+        if (me.isPlaybackComplete()) {
             me.stopCurrentSong();
             if (me.chainMode) {
                 me.playNext();
@@ -74,11 +74,8 @@
         }
     }
 
-    p.playbackComplete = function() {
+    p.isPlaybackComplete = function() {
         var me = this;
-        if (!me.isDefined(me.playingCircle)) {
-            return true;
-        }
         if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
             return true;
         }

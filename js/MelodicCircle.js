@@ -84,10 +84,6 @@
         }
     }
 
-    p.playbackDone = function () {
-        return this.position > offsets.playStart;
-    }
-
     p.generateId = function(i) {
         this.id = i;
     }

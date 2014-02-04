@@ -1,14 +1,34 @@
 /**
  * Oumshatt Game / Main File
+ * ============================
  * 
  * @type {Number} fftsize       Number of samples for analizer node
  * @type {Number} tick_freq     Refresh rate for ticker
- * @type {Number} countDown     Used to force user into a timeout 
+ * @type {Number} countDown     Ends game when countDown reaches 0. (refactor to central class later)
+ * @type {Number} songDividend  Song is split up by this dividend to use a short sample for gameplay
+ * @type {String} assetsPath    Audio and graphic files are loaded from this path
+ * @type {Object} canvas        HTML-Canvas used to display game
+ * @type {Object} manifest      Preload definitions, asset-files are specified for preload and tagged with an ID
+ *                              for later access.
+ * @type {Stage} stage          Main stage of the game, all objects like the MelodicCircles, etc. are added here
+ * @type {int []} fData         Live frequency data extracted from playing sound file (analyserNodes)
+ * @type {int []} waveformData  Live waveform data [...]
+ * @type {int []} dbData        Live amplitude data displayed as dB-Values [...]
+ * @type {Instance} currentSong Sound instance from the framework, used for central playback / pause of the 
+ *                              currently loaded song (no fragmentation here)
+ * @type {Analyzer} analyersNode Used to generate [fdata/waveformData/dbData] from song
+ * @type {int []} soundData     'Manually' processed sound data used for MelodicCircles. Generated from
+ *                               waveformData & fData
+ * @type {boolean} loaded        Triggered by callback fct. when sound file is actually loaded,
+ *                               avoids nasty errors when trying to access soundData in the main ticker which constantly
+ *                               runs.
+ * ------------------------------
+ * @class MelodicControl         Sound controller, handles logic for playback / chained play, etc. of the MelodicCircles.                   
+ *                         
  */
 var fftsize = 32;
 var tick_freq = 30;  
 var countDown = 30;
-var count = 0;
 var songDividend = 8;
 var assetsPath = 'assets/';
 var canvas;
