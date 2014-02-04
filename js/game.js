@@ -21,6 +21,7 @@ var instance;
 var analyserNode;
 var soundData = [];
 var loaded = false;
+var melodicControl;
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
@@ -30,11 +31,12 @@ function init() {
         id: 'shattSong', 
         src: 'music/shatt.ogg'
     }];
+    melodicControl = new MelodicControl();
     var preload = new createjs.LoadQueue(true, assetsPath);
     preload.installPlugin(createjs.Sound);
     preload.addEventListener('complete', afterLoad);
     preload.loadManifest(manifest);
-    createjs.Ticker.addEventListener("tick", tick);
+    createjs.Ticker.addEventListener('tick', tick);
     createjs.Ticker.setInterval(tick_freq);
 }
 
@@ -65,8 +67,8 @@ function createWorld(numberOfCircles) {
         var rndPositionY = Math.max(100, Math.random() * stage.canvas.height);
 
         var melodicCircle = new MelodicCircle(i, rndPositionX, rndPositionY, {
-            startOffset: fragmentSize * i,
-            endOffset: fragmentSize * (i + 1)
+            playStart: fragmentSize * i,
+            playEnd: fragmentSize * (i + 1)
         });
 
         var slot = new Slot(i, 100, 300, melodicCircle.getRadius());

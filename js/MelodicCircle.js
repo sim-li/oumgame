@@ -39,7 +39,7 @@
     }
 
     p.handleClick = function() {
-        
+        melodicControl.triggerPlayback(this);
     }
 
     p.makeShape = function(data)  {
@@ -94,6 +94,9 @@
     }
     p.getRadius = function() {
         return (this.circleCount + 1) * this.circleSpread;
+    }
+    p.getOffsets = function() {
+        return this.offsets;
     }
     p.play = function () {
         this.playing = true;
