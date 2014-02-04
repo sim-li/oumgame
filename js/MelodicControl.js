@@ -28,17 +28,17 @@
             this.playingCircle.pause();
             this.playingCircle.resetIcon();
         }
-            this.playingCircle = melodicCircle;
-            melodicCircle.play();
-            currentSong.setPosition(melodicCircle.getPosition());
-            currentSong.play();
+        this.playingCircle = melodicCircle;
+        melodicCircle.play();
+        currentSong.setPosition(melodicCircle.getPosition());
+        currentSong.play();
     }
 
     p.playAll = function() {
         var me = this;
         me.chainMode = true;
         me.play(me.playlist[me.playlistPosition]);
-        console.log(me.playlist);
+        console.log(me.playlist.length);
     }
 
   
@@ -74,13 +74,36 @@
     }
 
     p.addToPlaylist = function(melodicCircle) {
-        this.playlist.push(melodicCircle);
+        if (!this.contains(melodicCircle)) {
+            this.playlist.push(melodicCircle);
+            console.log('Pushed!');
+        }
+         console.log('Not Pushed!');
+    }
+
+    p.removeFromPlaylist = function(melodicCircle) {
+        var index = this.playlist.indexOf(melodicCircle);
+        if (index > -1) {
+            this.playlist.splice(index, 1);
+            console.log('Deleted');
+        }
     }
     
     p.isPlaying = function(melodicCircle) {
         return this.playingCircle === melodicCircle;
     }
-    
+
+    p.contains = function (melodicCircle) {
+        var i = this.playlist.length;
+        while (i--) {
+           if (this.playlist[i] === melodicCircle) {
+            console.log('CONTAINS');
+               return true;
+           }
+        }
+        return false;
+    }
+
     p.isDefined = function(object) {
         if (object === '') { 
             return false;

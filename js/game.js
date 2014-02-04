@@ -97,8 +97,6 @@ function createWorld(numberOfCircles) {
         stage.addChild(slot);
         stage.addChild(melodicCircle);
 
-        melodicControl.addToPlaylist(melodicCircle);
-
         melodicCircle.on('pressmove', function(evt) {
             dockCircleToSlot(evt);
         });
@@ -115,9 +113,10 @@ function createWorld(numberOfCircles) {
 
 function dockCircleToSlot(evt) {
     var melodicCircle = evt.target;
-    melodicCircle.setCorrectSlot(false);
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
+    melodicCircle.setCorrectSlot(false);
+    melodicControl.removeFromPlaylist(melodicCircle);
     var slot;
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
         var element = stage.getChildAt(i);
@@ -129,6 +128,8 @@ function dockCircleToSlot(evt) {
                     melodicCircle.setCorrectSlot(true);
                     console.log('HINT HINT');
                     this.playTimeline();
+                } else {
+                    console.log('Fucki');
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
             } 
@@ -138,11 +139,10 @@ function dockCircleToSlot(evt) {
     stage.update(); 
 }
 
-function playTimeline(evt) {
+function playTimeline() {
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
         var element = stage.getChildAt(i);
         if (element.isMelodicCircle() && element.hasCorrectSlot()) {
-            console.log(element.hasCorrectSlot());
             melodicControl.flushPlaylist();
             melodicControl.addToPlaylist(element);
             melodicControl.playAll();
