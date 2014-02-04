@@ -29,31 +29,29 @@
             this.playingCircle.resetIcon();
         }
         if (this.isDefined(melodicCircle)) {
-            this.playItem(melodicCircle);
+            this.playingCircle = melodicCircle;
+            melodicCircle.play();
+            currentSong.setPosition(melodicCircle.getPosition());
+            currentSong.play();
         }
     }
 
     p.playAll = function() {
-        this.chainMode = true;
-        this.playListPosition = 0;
-        if (this.playlistPosition === (this.playlist.length - 1)) {
-            this.chainMode = false;
-            this.playlistPosition = 0;
-            this.stopCurrentSong();
-            return;
-        }
-        var nextItem = this.playlist[this.playlistPosition];
-        this.playingCircle = melodicCircle;
-        melodicCircle.play();
+        var me = this;
+        me.playListPosition = 1;
+        // Plays first item
+        me.playingCircle = me.playlist[me.playlistPosition];
+        me.playingCircle.play();
         currentSong.setPosition(melodicCircle.getPosition());
         currentSong.play();
-        this.playlistPosition++;
+        me.chainMode = true;
     }
 
   
     p.pause = function() {
-        this.chainMode = false;
         var me = this;
+        me.chainMode = false;
+        me.playlistPosition = 0;
         me.playingCircle.pause();
         me.playingCircle.resetPosition();
         me.playingCircle = me.empty;
@@ -63,11 +61,20 @@
    
     p.tick = function() {
         var me = this; 
-        if (me.isDefined(me.playingCircle) && currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
-            me.stopCurrentSong();
-            if (me.chainMode) {
-                me.playNext();
-            }
+        if (!me.isDefined(me.playingCircle)) {
+            return;
+        }
+        console.log(me.playingCircle);
+        if ((currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) || 
+            this.playlistPosition === (this.playlist.length - 1)) {
+
+            me.pause();
+            return;
+        }
+        if (me.chainMode) {
+            var nextItem = this.playlist[this.playlistPosition];
+            this.play(nextItem);
+            this.playlistPosition++;
         }
     }
 
@@ -76,6 +83,9 @@
     }
     
     p.isDefined = function(object) {
+        if (object === '') { 
+            return false;
+        }
         return typeof object != 'undefined';
     }
 
