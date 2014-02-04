@@ -62,8 +62,12 @@
 
     p.resetPosition = function() {
         var me = this;
-        me.makeShape(me.randomSoundData);
+        me.resetIcon();
         me.position = me.offsets.playStart;
+    }
+
+    p.resetIcon = function() {
+        this.makeShape(this.randomSoundData);
     }
 
     p.generateRndSoundData = function() {

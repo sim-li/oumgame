@@ -31,6 +31,7 @@
         }
         if (this.isPlayingSolo()) {
             this.playingCircle.pause();
+            this.playingCircle.resetIcon();
         }
         this.playingCircle = melodicCircle;
         melodicCircle.play();
