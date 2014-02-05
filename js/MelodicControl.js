@@ -32,10 +32,12 @@
             this.playingCircle.pause();
             this.playingCircle.resetIcon();
         }
-        this.playingCircle = melodicCircle;
-        melodicCircle.play();
-        currentSong.setPosition(melodicCircle.getPosition());
-        currentSong.play();
+        if (this.isDefined(melodicCircle)) {
+            this.playingCircle = melodicCircle;
+            melodicCircle.play();
+            currentSong.setPosition(melodicCircle.getPosition());
+            currentSong.play();
+        }
     }
 
     p.blockSinglePlay = function() {

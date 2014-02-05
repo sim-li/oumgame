@@ -92,6 +92,8 @@ function afterLoad(event) {
 
 function createWorld(numberOfCircles) {
     me = this;
+    stage.removeAllChildren();
+    textStage.removeAllChildren();
     me.showPlayAllButton();
     this.showTimer();
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
@@ -238,9 +240,11 @@ function showTimer() {
     resetLabel.alpha = 0.5;
     resetLabel.x = 60;
     resetLabel.y = 0;
-    resetLabel.on('click', function(evt) {
-                // RESTART
-    });
+    (function(self) {
+        resetLabel.addEventListener('click', function() {
+            self.createWorld(numberOfCircles);
+        });
+    })(this);
     textStage.addChild(countdownLabel);
     textStage.addChild(resetLabel);
 }
