@@ -97,8 +97,23 @@ function afterLoad(event) {
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     currentSong = createjs.Sound.createInstance('shattSong');
-    this.introStart();
+    // this.introStart();
     // this.startGame();
+    this.promptForInput();
+}
+
+function promptForInput() {
+    var promptLabel = new createjs.Text('Click here for \nsome action!', 'bold 85px Arial', '#FFFFFF');
+    promptLabel.alpha = 0.5;
+    promptLabel.x = 30;
+    promptLabel.y = 140; 
+    textStage.addChild(promptLabel);
+     (function(self) {
+            promptLabel.on('click', function() {
+                textStage.removeAllChildren();
+                self.introStart();
+            });
+    })(this);
 }
 
 function reset() {
