@@ -98,8 +98,8 @@ function afterLoad(event) {
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     currentSong = createjs.Sound.createInstance('shattSong');
     // this.introStart();
-    // this.startGame();
-    this.promptForInput();
+    this.startGame();
+    // this.promptForInput();
 }
 
 function promptForInput() {
@@ -329,8 +329,6 @@ function showLose() {
     loseSubLabel.alpha = 0.5;
     loseSubLabel.x = 50;
     loseSubLabel.y = 270;
-    // this.winLabel.visible = true;
-    // this.winSubLabel.visible = true;
     textStage.addChild(loseLabel);
     textStage.addChild(loseSubLabel);
 }
@@ -372,14 +370,17 @@ function showTimer() {
 }
 
 function showPlayAllButton() {
-    var playall = new createjs.Text('play!>', 'bold 20px Arial', '#FFFFFF');
-    playall.alpha = 0.5;
-    playall.x = 30;
-    playall.y = 180;
-    playall.addEventListener('click', function() {
+    var playButton = new createjs.Bitmap(preload.getResult('playbutton'));
+    playButton.x = 383;
+    playButton.y = 270;
+    // var playall = new createjs.Text('play!>', 'bold 20px Arial', '#FFFFFF');
+    playButton.alpha = 0.3;
+    // playall.x = 30;
+    // playall.y = 180;
+    playButton.addEventListener('click', function() {
         melodicControl.playAll();
     });
-    textStage.addChild(playall);
+    textStage.addChild(playButton);
 }
 
 function clearTextStage() {
