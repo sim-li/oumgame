@@ -70,6 +70,8 @@ function init() {
     manifest = [{
         id: 'shattSong', 
         src: 'music/shatt.ogg'
+    }, {
+
     }];
     melodicControl = new MelodicControl();
     var preload = new createjs.LoadQueue(true, assetsPath);
@@ -100,6 +102,7 @@ function afterLoad(event) {
 function reset() {
    stage.removeAllChildren();
    textStage.removeAllChildren();
+   melodicControl.stop();
    melodicControl.flushPlaylist();
    this.countDown = this.countDownStart;
    this.winner = false;
@@ -121,9 +124,13 @@ function introStart() {
     textStage.addChild(greetingLabel);
     textStage.addChild(greetingSubLabel);
     this.customInterval = 3;
-    melodicControl.addEventListener('custominterval', function() {
-        console.log('Hello');
-    })
+    (function(self) {
+            melodicControl.on('custominterval', function() {
+                self.customInterval = false;
+                textStage.removeAllChildren();
+                self.introPreview();
+            });
+    })(this);
 }
 
 function introPreview() {
@@ -143,14 +150,12 @@ function introPreview() {
     (function(self) {
             melodicControl.on('doneplaying', function() {
                 if (!gamestart) {
+                    melodicControl.flushPlaylist();
+                    self.stage.removeAllChildren();
                     self.introEnd();
                 }
             });
         })(this);
-    // this.startGame();
-
-
- 
 }
 
 function introEnd() {
@@ -158,7 +163,7 @@ function introEnd() {
     greetingLabel.alpha = 0.5;
     greetingLabel.x = 30;
     greetingLabel.y = 140;
-    var greetingSubLabel =  new createjs.Text('Click to listen.\nDock your MelodicCircles.\nReconstruct the song in the\nright oder.', 'bold 48px Arial', '#FFFFFF');
+    var greetingSubLabel =  new createjs.Text('You know the tune. It\'sYour turn!.\nDock your MelodicCircles.\nReconstruct the song in the\nright oder.\nCLICK HERE TO PLAY', 'bold 48px Arial', '#FFFFFF');
     greetingSubLabel.alpha = 0.5;
     greetingSubLabel.x = 50;
     greetingSubLabel.y = 270;
@@ -166,6 +171,13 @@ function introEnd() {
     // this.winSubLabel.visible = true;
     textStage.addChild(greetingLabel);
     textStage.addChild(greetingSubLabel);
+     melodicControl.playAll();
+    (function(self) {
+            greetingSubLabel.on('click', function() {
+                textStage.removeAllChildren();
+                self.startGame();
+            });
+        })(this);
 }
 
 function startGame() {
