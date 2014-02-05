@@ -357,7 +357,7 @@ function showWin() {
 
 
 function showTimer() {
-    countDownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
+    countDownLabel = new createjs.Text(' -', 'bold 36px Arial', '#FFFFFF');
     countDownLabel.alpha = 0.5;
     countDownLabel.x = 0;
     countDownLabel.y = 0;
