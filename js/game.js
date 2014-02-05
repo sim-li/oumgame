@@ -60,7 +60,6 @@ var customInterval = false;
 var preload;
 
 function init() {
-  
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
     canvas = document.getElementById('gameCanvas');
     mainStage = new createjs.Stage(canvas);
