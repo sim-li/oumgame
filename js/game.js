@@ -236,7 +236,7 @@ function createWorld(numberOfCircles) {
         var slot = new Slot(i, 100, 300, melodicCircle.getRadius());
 
         melodicCircle.setSlot(slot);
-
+      
         stage.addChild(slot);
         stage.addChild(melodicCircle);
 
