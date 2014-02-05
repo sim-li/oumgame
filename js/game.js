@@ -133,10 +133,12 @@ function dockCircleToSlot(evt) {
             slot = element;
             var pt = melodicCircle.localToLocal(10, 10, slot);
             if (slot.hitTest(pt.x, pt.y)) { 
-                if (slot === melodicCircle.getSlot()) {
-                    melodicCircle.setCorrectSlot(true);
+                    melodicCircle.setDockedId(slot.getId());
                     melodicControl.addToPlaylist(melodicCircle);
                     console.log('Added: ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
+                if (slot === melodicCircle.getSlot()) {
+                    melodicCircle.setCorrectSlot(true);
+
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
             } 
@@ -145,6 +147,15 @@ function dockCircleToSlot(evt) {
     }
     mainStage.update(); 
 }
+
+// function sortPlayList() {
+//     this.playlist.sort(this.sortfunction)
+// }
+
+// function sortfunction(a, b){
+// //Compare "a" and "b" in some fashion, and return -1, 0, or 1
+//     if ()
+// }
 
 function tick(event) {
     var me = this;

@@ -96,7 +96,7 @@
         if (!this.contains(melodicCircle)) {
             this.playlist.push(melodicCircle);
             this.playlistPosition = this.playlist.length - 1;
-            console.log(this.playlistPosition);
+            console.log(melodicCircle.getDockedId());
         }
     }
 

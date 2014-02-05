@@ -14,6 +14,7 @@
         p.offsets = {};
         p.id;
         p.slot;
+        p.dockedId;
         p.correctSlot = false;
         p.Container_initialize = p.initialize;
     p.initialize = function(iNumber, x, y, offsets) {
@@ -70,6 +71,14 @@
         }
     }
 
+    p.getDockedId = function() {
+        return this.dockedId;
+    }
+
+    p.setDockedId = function(dockedId) {
+        this.dockedId = dockedId;
+    }
+    
     p.resetPosition = function() {
         var me = this;
         me.resetIcon();
@@ -94,7 +103,6 @@
             me.makeShape(soundData);
         }
     }
-
     p.generateId = function(i) {
         this.id = i;
     }

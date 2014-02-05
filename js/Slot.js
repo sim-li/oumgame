@@ -21,7 +21,7 @@
         me.makeShape();
     }
     p.generateId = function(i) {
-        this.id = Number.POSITIVE_INFINITY - i;
+        this.id = 999999999 - i;
     }
     p.getId = function() {
         return this.id;
