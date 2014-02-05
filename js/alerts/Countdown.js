@@ -24,8 +24,10 @@
         resetLabel.x = 60;
         resetLabel.y = 0;
         resetLabel.on('click', function(evt) {
-        countDown = 30;
+            // RESTART
     });
+        this.add(countdownLabel);
+        this.add(resetLabel);
 
     }
     window.Countdown = Countdown;

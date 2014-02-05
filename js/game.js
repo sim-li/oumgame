@@ -88,6 +88,7 @@ function afterLoad(event) {
 function createWorld(numberOfCircles) {
     me = this;
     me.showPlayAllButton();
+    this.showTimer();
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
@@ -118,8 +119,15 @@ function createWorld(numberOfCircles) {
     }
     mainStage.update();
 }
-// Sort by GUEST ID necessary to determine playlist order.... think of smart algorithm,
-// maybe when added bla bla
+
+function handleWin() {
+
+}
+
+function handleLoss() {
+
+}
+
 function dockCircleToSlot(evt) {
     var melodicCircle = evt.target;
     evt.currentTarget.x = evt.stageX;
@@ -157,12 +165,27 @@ function tick(event) {
     mainStage.update(event);
 }
 
-function showWinlabel() {
-    var winLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
+function showLose() {
+    var loseLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
+    loseLabel.alpha = 0.5;
+    loseLabel.x = 30;
+    loseLabel.y = 140;
+    var loseSubLabel =  new createjs.Text('You took way too long. \nTry harder next time.', 'bold 48px Arial', '#FFFFFF');
+    loseSubLabel.alpha = 0.5;
+    loseSubLabel.x = 50;
+    loseSubLabel.y = 270;
+    // this.winLabel.visible = true;
+    // this.winSubLabel.visible = true;
+    textStage.addChild(loseLabel);
+    textStage.addChild(loseSubLabel);
+}
+
+function showWin() {
+    var winLabel = new createjs.Text('Nice one!', 'bold 146px Arial', '#FFFFFF');
     winLabel.alpha = 0.5;
     winLabel.x = 30;
     winLabel.y = 140;
-    var winSubLabel =  new createjs.Text('Try harder next time.', 'bold 72px Arial', '#FFFFFF');
+    var winSubLabel =  new createjs.Text('You made it.\nWe are very proud of you.', 'bold 48px Arial', '#FFFFFF');
     winSubLabel.alpha = 0.5;
     winSubLabel.x = 50;
     winSubLabel.y = 270;
@@ -170,6 +193,37 @@ function showWinlabel() {
     // this.winSubLabel.visible = true;
     textStage.addChild(winLabel);
     textStage.addChild(winSubLabel);
+}
+
+function showGreeting() {
+    var greetingLabel = new createjs.Text('Go ahead', 'bold 146px Arial', '#FFFFFF');
+    greetingLabel.alpha = 0.5;
+    greetingLabel.x = 30;
+    greetingLabel.y = 140;
+    var greetingSubLabel =  new createjs.Text('Click to listen.\nDock your MelodicCircles.\nReconstruct the song in the\nright oder.', 'bold 48px Arial', '#FFFFFF');
+    greetingSubLabel.alpha = 0.5;
+    greetingSubLabel.x = 50;
+    greetingSubLabel.y = 270;
+    // this.winLabel.visible = true;
+    // this.winSubLabel.visible = true;
+    textStage.addChild(greetingLabel);
+    textStage.addChild(greetingSubLabel);
+}
+
+function showTimer() {
+    countdownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
+    countdownLabel.alpha = 0.5;
+    countdownLabel.x = 0;
+    countdownLabel.y = 0;
+    resetLabel =  new createjs.Text('Restart', 'bold 36px Arial', '#FFFFFF');
+    resetLabel.alpha = 0.5;
+    resetLabel.x = 60;
+    resetLabel.y = 0;
+    resetLabel.on('click', function(evt) {
+                // RESTART
+    });
+    textStage.addChild(countdownLabel);
+    textStage.addChild(resetLabel);
 }
 
 function showPlayAllButton() {
