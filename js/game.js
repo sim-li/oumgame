@@ -186,6 +186,7 @@ function introEnd() {
 function startGame() {
     var me = this;
     this.showTimer();
+    melodicControl.flushPlaylist();
     me.showPlayAllButton();
     this.gamestart = true; 
     this.createWorld(numberOfCircles);
@@ -316,7 +317,6 @@ function showLose() {
 }
 
 function showWin() {
-    textStage.removeAllChildren();
     var winLabel = new createjs.Text('Nice one!', 'bold 146px Arial', '#FFFFFF');
     winLabel.alpha = 0.5;
     winLabel.x = 30;
