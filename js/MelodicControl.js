@@ -4,7 +4,7 @@
     }
     var p = MelodicControl.prototype = new createjs.Container();
         p.playlist = [];
-        p.playlistPosition = 0;
+        p.playlistPosition = -1;
         p.empty = '';
         p.playingCircle = '';
         p.chainMode = false;
@@ -55,6 +55,7 @@
     p.playAll = function() {
         var me = this;
         me.chainMode = true;
+        console.log(me.playlistPosition);
         me.play(me.playlist[me.playlistPosition]);
     }
 
@@ -66,7 +67,6 @@
     p.stop = function() {
         var me = this;
         me.chainMode = false;
-        me.playlistPosition = 0;
         if (this.isDefined(me.playingCircle)) {
             me.playingCircle.pause();
             me.playingCircle.resetPosition();
@@ -81,11 +81,11 @@
             return;
         }
         if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
-            if (!me.chainMode || this.playlistPosition === (this.playlist.length - 1)) {
+            if (!me.chainMode || this.playlistPosition === 0) {
                 me.stop();
                 return;
             }
-            this.playlistPosition++;
+            this.playlistPosition--;
             var nextItem = this.playlist[this.playlistPosition];
             this.play(nextItem);
         }
@@ -94,6 +94,8 @@
     p.addToPlaylist = function(melodicCircle) {
         if (!this.contains(melodicCircle)) {
             this.playlist.push(melodicCircle);
+            this.playlistPosition = this.playlist.length - 1;
+            console.log(this.playlistPosition);
         }
     }
 

@@ -117,13 +117,15 @@ function createWorld(numberOfCircles) {
     }
     mainStage.update();
 }
-
+// Sort by GUEST ID necessary to determine playlist order.... think of smart algorithm,
+// maybe when added bla bla
 function dockCircleToSlot(evt) {
     var melodicCircle = evt.target;
     evt.currentTarget.x = evt.stageX;
     evt.currentTarget.y = evt.stageY;
     melodicCircle.setCorrectSlot(false);
     melodicControl.removeFromPlaylist(melodicCircle);
+    console.log('Removed ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
     var slot;
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
         var element = stage.getChildAt(i);
@@ -133,8 +135,8 @@ function dockCircleToSlot(evt) {
             if (slot.hitTest(pt.x, pt.y)) { 
                 if (slot === melodicCircle.getSlot()) {
                     melodicCircle.setCorrectSlot(true);
-                    console.log('BINGO');
-                    this.playTimeline();
+                    melodicControl.addToPlaylist(melodicCircle);
+                    console.log('Added: ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
             } 
@@ -142,6 +144,14 @@ function dockCircleToSlot(evt) {
         }
     }
     mainStage.update(); 
+}
+
+function tick(event) {
+    var me = this;
+    if (me.loaded) {
+        me.updateSoundData();
+    }
+    mainStage.update(event);
 }
 
 function showWinlabel() {
@@ -174,24 +184,6 @@ function clearTextStage() {
     textStage.removeAllChildren();
 }
 
-function playTimeline() {
-    for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
-        var element = stage.getChildAt(i);
-        if (element.isMelodicCircle() && element.hasCorrectSlot()) {
-            melodicControl.flushPlaylist();
-            melodicControl.addToPlaylist(element);
-            // melodicControl.playAll();
-        }
-    }
-}
-
-function tick(event) {
-    var me = this;
-    if (me.loaded) {
-        me.updateSoundData();
-    }
-    mainStage.update(event);
-}
 
 function updateSoundData() {
     analyserNode.getFloatFrequencyData(dbData);
