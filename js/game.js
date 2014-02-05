@@ -255,12 +255,10 @@ function dockCircleToSlot(evt) {
             if (slot.hitTest(pt.x, pt.y)) { 
                     melodicCircle.setDockedId(slot.getId());
                     melodicControl.addToPlaylist(melodicCircle);
-                    console.log('Added: ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
+                    // console.log('Added: ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
                 if (slot === melodicCircle.getSlot()) {
-                    console.log('Here!');
                     melodicCircle.setCorrectSlot(true);
                     if (melodicControl.checkForWin() === true) {
-                        console.log('Winner');
                         this.winner = true;
                         this.showWin();
                     }
