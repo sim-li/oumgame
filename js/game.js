@@ -103,12 +103,22 @@ function afterLoad(event) {
 }
 
 function promptForInput() {
-    var promptLabel = new createjs.Text('Click here for \nsome action!', 'bold 85px Arial', '#FFFFFF');
+    var playButton = new createjs.Bitmap(preload.getResult('playbutton'));
+    playButton.x = 310;
+    playButton.y = 180;
+    textStage.addChild(playButton);
+    var promptLabel = new createjs.Text('Click   here for \nsome action!', 'bold 85px Arial', '#FFFFFF');
     promptLabel.alpha = 0.5;
-    promptLabel.x = 30;
-    promptLabel.y = 140; 
+    promptLabel.x = 80;
+    promptLabel.y = 160; 
+    (function(self) {
+            playButton.on('click', function() {
+                textStage.removeAllChildren();
+                self.introStart();
+            });
+    })(this);
     textStage.addChild(promptLabel);
-     (function(self) {
+    (function(self) {
             promptLabel.on('click', function() {
                 textStage.removeAllChildren();
                 self.introStart();
@@ -136,13 +146,12 @@ function introStart() {
     greetingSubLabel.alpha = 0.5;
     greetingSubLabel.x = 50;
     greetingSubLabel.y = 270;
-    // this.winLabel.visible = true;
-    // this.winSubLabel.visible = true;
     textStage.addChild(greetingLabel);
     textStage.addChild(greetingSubLabel);
     this.customInterval = 3;
     (function(self) {
             melodicControl.on('custominterval', function() {
+                melodicControl.removeAllEventListeners();
                 self.customInterval = false;
                 textStage.removeAllChildren();
                 self.introPreview();
@@ -152,8 +161,6 @@ function introStart() {
 
 function introPreview() {
     var me = this;
-    // stage.addChild()
-    
     this.createWorld(numberOfCircles);
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
         var element = stage.getChildAt(i);
@@ -180,21 +187,21 @@ function introEnd() {
     greetingLabel.alpha = 0.5;
     greetingLabel.x = 30;
     greetingLabel.y = 140;
-    var greetingSubLabel =  new createjs.Text('You know the tune. It\'sYour turn!.\nDock your MelodicCircles.\nReconstruct the song in the\nright oder.\nCLICK HERE TO PLAY', 'bold 48px Arial', '#FFFFFF');
+    var greetingSubLabel =  new createjs.Text('You know the tune. It\'sYour turn!.\nDock your MelodicCircles.\nReconstruct the song in the\nright oder.', 'bold 48px Arial', '#FFFFFF');
     greetingSubLabel.alpha = 0.5;
     greetingSubLabel.x = 50;
     greetingSubLabel.y = 270;
-    // this.winLabel.visible = true;
-    // this.winSubLabel.visible = true;
     textStage.addChild(greetingLabel);
     textStage.addChild(greetingSubLabel);
-     melodicControl.playAll();
+     this.customInterval = 5;
     (function(self) {
-            greetingSubLabel.on('click', function() {
+            melodicControl.on('custominterval', function() {
+                melodicControl.removeAllEventListeners();
+                self.customInterval = false;
                 textStage.removeAllChildren();
                 self.startGame();
             });
-        })(this);
+    })(this);
 }
 
 function startGame() {
@@ -365,8 +372,6 @@ function showTimer() {
 }
 
 function showPlayAllButton() {
-    // playall = new createjs.Bitmap('playbutton');
-    // playall = new createjs.Bitmap
     var playall = new createjs.Text('play!>', 'bold 20px Arial', '#FFFFFF');
     playall.alpha = 0.5;
     playall.x = 30;
