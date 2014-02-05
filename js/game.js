@@ -54,6 +54,8 @@ var countDown = 30;
 var gamestart = false;
 var countDownLabel;
 var tickCicle = 0;
+var winner = false;
+var winlabelShowed = false;
 
 function init() {
   
@@ -101,7 +103,9 @@ function createWorld(numberOfCircles) {
     me.showPlayAllButton();
     this.showTimer();
     this.countDown = 30;
-    gamestart = true;
+    this.winner = false;
+    this.winlabelShowed = false;
+    this.gamestart = true;
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
@@ -151,7 +155,10 @@ function dockCircleToSlot(evt) {
                     console.log('Added: ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
                 if (slot === melodicCircle.getSlot()) {
                     melodicCircle.setCorrectSlot(true);
-                    console.log('And, are we a winner: ', melodicControl.checkForWin());
+                    if (melodicControl.checkForWin() === true) {
+                        this.winner = true;
+                        this.showWin();
+                    }
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
             } 
@@ -179,13 +186,13 @@ function tick(event) {
     if (this.calibrated) {
         if (this.tickCicle > this.oneSecondInTicks) {
             this.tickCicle = 0;
-            if (this.gamestart) {
+            if (this.gamestart && this.winner === false) {
                 if (this.countDown <= 0) {
                     this.gamestart = false;
                     this.showLose();
                 }
-                this.countDown--;
                 this.countDownLabel.text = this.countDown;
+                this.countDown--;
             }
         }
     }
@@ -221,10 +228,11 @@ function showWin() {
     winSubLabel.alpha = 0.5;
     winSubLabel.x = 50;
     winSubLabel.y = 270;
-    // this.winLabel.visible = true;
-    // this.winSubLabel.visible = true;
-    textStage.addChild(winLabel);
-    textStage.addChild(winSubLabel);
+    if (this.winlabelShowed === false) {
+        textStage.addChild(winLabel);
+        textStage.addChild(winSubLabel);
+        this.winlabelShowed = true;
+    }
 }
 
 function showGreeting() {
