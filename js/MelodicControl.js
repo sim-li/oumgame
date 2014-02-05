@@ -135,6 +135,19 @@
         }
     }
 
+    p.checkForWin = function() {
+        var i = this.playlist.length;
+        while (i--) {
+            if (this.playlist[i].hasCorrectSlot() === false) {
+                return false;
+            }
+        }
+        if (this.playlist.length === numberOfCircles) {
+            return true;
+        }
+        return false;
+    }
+
     p.isDefined = function(object) {
         if (object === '') { 
             return false;

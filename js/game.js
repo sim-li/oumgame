@@ -45,6 +45,7 @@ var melodicControl;
 var mainStage;
 var stage;
 var textStage;
+var numberOfCircles = 4;
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
@@ -81,7 +82,7 @@ function afterLoad(event) {
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     currentSong = createjs.Sound.createInstance('shattSong');
-    this.createWorld(4);
+    this.createWorld(numberOfCircles);
 }
 
 function createWorld(numberOfCircles) {
@@ -125,7 +126,6 @@ function dockCircleToSlot(evt) {
     evt.currentTarget.y = evt.stageY;
     melodicCircle.setCorrectSlot(false);
     melodicControl.removeFromPlaylist(melodicCircle);
-    console.log('Removed ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
     var slot;
     for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
         var element = stage.getChildAt(i);
@@ -138,7 +138,7 @@ function dockCircleToSlot(evt) {
                     console.log('Added: ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
                 if (slot === melodicCircle.getSlot()) {
                     melodicCircle.setCorrectSlot(true);
-
+                    console.log('And, are we a winner: ', melodicControl.checkForWin());
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
             } 
@@ -147,6 +147,7 @@ function dockCircleToSlot(evt) {
     }
     mainStage.update(); 
 }
+
 
 function tick(event) {
     var me = this;
