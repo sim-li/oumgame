@@ -57,6 +57,7 @@ var tickCicle = 0;
 var winner = false;
 var winlabelShowed = false;
 var customInterval = false;
+var allowingCalibration = false;
 var preload;
 
 function init() {
@@ -101,8 +102,8 @@ function afterLoad(event) {
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     currentSong = createjs.Sound.createInstance('shattSong');
     // this.introStart();
-    this.startGame();
-    // this.promptForInput();
+    // this.startGame();
+    this.promptForInput();
 }
 
 function promptForInput() {
@@ -116,12 +117,14 @@ function promptForInput() {
     promptLabel.y = 160; 
     (function(self) {
             playButton.on('click', function() {
+                this.allowingCalibration = true;
                 textStage.removeAllChildren();
                 self.introStart();
             });
     })(this);
     textStage.addChild(promptLabel);
     (function(self) {
+            this.allowingCalibration = true;
             promptLabel.on('click', function() {
                 textStage.removeAllChildren();
                 self.introStart();
@@ -284,7 +287,7 @@ function dockCircleToSlot(evt) {
 
 function tick(event) {
     //Calibrate ticker
-    if (!this.calibrated) {
+    if (!this.calibrated && this.allowingCalibration) {
         if (startTime == -1) {
             date = new Date();
             startTime = date.getTime();
