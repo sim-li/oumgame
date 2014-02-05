@@ -46,8 +46,13 @@ var mainStage;
 var stage;
 var textStage;
 var numberOfCircles = 4;
+var calibrated = false;
+var oneSecondInTicks = -1;
+var date;
+var startTime = -1;
 
 function init() {
+  
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
     canvas = document.getElementById('gameCanvas');
     mainStage = new createjs.Stage(canvas);
@@ -128,6 +133,7 @@ function handleLoss() {
 
 }
 
+
 function dockCircleToSlot(evt) {
     var melodicCircle = evt.target;
     evt.currentTarget.x = evt.stageX;
@@ -158,6 +164,19 @@ function dockCircleToSlot(evt) {
 
 
 function tick(event) {
+    //Calibrate ticker
+    if (!this.calibrated) {
+        if (startTime == -1) {
+            date = new Date();
+            startTime = date.getTime();
+        }
+        date = new Date();
+        this.oneSecondInTicks++;
+        if ((date.getTime() - startTime) >= 1000) {
+            this.calibrated = true;
+        }
+    }
+
     var me = this;
     if (me.loaded) {
         me.updateSoundData();
