@@ -50,6 +50,10 @@ var calibrated = false;
 var oneSecondInTicks = -1;
 var date;
 var startTime = -1;
+var countDown = 30;
+var gamestart = false;
+var countDownLabel;
+var tickCicle = 0;
 
 function init() {
   
@@ -96,6 +100,7 @@ function createWorld(numberOfCircles) {
     textStage.removeAllChildren();
     me.showPlayAllButton();
     this.showTimer();
+    gamestart = true;
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
@@ -126,15 +131,6 @@ function createWorld(numberOfCircles) {
     }
     mainStage.update();
 }
-
-function handleWin() {
-
-}
-
-function handleLoss() {
-
-}
-
 
 function dockCircleToSlot(evt) {
     var melodicCircle = evt.target;
@@ -176,6 +172,16 @@ function tick(event) {
         this.oneSecondInTicks++;
         if ((date.getTime() - startTime) >= 1000) {
             this.calibrated = true;
+        }
+    }
+    tickCicle++;
+    if (this.calibrated) {
+        if (this.tickCicle > this.oneSecondInTicks) {
+            this.tickCicle = 0;
+            if (this.gamestart) {
+                this.countDown--;
+                this.countDownLabel.text = this.countDown;
+            }
         }
     }
 
@@ -232,11 +238,11 @@ function showGreeting() {
 }
 
 function showTimer() {
-    countdownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
-    countdownLabel.alpha = 0.5;
-    countdownLabel.x = 0;
-    countdownLabel.y = 0;
-    resetLabel =  new createjs.Text('Restart', 'bold 36px Arial', '#FFFFFF');
+    countDownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
+    countDownLabel.alpha = 0.5;
+    countDownLabel.x = 0;
+    countDownLabel.y = 0;
+    var resetLabel =  new createjs.Text('Restart', 'bold 36px Arial', '#FFFFFF');
     resetLabel.alpha = 0.5;
     resetLabel.x = 60;
     resetLabel.y = 0;
@@ -245,7 +251,7 @@ function showTimer() {
             self.createWorld(numberOfCircles);
         });
     })(this);
-    textStage.addChild(countdownLabel);
+    textStage.addChild(countDownLabel);
     textStage.addChild(resetLabel);
 }
 
