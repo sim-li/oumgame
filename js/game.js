@@ -57,6 +57,7 @@ var tickCicle = 0;
 var winner = false;
 var winlabelShowed = false;
 var customInterval = false;
+var preload;
 
 function init() {
   
@@ -71,10 +72,11 @@ function init() {
         id: 'shattSong', 
         src: 'music/shatt.ogg'
     }, {
-
+        id: 'playbutton',
+        src: 'icon/playbutton.png'
     }];
     melodicControl = new MelodicControl();
-    var preload = new createjs.LoadQueue(true, assetsPath);
+    preload = new createjs.LoadQueue(true, assetsPath);
     preload.installPlugin(createjs.Sound);
     preload.addEventListener('complete', afterLoad);
     preload.loadManifest(manifest);
@@ -97,6 +99,7 @@ function afterLoad(event) {
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     currentSong = createjs.Sound.createInstance('shattSong');
     this.introStart();
+    // this.startGame();
 }
 
 function reset() {
@@ -313,6 +316,7 @@ function showLose() {
 }
 
 function showWin() {
+    textStage.removeAllChildren();
     var winLabel = new createjs.Text('Nice one!', 'bold 146px Arial', '#FFFFFF');
     winLabel.alpha = 0.5;
     winLabel.x = 30;
@@ -349,10 +353,12 @@ function showTimer() {
 }
 
 function showPlayAllButton() {
-    var playall = new createjs.Text('playall', 'bold 20px Arial', '#FFFFFF');
+    // playall = new createjs.Bitmap('playbutton');
+    // playall = new createjs.Bitmap
+    var playall = new createjs.Text('play!>', 'bold 20px Arial', '#FFFFFF');
     playall.alpha = 0.5;
     playall.x = 30;
-    playall.y = 140;
+    playall.y = 180;
     playall.addEventListener('click', function() {
         melodicControl.playAll();
     });
