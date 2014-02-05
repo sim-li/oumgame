@@ -85,6 +85,7 @@
         }
         if (currentSong.getPosition() > me.playingCircle.getOffsets().playEnd) {
             if (!me.chainMode || this.playlistPosition === 0) {
+                this.dispatchEvent('doneplaying');
                 me.stop();
                 return;
             }

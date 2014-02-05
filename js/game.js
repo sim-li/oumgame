@@ -56,6 +56,7 @@ var countDownLabel;
 var tickCicle = 0;
 var winner = false;
 var winlabelShowed = false;
+var customInterval = -1;
 
 function init() {
   
@@ -93,7 +94,7 @@ function afterLoad(event) {
     fData = new Uint8Array(analyserNode.frequencyBinCount);
     waveformData = new Uint8Array(analyserNode.frequencyBinCount);
     currentSong = createjs.Sound.createInstance('shattSong');
-    this.createWorld(numberOfCircles);
+    this.introStart();
 }
 
 function reset() {
@@ -106,11 +107,78 @@ function reset() {
    
 }
 
-function createWorld(numberOfCircles) {
-    me = this;
+function introStart() {
+    var greetingLabel = new createjs.Text('Hello', 'bold 146px Arial', '#FFFFFF');
+    greetingLabel.alpha = 0.5;
+    greetingLabel.x = 30;
+    greetingLabel.y = 140;
+    var greetingSubLabel =  new createjs.Text('Firstable: Let us listen to a song.\nYou pay good attention.\nOkay?', 'bold 48px Arial', '#FFFFFF');
+    greetingSubLabel.alpha = 0.5;
+    greetingSubLabel.x = 50;
+    greetingSubLabel.y = 270;
+    // this.winLabel.visible = true;
+    // this.winSubLabel.visible = true;
+    textStage.addChild(greetingLabel);
+    textStage.addChild(greetingSubLabel);
+    this.custominterval = 3000;
+    this.addEventListener('custominterval', function() {
+        console.log('Hello');
+    })
+}
+
+function introPreview() {
+    var me = this;
+    // stage.addChild()
+    
+    this.createWorld(numberOfCircles);
+    for (var i = 0, size = stage.getNumChildren(); i < size; i++) {
+        var element = stage.getChildAt(i);
+        if (element.isMelodicCircle()) {
+            element.x = element.getSlot().x;
+            element.y = element.getSlot().y;
+            melodicControl.addToPlaylist(element);
+        }
+    }
+    melodicControl.playAll();
+    (function(self) {
+            melodicControl.on('doneplaying', function() {
+                if (!gamestart) {
+                    self.introEnd();
+                }
+            });
+        })(this);
+    // this.startGame();
+
+
+ 
+}
+
+function introEnd() {
+    var greetingLabel = new createjs.Text('Go ahead', 'bold 146px Arial', '#FFFFFF');
+    greetingLabel.alpha = 0.5;
+    greetingLabel.x = 30;
+    greetingLabel.y = 140;
+    var greetingSubLabel =  new createjs.Text('Click to listen.\nDock your MelodicCircles.\nReconstruct the song in the\nright oder.', 'bold 48px Arial', '#FFFFFF');
+    greetingSubLabel.alpha = 0.5;
+    greetingSubLabel.x = 50;
+    greetingSubLabel.y = 270;
+    // this.winLabel.visible = true;
+    // this.winSubLabel.visible = true;
+    textStage.addChild(greetingLabel);
+    textStage.addChild(greetingSubLabel);
+}
+
+function startGame() {
+    var me = this;
     this.showTimer();
     me.showPlayAllButton();
     this.gamestart = true; 
+    this.createWorld(numberOfCircles);
+}
+
+function createWorld(numberOfCircles) {
+    me = this;
+  
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
@@ -192,6 +260,12 @@ function tick(event) {
     tickCicle++;
     if (this.calibrated) {
         if (this.tickCicle > this.oneSecondInTicks) {
+            this.customInterval--;
+            if (this.customInterval === 0) {
+                console.log('CUSTOM!');
+                this.dispatchEvent('custominterval');
+            }
+
             this.tickCicle = 0;
             if (this.gamestart && this.winner === false) {
                 if (this.countDown <= 0) {
@@ -242,20 +316,6 @@ function showWin() {
     }
 }
 
-function showGreeting() {
-    var greetingLabel = new createjs.Text('Go ahead', 'bold 146px Arial', '#FFFFFF');
-    greetingLabel.alpha = 0.5;
-    greetingLabel.x = 30;
-    greetingLabel.y = 140;
-    var greetingSubLabel =  new createjs.Text('Click to listen.\nDock your MelodicCircles.\nReconstruct the song in the\nright oder.', 'bold 48px Arial', '#FFFFFF');
-    greetingSubLabel.alpha = 0.5;
-    greetingSubLabel.x = 50;
-    greetingSubLabel.y = 270;
-    // this.winLabel.visible = true;
-    // this.winSubLabel.visible = true;
-    textStage.addChild(greetingLabel);
-    textStage.addChild(greetingSubLabel);
-}
 
 function showTimer() {
     countDownLabel = new createjs.Text('30', 'bold 36px Arial', '#FFFFFF');
@@ -269,7 +329,7 @@ function showTimer() {
     (function(self) {
         resetLabel.addEventListener('click', function() {
             self.reset();
-            self.createWorld(numberOfCircles);
+            self.startGame();
         });
     })(this);
     textStage.addChild(countDownLabel);
