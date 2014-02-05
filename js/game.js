@@ -100,6 +100,7 @@ function createWorld(numberOfCircles) {
     textStage.removeAllChildren();
     me.showPlayAllButton();
     this.showTimer();
+    this.countDown = 30;
     gamestart = true;
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
@@ -179,6 +180,10 @@ function tick(event) {
         if (this.tickCicle > this.oneSecondInTicks) {
             this.tickCicle = 0;
             if (this.gamestart) {
+                if (this.countDown <= 0) {
+                    this.gamestart = false;
+                    this.showLose();
+                }
                 this.countDown--;
                 this.countDownLabel.text = this.countDown;
             }
