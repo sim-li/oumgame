@@ -42,11 +42,18 @@ var analyserNode;
 var soundData = [];
 var loaded = false;
 var melodicControl;
+var mainStage;
+var stage;
+var textStage;
 
 function init() {
     createjs.Sound.registerPlugins([createjs.WebAudioPlugin]);
     canvas = document.getElementById('gameCanvas');
-    stage = new createjs.Stage(canvas);
+    mainStage = new createjs.Stage(canvas);
+    stage = new createjs.Container();
+    textStage = new createjs.Container();
+    mainStage.addChild(stage);
+    mainStage.addChild(textStage);
     manifest = [{
         id: 'shattSong', 
         src: 'music/shatt.ogg'
@@ -79,11 +86,13 @@ function afterLoad(event) {
 
 function createWorld(numberOfCircles) {
     me = this;
+    this.showWin();
+    // this.clearTextStage();
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
-        var rndPositionX = Math.max(100, Math.random() * stage.canvas.width);
-        var rndPositionY = Math.max(100, Math.random() * stage.canvas.height);
+        var rndPositionX = Math.max(100, Math.random() * mainStage.canvas.width);
+        var rndPositionY = Math.max(100, Math.random() * mainStage.canvas.height);
 
         var melodicCircle = new MelodicCircle(i, rndPositionX, rndPositionY, {
             playStart: fragmentSize * i,
@@ -125,6 +134,7 @@ function dockCircleToSlot(evt) {
             if (slot.hitTest(pt.x, pt.y)) { 
                 if (slot === melodicCircle.getSlot()) {
                     melodicCircle.setCorrectSlot(true);
+                    console.log('BINGO');
                     this.playTimeline();
                 }
                 melodicCircle.setTransform(slot.x, slot.y);
@@ -133,6 +143,25 @@ function dockCircleToSlot(evt) {
         }
     }
     stage.update(); 
+}
+
+function showWin() {
+    var winLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
+    winLabel.alpha = 0.5;
+    winLabel.x = 30;
+    winLabel.y = 140;
+    var winSubLabel =  new createjs.Text('Try harder next time.', 'bold 72px Arial', '#FFFFFF');
+    winSubLabel.alpha = 0.5;
+    winSubLabel.x = 50;
+    winSubLabel.y = 270;
+    // this.winLabel.visible = true;
+    // this.winSubLabel.visible = true;
+    textStage.addChild(winLabel);
+    textStage.addChild(winSubLabel);
+}
+
+function clearTextStage() {
+    textStage.removeAllChildren();
 }
 
 function playTimeline() {
@@ -151,7 +180,7 @@ function tick(event) {
     if (me.loaded) {
         me.updateSoundData();
     }
-    stage.update(event);
+    mainStage.update(event);
 }
 
 function updateSoundData() {

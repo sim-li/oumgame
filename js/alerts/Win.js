@@ -1,8 +1,8 @@
 (function(window) {
-    function WinMessage() {
+    function Win() {
         this.initialize();
     }
-    var p = WinMessage.prototype = new createjs.Shape(x, y);
+    var p = Win.prototype = new createjs.Shape(x, y);
         p.instance;
         p.Container_initialize = p.initialize;
     p.initialize = function(x, y) {
@@ -28,6 +28,6 @@
         this.add(winLabel);
         this.add(winSubLabel);
     }
-    window.WinMessage = WinMessage;
+    window.Win = Win;
 }(window));
 
