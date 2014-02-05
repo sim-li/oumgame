@@ -73,6 +73,9 @@ function init() {
     }, {
         id: 'playbutton',
         src: 'icon/playbutton.png'
+    }, {
+        id: 'stopbutton',
+        src: 'icon/stopbutton.png'
     }];
     melodicControl = new MelodicControl();
     preload = new createjs.LoadQueue(true, assetsPath);
@@ -373,13 +376,26 @@ function showPlayAllButton() {
     var playButton = new createjs.Bitmap(preload.getResult('playbutton'));
     playButton.x = 383;
     playButton.y = 270;
-    // var playall = new createjs.Text('play!>', 'bold 20px Arial', '#FFFFFF');
     playButton.alpha = 0.3;
-    // playall.x = 30;
-    // playall.y = 180;
-    playButton.addEventListener('click', function() {
-        melodicControl.playAll();
+
+    var stopButton = new createjs.Bitmap(preload.getResult('stopbutton'));
+    stopButton.x = 383;
+    stopButton.y = 278;
+    stopButton.alpha = 0.3;
+    stopButton.addEventListener('click', function() {
+        melodicControl.stop();
+        textStage.removeChild(stopButton);
+        textStage.addChild(playButton);
     });
+
+    playButton.addEventListener('click', function() {
+        if (melodicControl.playlist.length > 0) {
+            melodicControl.playAll();
+            textStage.removeChild(playButton);
+            textStage.addChild(stopButton);
+        }
+    });
+
     textStage.addChild(playButton);
 }
 
