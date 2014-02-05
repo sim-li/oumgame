@@ -28,7 +28,6 @@
  */
 var fftsize = 32;
 var tick_freq = 30;  
-var countDown = 30;
 var songDividend = 8;
 var assetsPath = 'assets/';
 var canvas;
@@ -50,7 +49,8 @@ var calibrated = false;
 var oneSecondInTicks = -1;
 var date;
 var startTime = -1;
-var countDown = 30;
+var countDown = 60;
+var countDownStart = 60;
 var gamestart = false;
 var countDownLabel;
 var tickCicle = 0;
@@ -96,16 +96,21 @@ function afterLoad(event) {
     this.createWorld(numberOfCircles);
 }
 
+function reset() {
+   stage.removeAllChildren();
+   textStage.removeAllChildren();
+   melodicControl.flushPlaylist();
+   this.countDown = this.countDownStart;
+   this.winner = false;
+   this.winlabelShowed = false;
+   
+}
+
 function createWorld(numberOfCircles) {
     me = this;
-    stage.removeAllChildren();
-    textStage.removeAllChildren();
-    me.showPlayAllButton();
     this.showTimer();
-    this.countDown = 30;
-    this.winner = false;
-    this.winlabelShowed = false;
-    this.gamestart = true;
+    me.showPlayAllButton();
+    this.gamestart = true; 
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
@@ -154,8 +159,10 @@ function dockCircleToSlot(evt) {
                     melodicControl.addToPlaylist(melodicCircle);
                     console.log('Added: ', melodicCircle, 'Now have: ', melodicControl.playlist.length);
                 if (slot === melodicCircle.getSlot()) {
+                    console.log('Here!');
                     melodicCircle.setCorrectSlot(true);
                     if (melodicControl.checkForWin() === true) {
+                        console.log('Winner');
                         this.winner = true;
                         this.showWin();
                     }
@@ -261,6 +268,7 @@ function showTimer() {
     resetLabel.y = 0;
     (function(self) {
         resetLabel.addEventListener('click', function() {
+            self.reset();
             self.createWorld(numberOfCircles);
         });
     })(this);

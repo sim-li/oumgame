@@ -64,7 +64,7 @@
 
   
     p.flushPlaylist = function() {
-        me.playlist = [];
+        this.playlist = [];
     }
 
     p.stop = function() {
@@ -141,6 +141,7 @@
 
     p.checkForWin = function() {
         var i = this.playlist.length;
+        console.log(i);
         while (i--) {
             if (this.playlist[i].hasCorrectSlot() === false) {
                 return false;
