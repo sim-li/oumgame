@@ -86,8 +86,7 @@ function afterLoad(event) {
 
 function createWorld(numberOfCircles) {
     me = this;
-    this.showWin();
-    // this.clearTextStage();
+    me.showPlayAllButton();
     var fragmentSize = (currentSong.getDuration() / me.songDividend) / numberOfCircles;
     for (var i = 0; i < numberOfCircles; i++) {
 
@@ -116,7 +115,7 @@ function createWorld(numberOfCircles) {
             return 0;
         });
     }
-    stage.update();
+    mainStage.update();
 }
 
 function dockCircleToSlot(evt) {
@@ -142,10 +141,10 @@ function dockCircleToSlot(evt) {
             continue;
         }
     }
-    stage.update(); 
+    mainStage.update(); 
 }
 
-function showWin() {
+function showWinlabel() {
     var winLabel = new createjs.Text('Game over', 'bold 146px Arial', '#FFFFFF');
     winLabel.alpha = 0.5;
     winLabel.x = 30;
@@ -160,6 +159,17 @@ function showWin() {
     textStage.addChild(winSubLabel);
 }
 
+function showPlayAllButton() {
+    var playall = new createjs.Text('playall', 'bold 20px Arial', '#FFFFFF');
+    playall.alpha = 0.5;
+    playall.x = 30;
+    playall.y = 140;
+    playall.addEventListener('click', function() {
+        melodicControl.playAll();
+    });
+    textStage.addChild(playall);
+}
+
 function clearTextStage() {
     textStage.removeAllChildren();
 }
@@ -170,7 +180,7 @@ function playTimeline() {
         if (element.isMelodicCircle() && element.hasCorrectSlot()) {
             melodicControl.flushPlaylist();
             melodicControl.addToPlaylist(element);
-            melodicControl.playAll();
+            // melodicControl.playAll();
         }
     }
 }
