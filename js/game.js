@@ -56,7 +56,7 @@ var countDownLabel;
 var tickCicle = 0;
 var winner = false;
 var winlabelShowed = false;
-var customInterval = -1;
+var customInterval = false;
 
 function init() {
   
@@ -120,8 +120,8 @@ function introStart() {
     // this.winSubLabel.visible = true;
     textStage.addChild(greetingLabel);
     textStage.addChild(greetingSubLabel);
-    this.custominterval = 3000;
-    this.addEventListener('custominterval', function() {
+    this.customInterval = 3;
+    melodicControl.addEventListener('custominterval', function() {
         console.log('Hello');
     })
 }
@@ -260,12 +260,12 @@ function tick(event) {
     tickCicle++;
     if (this.calibrated) {
         if (this.tickCicle > this.oneSecondInTicks) {
-            this.customInterval--;
-            if (this.customInterval === 0) {
-                console.log('CUSTOM!');
-                this.dispatchEvent('custominterval');
-            }
-
+            if (this.customInterval != false) {
+                this.customInterval--;
+                if (this.customInterval <= 0) {
+                    melodicControl.dispatchEvent('custominterval');
+                }
+            }   
             this.tickCicle = 0;
             if (this.gamestart && this.winner === false) {
                 if (this.countDown <= 0) {
