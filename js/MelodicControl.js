@@ -54,8 +54,10 @@
 
     p.playAll = function() {
         var me = this;
-        me.chainMode = true;
-        me.play(me.playlist[me.playlistPosition]);
+        if (me.playlist.length > 0) {
+            me.chainMode = true;
+            me.play(me.playlist[me.playlistPosition]);
+        }
     }
 
   
