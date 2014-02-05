@@ -24,7 +24,7 @@
         if (this.noSinglePlay) {
             return;
         }
-        if (melodicCircle.isPlaying()) {
+        if (this.isDefined(melodicCircle) && melodicCircle.isPlaying()) {
             currentSong.setPosition(melodicCircle.getOffsets().playStart);
             return;
         }
@@ -55,6 +55,7 @@
     p.playAll = function() {
         var me = this;
         me.chainMode = true;
+        console.log('Hello!');
         console.log(me.playlistPosition);
         me.play(me.playlist[me.playlistPosition]);
     }
