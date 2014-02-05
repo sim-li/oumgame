@@ -148,15 +148,6 @@ function dockCircleToSlot(evt) {
     mainStage.update(); 
 }
 
-// function sortPlayList() {
-//     this.playlist.sort(this.sortfunction)
-// }
-
-// function sortfunction(a, b){
-// //Compare "a" and "b" in some fashion, and return -1, 0, or 1
-//     if ()
-// }
-
 function tick(event) {
     var me = this;
     if (me.loaded) {

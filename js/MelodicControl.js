@@ -55,8 +55,6 @@
     p.playAll = function() {
         var me = this;
         me.chainMode = true;
-        console.log('Hello!');
-        console.log(me.playlistPosition);
         me.play(me.playlist[me.playlistPosition]);
     }
 
@@ -96,7 +94,7 @@
         if (!this.contains(melodicCircle)) {
             this.playlist.push(melodicCircle);
             this.playlistPosition = this.playlist.length - 1;
-            console.log(melodicCircle.getDockedId());
+            this.sortPlaylist();
         }
     }
 
@@ -119,6 +117,22 @@
            }
         }
         return false;
+    }
+
+    p.sortPlaylist = function () {
+        this.playlist.sort(this.sortfunction)
+    }
+
+    p.sortfunction = function (a, b){
+        if (a.getDockedId() > b.getDockedId()) {
+            return 1;
+        }
+        if (a.getDockedId() < b.getDockedId()) {
+            return -1;
+        }
+        if (a.getDockedId() === b.getDockedId()) {
+            return 0;
+        }
     }
 
     p.isDefined = function(object) {
